@@ -1,0 +1,17 @@
+body {
+  background-color: lightblue;
+  color: rgb(143, 29, 158);
+}
+
+h1 {
+  line-height: 0.2;
+}
+
+h3 {
+  margin-bottom: 0;
+  margin-top: 4px;
+}
+
+p {
+  line-height: 0;
+}
