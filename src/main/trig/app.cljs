@@ -66,6 +66,7 @@
    [:path {:transform (str "translate(" (+ 1.25 base) "," (inc height) ")" "scale(0.001)")
            :stroke    "#000000"
            :d         (:b letters)}]
+   [render-num (.sqrt js/Math (+ (* height height) (* base base))) 10 (* 50 height)]
    [:rect {:width        1
            :height       1
            :fill         "none"
