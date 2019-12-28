@@ -24,17 +24,17 @@
           (rem n 10))
     [n]))
 
-(defn render-num [n]
+(defn render-num [n x y]
   (let [digits (digits n)
         count  (count digits)]
     (into [:svg {:width    (* 9 count)
                  :view-box (str "0 0 " (* 500 count) " " 1000)}]
           (for [d (range count)]
-            [:path {:transform (str "translate(" (* d 500) ",0)")
+            [:path {:transform (str "translate(" (+ x (* d 50)) "," y ") scale(0.1)")
                     :stroke    "#000000"
                     :d         ((keyword (str (get digits d))) numbers)}]))))
 
-(defn triangle [base height]
+(defn right-triangle [base height]
   [:svg {:width    "50%"
          :view-box (str "0 0 " (+ 2 base) " " (+ 2 height))}
    [:line {:stroke       "#000000"
@@ -46,6 +46,7 @@
    [:path {:transform "scale(0.001)"
            :stroke    "#000000"
            :d         (:a letters)}]
+   [render-num height -360 (* 90 height)]
    [:line {:stroke       "#000000"
            :stroke-width 0.1
            :x1           1
@@ -55,6 +56,7 @@
    [:path {:transform (str "translate(" 0 "," (inc height) ")" "scale(0.001)")
            :stroke    "#000000"
            :d         (:c letters)}]
+   [render-num base 10 (* 180 height)]
    [:line {:stroke       "#000000"
            :stroke-width 0.1
            :x1           1
@@ -72,14 +74,10 @@
            :stroke       "#000000"
            :stroke-width 0.05}]])
 
-(comment
-
-  (render-num 12345678909876543210))
-
 (defn app []
   [:div#app
-   [:h1 "latex"]
-   [triangle 12 5]])
+   [:h1 "Trigonometric ratios in right triangles"]
+   [right-triangle 12 5]])
 
 (defn render []
   (r/render [app]
