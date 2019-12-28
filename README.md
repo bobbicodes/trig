@@ -1,6 +1,13 @@
-# shadow-reagent
+# trig
 
-Like the [official quickstart](https://github.com/thheller/shadow-cljs), but without the extra steps.
+Learn trig with Clojure!
+
+## Development
+
+```bash
+$ npm install
+added 97 packages from 106 contributors in 5.984s
+```
 
 Start the development process by running:
 
