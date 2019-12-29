@@ -36,36 +36,37 @@
                     :stroke    "#000000"
                     :d         ((keyword (str (get digits d))) numbers)}]))))
 
+(defn render-letter [k x y]
+  [:path {:transform (str "translate(" x "," y ")" "scale(0.001)")
+          :stroke    "#000000"
+          :d         (k letters)}])
+
 (defn polygon [& points]
   [:polygon {:stroke "#000000"
              :stroke-width 0.1
              :fill "none"
              :points (apply str (interpose " " points))}])
 
+(defn right-angle-box [x y]
+  [:rect {:width        1
+          :height       1
+          :fill         "none"
+          :x            x
+          :y            y
+          :stroke       "#000000"
+          :stroke-width 0.05}])
+
 (defn right-triangle [base height]
   [:svg {:width    "100%"
          :view-box (str "0 0 " (+ 2 base) " " (+ 2 height))}
-   (polygon 1 1 1 (inc height) (inc base) (inc height))
-   [:path {:transform "scale(0.001)"
-           :stroke    "#000000"
-           :stroke-linejoin "bevel"
-           :d         (:A letters)}]
+   [polygon 1 1 1 (inc height) (inc base) (inc height)]
+   [render-letter :A 0 0]
+   [render-letter :B (+ 1.25 base) (inc height)]
+   [render-letter :C 0 (inc height)]
    [render-num height -360 (* 90 height)]
-   [:path {:transform (str "translate(" 0 "," (inc height) ")" "scale(0.001)")
-           :stroke    "#000000"
-           :d         (:C letters)}]
    [render-num base 10 (* 180 height)]
-   [:path {:transform (str "translate(" (+ 1.25 base) "," (inc height) ")" "scale(0.001)")
-           :stroke    "#000000"
-           :d         (:B letters)}]
    [render-num (.sqrt js/Math (+ (* height height) (* base base))) 10 (* 50 height)]
-   [:rect {:width        1
-           :height       1
-           :fill         "none"
-           :x            1
-           :y            height
-           :stroke       "#000000"
-           :stroke-width 0.05}]])
+   [right-angle-box 1 height]])
 
 (defn app []
   [:div#app
