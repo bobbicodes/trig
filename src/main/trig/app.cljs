@@ -5,6 +5,7 @@
 (defonce triangle-atom 
   (r/atom {:base   12
            :height 5
+           :hypotenuse nil
            :angle1 {:name "A"
                     :degrees nil}
            :angle2 {:name "B"
@@ -40,8 +41,8 @@
   (let [angle1 (:name (:angle1 @triangle-atom))
         angle2 (:name (:angle2 @triangle-atom))
         angle3 (:name (:angle3 @triangle-atom))]
-    [:svg {:width    "100%"
-           :view-box (str "0 0 " (+ 2 base) " " (+ 2 height))}
+    [:svg {:width     "100%"
+           :view-box  (str "0 0 " (+ 2 base) " " (+ 2 height))}
      [polygon 1 1 1 (inc height) (inc base) (inc height)]
      [latex/render-letter (keyword angle1) 0 0]
      [latex/render-letter (keyword angle2) (inc base) (inc height)]
@@ -51,12 +52,24 @@
      [latex/render-num (.sqrt js/Math (+ (* height height) (* base base))) -200 (+ 200 (* 18 height))]
      [right-angle-box 1 height]]))
 
+(defn sin-deg
+  "accepts a value in degrees, converts it to radians and returns the sin"
+  [deg]
+  (.sin js/Math (* deg  (/ 3.14159 180))))
+
 (defn tan-deg 
   "accepts a value in degrees, converts it to radians and returns the tangent"
   [deg] 
   (.tan js/Math (* deg  (/ 3.14159 180))))
 
+(defn cos-deg
+  "accepts a value in degrees, converts it to radians and returns the cosine"
+  [deg]
+  (.cos js/Math (* deg  (/ 3.14159 180))))
+
 (comment 
+  (number? (:hypotenuse @triangle-atom))
+  (/ 3 (sin-deg 20))
   (* (:base @triangle-atom) (tan-deg 65))
   (count (:left-paren latex/characters))
   (latex/render-letters [[(:left-paren latex/characters) (:angle latex/characters)]] 0 20)
@@ -78,15 +91,29 @@
      [:div
       [input "number" "Base: " base #(swap! triangle-atom assoc :base (-> % .-target .-value js/parseInt))]
       [input "number" " Height: " height #(swap! triangle-atom assoc :height (-> % .-target .-value js/parseInt))]
+      [input "number" " Hypotenuse: " (:hypotenuse @triangle-atom) #(swap! triangle-atom assoc :hypotenuse (-> % .-target .-value js/parseInt))]
       [:div
        [input "number" (str "∠" angle1 ": ") (:degrees (:angle1 @triangle-atom)) 
-        #(swap! triangle-atom assoc-in
-                    [:angle1 :degrees] (-> % .-target .-value js/parseInt)
-             [:height]  (* base (tan-deg (:degrees (:angle2 @triangle-atom)))))]
+        #(do (.log js/console "change degrees")
+             (swap! triangle-atom assoc-in
+                    [:angle1 :degrees] (-> % .-target .-value js/parseInt))
+             (cond
+               (pos? (:hypotenuse @triangle-atom)) (do (swap! triangle-atom assoc :height (* (:hypotenuse @triangle-atom) (cos-deg (-> % .-target .-value js/parseInt))))
+                                                     (swap! triangle-atom assoc :base (* (:hypotenuse @triangle-atom) (cos-deg (-> % .-target .-value js/parseInt))))
+                                                     (swap! triangle-atom assoc :hypotenuse (/ height (cos-deg (-> % .-target .-value js/parseInt)))))
+               (pos? height) (do (.log js/console "change base")
+                                 (swap! triangle-atom assoc :hypotenuse (/ height (cos-deg (-> % .-target .-value js/parseInt))))
+                                    #_(swap! triangle-atom assoc :base (/ height (tan-deg (-> % .-target .-value js/parseInt)))))
+               :else (do
+                       (swap! triangle-atom assoc :height (/ base (tan-deg (-> % .-target .-value js/parseInt))))
+                       (swap! triangle-atom assoc :hypotenuse (/ base (sin-deg (-> % .-target .-value js/parseInt)))))))]
        [input "number" (str "∠" angle2 ": ") (:degrees (:angle2 @triangle-atom)) 
         #(do (swap! triangle-atom assoc-in
                     [:angle2 :degrees] (-> % .-target .-value js/parseInt))
-             (swap! triangle-atom assoc :height (* base (tan-deg (-> % .-target .-value js/parseInt)))))]]]
+             (cond
+               (pos? (:hypotenuse @triangle-atom)) (swap! triangle-atom assoc :height (* (:hypotenuse @triangle-atom) (sin-deg (-> % .-target .-value js/parseInt))))
+               (pos? height) (swap! triangle-atom assoc :base (/ height (tan-deg (-> % .-target .-value js/parseInt))))
+               :else (swap! triangle-atom assoc :height (* base (tan-deg (-> % .-target .-value js/parseInt))))))]]]
      [right-triangle base height]
      [:p (str "sin(∠" angle1 "): " base " / " hypotenuse)]
      [:p (str "cos(∠" angle1 "): " height " / " hypotenuse)]
@@ -94,6 +121,7 @@
      [:p (str "sin(∠" angle2 "): " height " / " hypotenuse)]
      [:p (str "cos(∠" angle2 "): " base " / " hypotenuse)]
      [:p (str "tan(∠" angle2 "): " height " / " base)]
+     [:p (str "Hypotenuse: " hypotenuse)]
      [:textarea
       {:rows      5
        :cols      40
