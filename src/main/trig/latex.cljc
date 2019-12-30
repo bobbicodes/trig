@@ -24,3 +24,34 @@
   {:left-paren  "M137 500Q137 431 147 369T170 262 207 174 245 107 287 55 320 21 345 0H358 362Q376 0 376 9 376 12 359 30T318 83 269 169 227 307 210 500 227 692 268 831 317 917 359 970 376 991Q376 1000 361 1000H358 345L317 976Q223 891 180 764T137 500Z"
    :right-paren "M271 1 275 0Q280 0 285 0H297L325 24Q419 109 462 236T505 500Q505 568 495 631T472 738 435 826 397 893 356 944 324 977 301 996Q298 999 297 1000H285Q277 1000 274 1000T269 997 266 988Q267 987 277 975 432 814 432 500T277 25Q267 13 266 12 266 4 271 1Z"
    :angle       "M16 988 13 986Q10 985 8 983T3 977 0 968Q0 966 2 960 12 945 291 627 342 568 419 480 540 340 561 317T592 294 606 300 611 314Q611 320 608 325 607 326 572 366T469 485 335 638L65 947 331 948H598Q611 958 611 968 611 980 596 988H16Z"})
+
+(defn digits [n]
+  (if (>= n 10)
+    (conj (digits (quot n 10))
+          (rem n 10))
+    [n]))
+
+(defn render-num [n x y]
+  (let [digits (digits n)
+        count  (count digits)]
+    (into [:svg {:width    (* 9 count)
+                 :view-box (str "0 0 " (* 500 count) " " 1000)}]
+          (for [d (range count)]
+            [:path {:transform (str "translate(" (+ x (* d 35)) "," y ") scale(0.07)")
+                    :stroke    "#000000"
+                    :d         ((keyword (str (get digits d))) numbers)}]))))
+
+(defn render-letter [k x y]
+  [:path {:transform (str "translate(" x "," y ")" "scale(0.001)")
+          :stroke    "#000000"
+          :d         (k letters)}])
+
+(defn render-letters [[letters] x y]
+  (let [count  (count letters)]
+    (into [:svg {:width    (* 22 count)
+                 :height   (* 9 count)
+                 :view-box (str "0 0 " (* 1000 count) " " 2000)}]
+          (for [c (range count)]
+            [:path {:transform (str "translate(" (+ x  (* c 1000)) "," y ") scale(2)")
+                    :stroke    "#000000"
+                    :d         (get letters c)}]))))
