@@ -39,7 +39,7 @@
    })
 
 (defn digits [n]
-  (if (> n 10)
+  (if (>= n 10)
     (conj (digits (quot n 10))
           (rem n 10))
     [n]))
@@ -50,7 +50,7 @@
     (into [:svg {:width    (* 9 count)
                  :view-box (str "0 0 " (* 500 count) " " 1000)}]
           (for [d (range count)]
-            [:path {:transform (str "translate(" (+ x (* d 50)) "," y ") scale(0.1)")
+            [:path {:transform (str "translate(" (+ x (* d 35)) "," y ") scale(0.07)")
                     :stroke    "#000000"
                     :d         ((keyword (str (get digits d))) numbers)}]))))
 
@@ -85,15 +85,15 @@
           :stroke-width 0.05}])
 
 (defn right-triangle [base height]
-  [:svg {:width    "70%"
+  [:svg {:width    "100%"
          :view-box (str "0 0 " (+ 2 base) " " (+ 2 height))}
    [polygon 1 1 1 (inc height) (inc base) (inc height)]
    [render-letter :A 0 0]
    [render-letter :B (inc base) (inc height)]
    [render-letter :C 0 (inc height)]
-   [render-num height (+ 50 base) (+ 400 height)]
-   [render-num base 400 950]
-   [render-num (.sqrt js/Math (+ (* height height) (* base base))) 600 (+ 20 (* 10 height))]
+   [render-num height -100 (+ 300 (* 40 height))]
+   [render-num base (* base 30) (+ 600 (* height 30))]
+   [render-num (.sqrt js/Math (+ (* height height) (* base base))) (* base 20) (+ 300 (* 20 height))]
    [right-angle-box 1 height]
    [render-letters
     [[(:t letters) (:a letters) (:n letters)
@@ -108,7 +108,7 @@
 
 
 (comment 
-  
+  (digits 10)
   (count (:left-paren characters))
   (render-letters [[(:left-paren characters) (:angle characters)]] 0 20)
   )
