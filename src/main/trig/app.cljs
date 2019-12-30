@@ -85,15 +85,15 @@
           :stroke-width 0.05}])
 
 (defn right-triangle [base height]
-  [:svg {:width    "100%"
+  [:svg {:width    "70%"
          :view-box (str "0 0 " (+ 2 base) " " (+ 2 height))}
    [polygon 1 1 1 (inc height) (inc base) (inc height)]
    [render-letter :A 0 0]
    [render-letter :B (inc base) (inc height)]
    [render-letter :C 0 (inc height)]
-   [render-num height -360 (* 90 height)]
-   [render-num base 10 (* 180 height)]
-   [render-num (.sqrt js/Math (+ (* height height) (* base base))) 10 (* 50 height)]
+   [render-num height (+ 50 base) (+ 400 height)]
+   [render-num base 400 950]
+   [render-num (.sqrt js/Math (+ (* height height) (* base base))) 600 (+ 20 (* 10 height))]
    [right-angle-box 1 height]
    [render-letters
     [[(:t letters) (:a letters) (:n letters)
@@ -113,14 +113,22 @@
   (render-letters [[(:left-paren characters) (:angle characters)]] 0 20)
   )
 
-
 (defn app []
-  [:div#app
-   [:h2 "Trigonometric ratios in right triangles"]
-   [number-input "Base: " (:base @triangle-atom) #(swap! triangle-atom assoc :base (-> % .-target .-value js/parseInt))]
-   [number-input " Height: " (:height @triangle-atom) #(swap! triangle-atom assoc :height (-> % .-target .-value js/parseInt))]
-   [right-triangle (:base @triangle-atom) (:height @triangle-atom)]
-])
+  (let [base   (:base @triangle-atom)
+        height (:height @triangle-atom)
+        hypotenuse (.sqrt js/Math (+ (* height height) (* base base)))]
+    [:div#app
+     [:h2 "Trigonometric ratios in right triangles"]
+     [:div
+      [number-input "Base: " base #(swap! triangle-atom assoc :base (-> % .-target .-value js/parseInt))]
+      [number-input " Height: " (:height @triangle-atom) #(swap! triangle-atom assoc :height (-> % .-target .-value js/parseInt))]]
+     [right-triangle base height]
+     [:p (str "sin(∠A): " base " / " hypotenuse)]
+     [:p (str "cos(∠A): " height " / " hypotenuse)]
+     [:p (str "tan(∠A): " base " / " height)]
+     [:p (str "sin(∠B): " height " / " hypotenuse)]
+     [:p (str "cos(∠B): " base " / " hypotenuse)]
+     [:p (str "tan(∠B): " height " / " base)]]))
 
 (defn render []
   (r/render [app]
