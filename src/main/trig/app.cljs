@@ -67,10 +67,20 @@
   [deg]
   (* (.asin js/Math deg) (/ 180 js/Math.PI)))
 
+(defn acos-deg
+  "accepts a value in degrees, converts it to radians and returns the arcosine"
+  [deg]
+  (* (.acos js/Math deg) (/ 180 js/Math.PI)))
+
 (defn tan-deg 
   "accepts a value in degrees, converts it to radians and returns the tangent"
   [deg] 
   (.tan js/Math (* deg (/ js/Math.PI 180))))
+
+(defn atan-deg
+  "accepts a value in degrees, converts it to radians and returns the arctangent"
+  [deg]
+  (* (.atan js/Math deg) (/ 180 js/Math.PI)))
 
 (defn cos-deg
   "accepts a value in degrees, converts it to radians and returns the cosine"
@@ -110,7 +120,13 @@
        (pos? base)) (assoc triangle
                            :height (* base (tan-deg (:degrees angle2)))
                            :hypotenuse (/ base (cos-deg (:degrees angle2))))
-      (and (pos? base) (pos? hypotenuse)) (assoc-in @triangle-atom [:angle1 :degrees] (asin-deg (/ base hypotenuse)))
+      ;; solve for angles
+      (and (pos? base) (pos? hypotenuse)) (assoc-in (assoc-in @triangle-atom [:angle1 :degrees] (asin-deg (/ base hypotenuse)))
+                                                    [:angle2 :degrees] (acos-deg (/ base hypotenuse)))
+      (and (pos? height) (pos? hypotenuse)) (assoc-in (assoc-in @triangle-atom [:angle1 :degrees] (acos-deg (/ height hypotenuse)))
+                                                      [:angle2 :degrees] (asin-deg (/ height hypotenuse)))
+      (and (pos? height) (pos? base))  (assoc-in (assoc-in @triangle-atom [:angle1 :degrees] (atan-deg (/ base height)))
+                                                 [:angle2 :degrees] (atan-deg (/ height base)))
       :else "Does not compute")))
 
 (comment 
