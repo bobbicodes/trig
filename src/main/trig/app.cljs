@@ -33,13 +33,13 @@
     :fill         "none"
     :points       (apply str (interpose " " points))}])
 
-(defn right-angle-box [x y]
+(defn right-angle-box [x-pos y-pos]
   [:rect 
    {:width        1
     :height       1
     :fill         "none"
-    :x            x
-    :y            y
+    :x            x-pos
+    :y            y-pos
     :stroke       "#000000"
     :stroke-width 0.05}])
 
@@ -60,10 +60,6 @@
       [latex/render-num base (* base 18) (+ 750 (* height 30))]
       [latex/render-num hypotenuse -200 (+ 200 (* 18 height))]]]))
 
-(comment
-  (right-triangle)
-  (triangle-labels @triangle))
-
 (defn sin [deg]
   (.sin js/Math (* deg (/ js/Math.PI 180))))
 
@@ -82,7 +78,7 @@
 (defn cos [deg]
   (.cos js/Math (* deg (/ js/Math.PI 180))))
 
-(defn solve-triangle [triangle]
+(defn solve-sides [triangle]
   (let [{:keys [base height hypotenuse angle1 angle2]} triangle]
     (cond
       (and (pos? (:degrees angle1)) (pos? hypotenuse))
@@ -109,31 +105,28 @@
       (assoc triangle
              :height (* base (tan (:degrees angle2)))
              :hypotenuse (/ base (cos (:degrees angle2))))
-      ;; solve for angles
+      :else triangle)))
+
+(defn solve-angles [triangle]
+  (let [{:keys [base height hypotenuse]} triangle]
+    (cond
       (and (pos? base) (pos? hypotenuse))
-      (assoc-in (assoc-in triangle
-                          [:angle1 :degrees]
-                          (asin (/ base hypotenuse)))
-                [:angle2 :degrees]
-                (acos (/ base hypotenuse)))
+      (-> triangle
+          (assoc-in [:angle1 :degrees] (asin (/ base hypotenuse)))
+          (assoc-in [:angle2 :degrees] (acos (/ base hypotenuse))))
       (and (pos? height) (pos? hypotenuse))
-      (assoc-in (assoc-in triangle 
-                          [:angle1 :degrees] 
-                          (acos (/ height hypotenuse)))
-                [:angle2 :degrees] 
-                (asin (/ height hypotenuse)))
-      (and (pos? height) (pos? base))  
-      (assoc-in (assoc-in triangle
-                          [:angle1 :degrees]
-                          (atan (/ base height)))
-                [:angle2 :degrees]
-                (atan (/ height base)))
-      :else "Does not compute")))
+      (-> triangle
+          (assoc-in [:angle1 :degrees] (acos (/ height hypotenuse)))
+          (assoc-in [:angle2 :degrees] (asin (/ height hypotenuse))))
+      (and (pos? height) (pos? base))
+      (-> triangle
+          (assoc-in [:angle1 :degrees] (atan (/ base height)))
+          (assoc-in [:angle2 :degrees] (atan (/ height base))))
+      :else triangle)))
 
 (comment
   (triangle-labels @triangle)
   (.asin js/Math (* (/ js/Math.PI 180) (/ 4 6)))
-  (solve-triangle @triangle)
 
   (number? (:hypotenuse @triangle))
   (/ 3 (sin 20))
@@ -145,6 +138,11 @@
 
 (defn round-hundredths [n]
   (/ (.round js/Math (* 100 n)) 100))
+
+(defn solve-triangle [triangle]
+  (-> triangle
+      solve-sides
+      solve-angles))
 
 (defn app []
   (let [base   (:base @triangle)
@@ -168,7 +166,7 @@
        [input "number" (str "∠" angle2 ": ") (round-hundredths (:degrees (:angle2 @triangle))) #(swap! triangle assoc-in [:angle2 :degrees] (-> % .-target .-value js/parseInt))]]]
      [:div 
       [button "Solve" #(swap! triangle solve-triangle)]
-      [button "Clear" (fn [e] (swap! triangle #(assoc % :base nil :height nil :hypotenuse nil))
+      [button "Clear" (fn [] (swap! triangle #(assoc % :base nil :height nil :hypotenuse nil))
                         (swap! triangle assoc-in [:angle1 :degrees] nil)
                         (swap! triangle assoc-in [:angle2 :degrees] nil))]]
      [right-triangle base height]
