@@ -127,14 +127,12 @@
 (comment
   (triangle-labels @triangle)
   (.asin js/Math (* (/ js/Math.PI 180) (/ 4 6)))
-
   (number? (:hypotenuse @triangle))
   (/ 3 (sin 20))
   (* (:base @triangle) (tan 65))
   (count (:left-paren latex/characters))
   (latex/render-letters [[(:left-paren latex/characters) (:angle latex/characters)]] 0 20)
-(/ (.round js/Math (* 100 27.266)) 100)
-  )
+  (/ (.round js/Math (* 100 27.266)) 100))
 
 (defn round-hundredths [n]
   (/ (.round js/Math (* 100 n)) 100))
@@ -172,11 +170,17 @@
      [right-triangle base height]
      [triangle-labels @triangle]
      [:p (str "sin(∠" angle1 "): " base " / " hypotenuse)]
+     [:p (str "csc(∠" angle1 "): " hypotenuse " / " base)]
      [:p (str "cos(∠" angle1 "): " height " / " hypotenuse)]
+     [:p (str "sec(∠" angle1 "): " hypotenuse " / " height)]
      [:p (str "tan(∠" angle1 "): " base " / " height)]
+     [:p (str "cot(∠" angle1 "): " height " / " base)]
      [:p (str "sin(∠" angle2 "): " height " / " hypotenuse)]
+     [:p (str "csc(∠" angle2 "): " hypotenuse " / " height)]
      [:p (str "cos(∠" angle2 "): " base " / " hypotenuse)]
+     [:p (str "sec(∠" angle2 "): " hypotenuse " / " base)]
      [:p (str "tan(∠" angle2 "): " height " / " base)]
+     [:p (str "cot(∠" angle2 "): " base " / " height)]
      [:p (str "Hypotenuse: " hypotenuse)]
      [:textarea
       {:rows      5
