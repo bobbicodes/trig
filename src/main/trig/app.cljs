@@ -132,7 +132,9 @@
   (* (:base @triangle) (tan 65))
   (count (:left-paren latex/characters))
   (latex/render-letters [[(:left-paren latex/characters) (:angle latex/characters)]] 0 20)
-  (/ (.round js/Math (* 100 27.266)) 100))
+  (/ (.round js/Math (* 100 27.266)) 100)
+(js/parseFloat "6.6")
+  )
 
 (defn round-hundredths [n]
   (/ (.round js/Math (* 100 n)) 100))
@@ -156,9 +158,9 @@
       [input "text" "" angle2 #(swap! triangle assoc-in [:angle2 :name] (-> % .-target .-value))]
       [input "text" "" angle3 #(swap! triangle assoc-in [:angle3 :name] (-> % .-target .-value))]]
      [:div
-      [input "number" "Base: " base #(swap! triangle assoc :base (-> % .-target .-value js/parseInt))]
-      [input "number" " Height: " height #(swap! triangle assoc :height (-> % .-target .-value js/parseInt))]
-      [input "number" " Hypotenuse: " (:hypotenuse @triangle) #(swap! triangle assoc :hypotenuse (-> % .-target .-value js/parseInt))]
+      [input "number" "Base: " base #(swap! triangle assoc :base (-> % .-target .-value js/parseFloat))]
+      [input "number" " Height: " height #(swap! triangle assoc :height (-> % .-target .-value js/parseFloat))]
+      [input "number" " Hypotenuse: " (:hypotenuse @triangle) #(swap! triangle assoc :hypotenuse (-> % .-target .-value js/parseFloat))]
       [:div
        [input "number" (str "∠" angle1 ": ") (round-hundredths (:degrees (:angle1 @triangle))) #(swap! triangle assoc-in [:angle1 :degrees] (-> % .-target .-value js/parseInt))]
        [input "number" (str "∠" angle2 ": ") (round-hundredths (:degrees (:angle2 @triangle))) #(swap! triangle assoc-in [:angle2 :degrees] (-> % .-target .-value js/parseInt))]]]
@@ -187,7 +189,7 @@
        :cols      40
        :value     (str @triangle)
        :read-only true}]]))
-
+6.6
 (defn render []
   (r/render [app]
             (.getElementById js/document "root")))
