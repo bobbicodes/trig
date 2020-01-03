@@ -37,7 +37,7 @@
     (into [:svg {:width    (* 9 count)
                  :view-box (str "0 0 " (* 500 count) " " 1000)}]
           (for [d (range count)]
-            [:path {:transform (str "translate(" (+ x (* d 35)) "," y ") scale(0.07)")
+            [:path {:transform (str "translate(" (+ x (* d 35)) "," y ") scale(0.1)")
                     :stroke    "#000000"
                     :d         ((keyword (str (get digits d))) numbers)}]))))
 
