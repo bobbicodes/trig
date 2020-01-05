@@ -100,19 +100,36 @@
 (defn law-of-sines [triangle]
   (let [{:keys [angle1 angle2 angle3 line1 line2 line3]} triangle]
     (cond
-      (and (pos? angle1)
-           (pos? angle2)
-           (pos? line2))
+      (and (pos? angle1) (pos? angle2) (pos? line2))
       (assoc triangle :line3 (* line2 (/ (sin angle2) (sin angle1))))
-      (and (pos? angle2)
-           (pos? angle3)
-           (pos? line1))
+      (and (pos? angle1) (pos? angle2) (pos? line3))
+      (assoc triangle :line2 (* line3 (/ (sin angle1) (sin angle2))))
+      (and (pos? angle1) (pos? line1) (pos? line2))
+      (assoc triangle :angle3 (asin (* (/ line1 line2) (sin angle1))))
+      (and (pos? angle1) (pos? line2) (pos? line3))
+      (assoc triangle :angle2 (asin (* (/ line3 line2) (sin angle1))))
+      (and (pos? angle1) (pos? angle3) (pos? line1))
+      (assoc triangle :line2 (* line1 (/ (sin angle1) (sin angle3))))
+      (and (pos? angle1) (pos? angle3) (pos? line2))
+      (assoc triangle :angle2 (* line2 (/ (sin angle3) (sin angle1))))
+      (and (pos? angle1) (pos? angle3) (pos? line1))
+      (assoc triangle :line2 (* line1 (/ (sin angle1) (sin angle3))))
+      (and (pos? angle2) (pos? angle3) (pos? line1))
       (assoc triangle :line3 (* line1 (/ (sin angle2) (sin angle3))))
-      (and (pos? angle1)
-           (pos? line2)
-           (pos? line3))
-      (assoc triangle :angle2 (- 180 (asin (* (/ line3 line2) (sin angle1)))))
+      (and (pos? angle2) (pos? angle3) (pos? line3))
+      (assoc triangle :line1 (* line3 (/ (sin angle3) (sin angle2))))
+      (and (pos? angle2) (pos? line1) (pos? line3))
+      (assoc triangle :angle3 (asin (* (/ line1 line3) (sin angle2))))
+      (and (pos? angle2) (pos? line2) (pos? line3))
+      (assoc triangle :angle1 (asin (* (/ line2 line3) (sin angle2))))
+      (and (pos? angle3) (pos? line1) (pos? line2))
+      (assoc triangle :angle1 (asin (* (/ line2 line1) (sin angle3))))
+      (and (pos? angle3) (pos? line1) (pos? line3))
+      (assoc triangle :angle2 (asin (* (/ line3 line1) (sin angle3))))
       :else triangle)))
+
+(comment
+  (- 180 78.08))
 
 (defn solve-triangle [triangle]
   (-> triangle

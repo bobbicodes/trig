@@ -1,11 +1,12 @@
 (ns trig.view
-  (:require [trig.latex :as latex]
+  (:require [reagent.core :as r]
+            [trig.latex :as latex]
             [trig.triangle :as tri :refer [triangle]]))
 
 (defn input [type label value on-change]
   [:label label
    [:input
-    {:style     {:width 50}
+    {:style     {:width 40}
      :type      type
      :value     value
      :on-change on-change}]])
@@ -68,31 +69,39 @@
      [:p (str "cot(∠" angle2 "): " line1 " / " line2)]
      [:p (str "line3: " line3)]]))
 
+(defonce obtuse? (r/atom {:angle1 false :angle2 false :angle3 false}))
+
 (defn app []
   (let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} @triangle]
     [:div#app
      [:h2 "Trigonometry with general triangles"]
+     [:h3 "Law of sines"]
      [:div "Angles: "
-      [input "text" "" label1 #(swap! triangle assoc :label1 (-> % .-target .-value))]
-      [input "text" "" label2 #(swap! triangle assoc :label2 (-> % .-target .-value))]
-      [input "text" "" label3 #(swap! triangle assoc :label3 (-> % .-target .-value))]]
+      [input "text" "" label1 #(swap! triangle assoc :label1 (-> % .-target .-value))] " "
+      [input "text" "" label2 #(swap! triangle assoc :label2 (-> % .-target .-value))] " "
+      [input "text" "" label3 #(swap! triangle assoc :label3 (-> % .-target .-value))] " "]
      [:div
-      [input "number" (str label1 label2 ":") (round line1 10) #(swap! triangle assoc :line1 (-> % .-target .-value js/parseFloat))]
-      [input "number" (str label2 label3 ":") (round line2 10) #(swap! triangle assoc :line2 (-> % .-target .-value js/parseFloat))]
-      [input "number" (str label1 label3 ":") (round line3 10) #(swap! triangle assoc :line3 (-> % .-target .-value js/parseFloat))]]
+      [input "number" (str label1 label2 ": ") (round line1 10) #(swap! triangle assoc :line1 (-> % .-target .-value js/parseFloat))] " "
+      [input "number" (str label2 label3 ": ") (round line2 10) #(swap! triangle assoc :line2 (-> % .-target .-value js/parseFloat))] " "
+      [input "number" (str label1 label3 ": ") (round line3 10) #(swap! triangle assoc :line3 (-> % .-target .-value js/parseFloat))] " "]
       [:div
-       [input "number" (str "∠" label1 ": ") (round angle1 100) #(swap! triangle assoc :angle1 (-> % .-target .-value js/parseFloat))]
-       [input "number" (str "∠" label2 ": ") (round angle2 100) #(swap! triangle assoc :angle2 (-> % .-target .-value js/parseFloat))]
-       [input "number" (str "∠" label3 ": ") (round angle3 100) #(swap! triangle assoc :angle3 (-> % .-target .-value js/parseFloat))]]
+       [input "number" (str "∠" label1 ": ") (round (if (:angle1 @obtuse?) (- 180 angle1) angle1) 1) #(swap! triangle assoc :angle1 (-> % .-target .-value js/parseFloat))] "° "
+       [input "number" (str "∠" label2 ": ") (round (if (:angle2 @obtuse?) (- 180 angle2) angle2) 1) #(swap! triangle assoc :angle2 (-> % .-target .-value js/parseFloat))] "° "
+       [input "number" (str "∠" label3 ": ") (round (if (:angle3 @obtuse?) (- 180 angle3) angle3) 1) #(swap! triangle assoc :angle3 (-> % .-target .-value js/parseFloat))] "° "]
+     [:div 
+      [input "checkbox" "Obtuse" (:angle1 @obtuse?) #(swap! obtuse? update :angle1 not)]
+      [input "checkbox" "Obtuse" (:angle2 @obtuse?) #(swap! obtuse? update :angle2 not)]
+      [input "checkbox" "Obtuse" (:angle3 @obtuse?) #(swap! obtuse? update :angle3 not)]]
      [:div 
       [button "Solve" #(swap! triangle tri/solve-triangle)]
-      [button "Clear" (fn [] (swap! triangle #(assoc % :line1 nil :line2 nil :line3 nil))
-                        (swap! triangle assoc :angle1 nil)
-                        (swap! triangle assoc :angle2 nil))]]
-     [render-triangle @triangle]
-     [ratios @triangle]
+      [button "Clear" (fn [] (swap! triangle #(assoc % :line1 nil :line2 nil :line3 nil :angle1 nil :angle2 nil :angle3 nil)))]]
+     ;[render-triangle @triangle]
+     ;[ratios @triangle]
      [:textarea
       {:rows      5
        :cols      40
        :value     (str @triangle)
        :read-only true}]]))
+
+(comment
+  @obtuse?)
