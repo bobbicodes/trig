@@ -18,8 +18,8 @@
 
 (defn polygon [& points]
   [:polygon
-   {:stroke       "#000000"
-    :stroke-width 0.1
+   {:stroke       "#61e2ff"
+    :stroke-width 0.3
     :fill         "none"
     :points       (apply str (interpose " " points))}])
 
@@ -30,7 +30,7 @@
     :fill         "none"
     :x            x-pos
     :y            y-pos
-    :stroke       "#000000"
+    :stroke       "#61e2ff"
     :stroke-width 0.05}])
 
 (defn round
@@ -39,14 +39,15 @@
   (/ (.round js/Math (* x n)) x))
 
 (defn render-triangle [triangle]
-  (let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} triangle]
+  (let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} triangle
+        rad (* angle1 (/ js/Math.PI 180))]
     [:svg {:width    "80%"
-           :view-box (str "0 0 " (+ 2 line1) " " (+ 2 line2))}
-     [polygon 1 1 1 (inc line2) (inc line1) (inc line2)]
-     [:g [latex/render-letter (keyword label1) 0 0]
+           :view-box (str "-2 0 30 30")}
+     [polygon 0 0 0 line3 (* line2 (tri/cos rad)) (* line2 (tri/sin rad))]
+     #_[:g [latex/render-letter (keyword label1) 0 0]
       [latex/render-letter (keyword label2) (inc line1) (inc line2)]
       [latex/render-letter (keyword label3) 0 (inc line2)]]
-     [:g [latex/render-num line2 -350 (+ 300 (* 40 line2))]
+     #_[:g [latex/render-num line2 -350 (+ 300 (* 40 line2))]
       [latex/render-num line1 (* line1 18) (+ 750 (* line2 30))]
       [latex/render-num line3 -200 (+ 200 (* 18 line2))]]
      ;[right-angle-box 1 line2]
@@ -84,18 +85,19 @@
       [input "number" (str label1 label2 ": ") (round line1 10) #(swap! triangle assoc :line1 (-> % .-target .-value js/parseFloat))] " "
       [input "number" (str label2 label3 ": ") (round line2 10) #(swap! triangle assoc :line2 (-> % .-target .-value js/parseFloat))] " "
       [input "number" (str label1 label3 ": ") (round line3 10) #(swap! triangle assoc :line3 (-> % .-target .-value js/parseFloat))] " "]
-      [:div
-       [input "number" (str "∠" label1 ": ") (round (if (:angle1 @obtuse?) (- 180 angle1) angle1) 1) #(swap! triangle assoc :angle1 (-> % .-target .-value js/parseFloat))] "° "
-       [input "number" (str "∠" label2 ": ") (round (if (:angle2 @obtuse?) (- 180 angle2) angle2) 1) #(swap! triangle assoc :angle2 (-> % .-target .-value js/parseFloat))] "° "
-       [input "number" (str "∠" label3 ": ") (round (if (:angle3 @obtuse?) (- 180 angle3) angle3) 1) #(swap! triangle assoc :angle3 (-> % .-target .-value js/parseFloat))] "° "]
+     [:div
+      [input "number" (str "∠" label1 ": ") (round (if (:angle1 @obtuse?) (- 180 angle1) angle1) 1) #(swap! triangle assoc :angle1 (-> % .-target .-value js/parseFloat))] "° "
+      [input "number" (str "∠" label2 ": ") (round (if (:angle2 @obtuse?) (- 180 angle2) angle2) 1) #(swap! triangle assoc :angle2 (-> % .-target .-value js/parseFloat))] "° "
+      [input "number" (str "∠" label3 ": ") (round (if (:angle3 @obtuse?) (- 180 angle3) angle3) 1) #(swap! triangle assoc :angle3 (-> % .-target .-value js/parseFloat))] "° "]
      [:div
       [input "checkbox" "Obtuse" (:angle1 @obtuse?) #(swap! obtuse? update :angle1 not)]
       [input "checkbox" "Obtuse" (:angle2 @obtuse?) #(swap! obtuse? update :angle2 not)]
       [input "checkbox" "Obtuse" (:angle3 @obtuse?) #(swap! obtuse? update :angle3 not)]]
-     [:div 
+     [:div
       [button "Solve" #(swap! triangle tri/solve-triangle)]
-      [button "Clear" (fn [] (swap! triangle #(assoc % :line1 nil :line2 nil :line3 nil :angle1 nil :angle2 nil :angle3 nil)))]]
-     ;[render-triangle @triangle]
+      [button "Clear" #(swap! triangle assoc :line1 nil :line2 nil :line3 nil :angle1 nil :angle2 nil :angle3 nil)]]
+     [:p]
+     [render-triangle @triangle]
      ;[ratios @triangle]
      [:textarea
       {:rows      5
@@ -104,4 +106,7 @@
        :read-only true}]]))
 
 (comment
-  @obtuse?)
+  (let [rad (* (:angle1 @triangle) (/ js/Math.PI 180))
+        line (:line2 @triangle)]
+    [(* line (tri/cos rad)) (* line (tri/sin rad))]
+    ))
