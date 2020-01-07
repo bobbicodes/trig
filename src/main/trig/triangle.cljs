@@ -128,9 +128,52 @@
       (assoc triangle :angle2 (asin (* (/ line3 line1) (sin angle3))))
       :else triangle)))
 
+(defn loc-side
+  "Use law of cosines to solve for a side, given the opposite angle and 2 other sides."
+  [s1 s2 a]
+  (.sqrt js/Math
+         (- (+ (* s1 s1)
+               (* s2 s2))
+            (* 2 s1 s2 (cos a)))))
+
+(defn loc-angle
+  "Use law of cosines to solve for an angle, given an opposite and 2 adjacent sides."
+  [a1 o a2]
+  (acos (/ (+ (* a1 a1) (* a2 a2) (- (* o o)))
+           (* 2 a1 a2))))
+
+(defn loc-B
+  "Use law of cosines to solve for cos(B), given sides a b and c"
+  [a b c]
+  (acos (/ (+ (* c c) (* a a) (- (* b b)))
+           (* 2 c a))))
+
+(defn loc-C
+  "Use law of cosines to solve for cos(C), given sides a b and c"
+  [a b c]
+  (acos (/ (+ (* a a) (* b b) (- (* c c)))
+           (* 2 a b))))
+
+(defn law-of-cosines [triangle]
+  (let [{:keys [angle1 angle2 angle3 line1 line2 line3]} triangle]
+    (cond
+      (and (pos? angle1) (pos? line1) (pos? line3))
+      (assoc triangle :line2 (loc-side line3 line1 angle1))
+      (and (pos? angle2) (pos? line1) (pos? line2))
+      (assoc triangle :line3 (loc-side line1 line2 angle2))
+      (and (pos? angle3) (pos? line2) (pos? line3))
+      (assoc triangle :line1 (loc-side line2 line3 angle3))
+      (and (pos? line1) (pos? line2) (pos? line3))
+      (assoc triangle
+             :angle1 (loc-angle line1 line2 line3)
+             :angle2 (loc-angle line2 line3 line1)
+             :angle3 (loc-angle line2 line1 line3))
+      :else triangle)))
+
 (comment
-  (- 180 78.08))
+  (- 180 78.08)
+  (law-of-cosines @triangle))
 
 (defn solve-triangle [triangle]
   (-> triangle
-      law-of-sines))
+      law-of-cosines))

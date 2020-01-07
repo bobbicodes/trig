@@ -40,10 +40,11 @@
 
 (defn render-triangle [triangle]
   (let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} triangle
-        rad (* angle1 (/ js/Math.PI 180))]
+        rad1 (* angle1 (/ js/Math.PI 180))
+        rad2 (* angle2 (/ js/Math.PI 180))]
     [:svg {:width    "80%"
-           :view-box (str "-2 0 30 30")}
-     [polygon 0 0 0 line3 (* line2 (tri/cos rad)) (* line2 (tri/sin rad))]
+           :view-box (str "-2 -2 30 30")}
+     [polygon 0 0 (* line2 (tri/cos rad2)) (* line2 (tri/sin rad2)) (* line3 (tri/cos rad1)) (* line3 (tri/sin rad1))]
      #_[:g [latex/render-letter (keyword label1) 0 0]
       [latex/render-letter (keyword label2) (inc line1) (inc line2)]
       [latex/render-letter (keyword label3) 0 (inc line2)]]
@@ -76,8 +77,8 @@
   (let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} @triangle]
     [:div#app
      [:h2 "Trigonometry with general triangles"]
-     [:h3 "Law of sines"]
-     [:div "Angles: "
+     [:h3 "Law of cosines"]
+     [:div "Vertices: "
       [input "text" "" label1 #(swap! triangle assoc :label1 (-> % .-target .-value))] " "
       [input "text" "" label2 #(swap! triangle assoc :label2 (-> % .-target .-value))] " "
       [input "text" "" label3 #(swap! triangle assoc :label3 (-> % .-target .-value))] " "]
@@ -96,7 +97,6 @@
      [:div
       [button "Solve" #(swap! triangle tri/solve-triangle)]
       [button "Clear" #(swap! triangle assoc :line1 nil :line2 nil :line3 nil :angle1 nil :angle2 nil :angle3 nil)]]
-     [:p]
      [render-triangle @triangle]
      ;[ratios @triangle]
      [:textarea
