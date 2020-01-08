@@ -83,9 +83,9 @@
       [input "text" "" label2 #(swap! triangle assoc :label2 (-> % .-target .-value))] " "
       [input "text" "" label3 #(swap! triangle assoc :label3 (-> % .-target .-value))] " "]
      [:div
-      [input "number" (str label1 label2 ": ") (round line1 10) #(swap! triangle assoc :line1 (-> % .-target .-value js/parseFloat))] " "
-      [input "number" (str label2 label3 ": ") (round line2 10) #(swap! triangle assoc :line2 (-> % .-target .-value js/parseFloat))] " "
-      [input "number" (str label1 label3 ": ") (round line3 10) #(swap! triangle assoc :line3 (-> % .-target .-value js/parseFloat))] " "]
+      [input "number" (str label1 label2 ": ") (round line1 100) #(swap! triangle assoc :line1 (-> % .-target .-value js/parseFloat))] " "
+      [input "number" (str label2 label3 ": ") (round line2 100) #(swap! triangle assoc :line2 (-> % .-target .-value js/parseFloat))] " "
+      [input "number" (str label1 label3 ": ") (round line3 100) #(swap! triangle assoc :line3 (-> % .-target .-value js/parseFloat))] " "]
      [:div
       [input "number" (str "∠" label1 ": ") (round (if (:angle1 @obtuse?) (- 180 angle1) angle1) 1) #(swap! triangle assoc :angle1 (-> % .-target .-value js/parseFloat))] "° "
       [input "number" (str "∠" label2 ": ") (round (if (:angle2 @obtuse?) (- 180 angle2) angle2) 1) #(swap! triangle assoc :angle2 (-> % .-target .-value js/parseFloat))] "° "

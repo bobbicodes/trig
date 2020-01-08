@@ -114,8 +114,7 @@
   (let [{:keys [angle1 angle2 angle3 line1 line2 line3]} triangle]
     (cond
       (and (pos? angle1) (pos? angle2) (pos? line2))
-      "poop"
-      ;(assoc triangle :line3 (* line2 (/ (sin angle2) (sin angle1))))
+      (assoc triangle :line3 (* line2 (/ (sin angle2) (sin angle1))))
       (and (pos? angle1) (pos? angle2) (pos? line3))
       (assoc triangle :line2 (* line3 (/ (sin angle1) (sin angle2))))
       (and (pos? angle1) (pos? line1) (pos? line2))
@@ -179,7 +178,7 @@
       :else triangle)))
 
 (comment
-  (- 180 40 110)
+  (- 180 49)
   (let [{:keys [angle1 angle2 angle3]} @triangle]
     (= 2 (count (filter pos? [angle1 angle2 angle3]))))
   (law-of-cosines @triangle)
