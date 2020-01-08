@@ -77,7 +77,7 @@
   (let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} @triangle]
     [:div#app
      [:h2 "Trigonometry with general triangles"]
-     [:h3 "Law of cosines"]
+     [:h3 "Solve for sides or angles"]
      [:div "Vertices: "
       [input "text" "" label1 #(swap! triangle assoc :label1 (-> % .-target .-value))] " "
       [input "text" "" label2 #(swap! triangle assoc :label2 (-> % .-target .-value))] " "

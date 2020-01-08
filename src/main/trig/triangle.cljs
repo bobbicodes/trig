@@ -80,9 +80,22 @@
              :line3 (/ line1 (cos angle2)))
       :else triangle)))
 
+(defn infer-angle [triangle]
+ (let [{:keys [angle1 angle2 angle3]} triangle] 
+   (cond
+     (nil? angle1)
+     (assoc triangle :angle1 (- 180 angle2 angle3))
+     (nil? angle2)
+     (assoc triangle :angle2 (- 180 angle1 angle3))
+     (nil? angle3)
+     (assoc triangle :angle3 (- 180 angle2 angle1)))))
+
+
 (defn solve-angles [triangle]
-  (let [{:keys [line1 line2 line3]} triangle]
+  (let [{:keys [line1 line2 line3 angle1 angle2 angle3]} triangle]
     (cond
+      (= 2 (count (filter pos? [angle1 angle2 angle3])))
+      (infer-angle triangle)
       (and (pos? line1) (pos? line3))
       (-> triangle
           (assoc :angle1 (asin (/ line1 line3))
@@ -112,8 +125,8 @@
       (assoc triangle :line2 (* line1 (/ (sin angle1) (sin angle3))))
       (and (pos? angle1) (pos? angle3) (pos? line2))
       (assoc triangle :angle2 (* line2 (/ (sin angle3) (sin angle1))))
-      (and (pos? angle1) (pos? angle3) (pos? line1))
-      (assoc triangle :line2 (* line1 (/ (sin angle1) (sin angle3))))
+      (and (pos? angle1) (pos? angle3) (pos? line3))
+      (assoc triangle :line2 (* line3 (/ (sin angle1) (sin angle3))))
       (and (pos? angle2) (pos? angle3) (pos? line1))
       (assoc triangle :line3 (* line1 (/ (sin angle2) (sin angle3))))
       (and (pos? angle2) (pos? angle3) (pos? line3))
@@ -132,8 +145,7 @@
   "Use law of cosines to solve for a side, given the opposite angle and 2 other sides."
   [s1 s2 a]
   (.sqrt js/Math
-         (- (+ (* s1 s1)
-               (* s2 s2))
+         (- (+ (* s1 s1) (* s2 s2))
             (* 2 s1 s2 (cos a)))))
 
 (defn loc-angle
@@ -141,18 +153,6 @@
   [a1 o a2]
   (acos (/ (+ (* a1 a1) (* a2 a2) (- (* o o)))
            (* 2 a1 a2))))
-
-(defn loc-B
-  "Use law of cosines to solve for cos(B), given sides a b and c"
-  [a b c]
-  (acos (/ (+ (* c c) (* a a) (- (* b b)))
-           (* 2 c a))))
-
-(defn loc-C
-  "Use law of cosines to solve for cos(C), given sides a b and c"
-  [a b c]
-  (acos (/ (+ (* a a) (* b b) (- (* c c)))
-           (* 2 a b))))
 
 (defn law-of-cosines [triangle]
   (let [{:keys [angle1 angle2 angle3 line1 line2 line3]} triangle]
@@ -171,9 +171,13 @@
       :else triangle)))
 
 (comment
-  (- 180 78.08)
+  (- 180 40 110)
+  (let [{:keys [angle1 angle2 angle3]} @triangle]
+    (= 2 (count (filter pos? [angle1 angle2 angle3]))))
   (law-of-cosines @triangle))
 
 (defn solve-triangle [triangle]
   (-> triangle
+      solve-angles
+      law-of-sines
       law-of-cosines))
