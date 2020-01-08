@@ -114,7 +114,8 @@
   (let [{:keys [angle1 angle2 angle3 line1 line2 line3]} triangle]
     (cond
       (and (pos? angle1) (pos? angle2) (pos? line2))
-      (assoc triangle :line3 (* line2 (/ (sin angle2) (sin angle1))))
+      "poop"
+      ;(assoc triangle :line3 (* line2 (/ (sin angle2) (sin angle1))))
       (and (pos? angle1) (pos? angle2) (pos? line3))
       (assoc triangle :line2 (* line3 (/ (sin angle1) (sin angle2))))
       (and (pos? angle1) (pos? line1) (pos? line2))
@@ -136,10 +137,17 @@
       (and (pos? angle2) (pos? line2) (pos? line3))
       (assoc triangle :angle1 (asin (* (/ line2 line3) (sin angle2))))
       (and (pos? angle3) (pos? line1) (pos? line2))
-      (assoc triangle :angle1 (asin (* (/ line2 line1) (sin angle3))))
+      (assoc triangle :angle1 (asin (/ (* line2 (sin angle3))
+                                       line1)))
       (and (pos? angle3) (pos? line1) (pos? line3))
       (assoc triangle :angle2 (asin (* (/ line3 line1) (sin angle3))))
       :else triangle)))
+
+(comment
+  (let [{:keys [angle1 angle2 angle3 line1 line2 line3]} @triangle]
+    (cond
+      (and (pos? angle1) (pos? angle2) (pos? line2))
+      "poop")))
 
 (defn loc-side
   "Use law of cosines to solve for a side, given the opposite angle and 2 other sides."
@@ -174,10 +182,20 @@
   (- 180 40 110)
   (let [{:keys [angle1 angle2 angle3]} @triangle]
     (= 2 (count (filter pos? [angle1 angle2 angle3]))))
-  (law-of-cosines @triangle))
+  (law-of-cosines @triangle)
+  )
 
-(defn solve-triangle [triangle]
-  (-> triangle
-      solve-angles
-      law-of-sines
-      law-of-cosines))
+(defn solve-triangle
+  "If 2 angles defined, will calculate the 3rd."
+  [triangle]
+  (let [{:keys [angle1 angle2 angle3]} triangle]
+    (if (= 2 (count (filter pos? [angle1 angle2 angle3])))
+       (infer-angle triangle)
+      (-> triangle
+          law-of-sines
+          law-of-cosines))))
+
+(comment
+  (pos? (:angle2 @triangle))
+  (law-of-sines @triangle)
+(solve-triangle @triangle))
