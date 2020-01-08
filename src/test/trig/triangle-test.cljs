@@ -13,10 +13,10 @@
                                           :angle2 105})))))
 
 (deftest one-side-all-angles-test
-  (is (= 5.27 (round (tri/solve-triangle {:angle3 35
-                                          :angle1 40
-                                          :angle2 105
-                                          :line1  4.7}) 100))))
+  (is (= 5.27 (round (:line2 (tri/solve-triangle {:angle3 35
+                                                  :angle1 40
+                                                  :angle2 105
+                                                  :line1  4.7})) 100))))
 
 (comment
   (:angle3 @tri/triangle)
