@@ -43,7 +43,7 @@
 
 (defn render-letter [k x y]
   [:path {:transform (str "translate(" x "," y ")" "scale(0.001)")
-          :stroke    "#000000"
+          :fill    "#ffcc00"
           :d         (k letters)}])
 
 (defn render-letters [[letters] x y]

@@ -58,9 +58,9 @@
     [:svg {:width    "80%"
            :view-box (str "-2 -2 20 20")}
      (apply polygon (conj place-line1 cx cy))
-     #_[:g [latex/render-letter (keyword label1) 0 0]
-      [latex/render-letter (keyword label2) (inc line1) (inc line2)]
-      [latex/render-letter (keyword label3) 0 (inc line2)]]
+     [:g [latex/render-letter (keyword label1) -1 -1]
+      [latex/render-letter (keyword label2) -1 line1]
+      [latex/render-letter (keyword label3) (+ 0.4 cx) cy]]
      #_[:g [latex/render-num line2 -350 (+ 300 (* 40 line2))]
       [latex/render-num line1 (* line1 18) (+ 750 (* line2 30))]
       [latex/render-num line3 -200 (+ 200 (* 18 line2))]]
@@ -113,7 +113,7 @@
      [render-triangle @triangle]
      ;[ratios @triangle]
      ;(into [] (edn/html-edn @triangle))
-     [:div.edn-block
+     #_[:div.edn-block
       [:span
        [:span.opener "{"]
        [:span.contents
