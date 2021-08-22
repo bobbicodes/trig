@@ -1,7 +1,8 @@
 (ns trig.view
   (:require [reagent.core :as r]
             [trig.latex :as latex]
-            [trig.triangle :as tri :refer [triangle]]))
+            [trig.triangle :as tri :refer [triangle]]
+            [trig.edn :as edn]))
 
 (defn input [type label value on-change]
   [:label label
@@ -38,13 +39,25 @@
   [n x]
   (/ (.round js/Math (* x n)) x))
 
+(defn sq [n]
+  (* n n))
+
+(defn dist [x1 y1 x2 y2]
+  (.sqrt js/Math (+ (sq (- x2 x1))
+                    (sq (- y2 y1)))))
+
+;; see https://math.stackexchange.com/questions/543961/determine-third-point-of-triangle-when-two-points-and-all-sides-are-known
 (defn render-triangle [triangle]
   (let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} triangle
         rad1 (* angle1 (/ js/Math.PI 180))
-        rad2 (* angle2 (/ js/Math.PI 180))]
+        rad2 (* angle2 (/ js/Math.PI 180))
+        place-line1 [0 0 0 line1]
+        cy (/ (- (+ (sq line1) (sq line3)) (sq line2))
+              (* 2 line1))
+        cx (.sqrt js/Math (- (sq line3) (sq cy)))]
     [:svg {:width    "80%"
-           :view-box (str "-2 -2 30 30")}
-     [polygon 0 0 (* line2 (tri/cos rad2)) (* line2 (tri/sin rad2)) (* line3 (tri/cos rad1)) (* line3 (tri/sin rad1))]
+           :view-box (str "-2 -2 20 20")}
+     (apply polygon (conj place-line1 cx cy))
      #_[:g [latex/render-letter (keyword label1) 0 0]
       [latex/render-letter (keyword label2) (inc line1) (inc line2)]
       [latex/render-letter (keyword label3) 0 (inc line2)]]
@@ -99,11 +112,52 @@
       [button "Clear" #(swap! triangle assoc :line1 nil :line2 nil :line3 nil :angle1 nil :angle2 nil :angle3 nil)]]
      [render-triangle @triangle]
      ;[ratios @triangle]
-     [:textarea
-      {:rows      5
-       :cols      40
-       :value     (str @triangle)
-       :read-only true}]]))
+     ;(into [] (edn/html-edn @triangle))
+     [:div.edn-block
+      [:span
+       [:span.opener "{"]
+       [:span.contents
+        [:span.keyval
+         [:span ":label1 "]
+         [:span
+          [:span.contents label1]
+          [:span.closer "\n"]]]
+        [:span.seperator " "]
+        [:span.keyval
+         [:span ":label2 "]
+         [:span
+          [:span.contents label2]
+          [:span.closer "\n"]]]
+        [:span.keyval
+         [:span " :label3 "]
+         [:span
+          [:span.contents label3]
+          [:span.closer "\n"]]]
+        [:span.keyval
+         [:span " :line1 "]
+         [:span line1]
+         [:span.closer "\n"]]
+        [:span.seperator " "]
+        [:span.keyval
+         [:span ":line2 "]
+         [:span line2]
+         [:span.closer "\n"]]
+        [:span.keyval
+         [:span " :line3 "]
+         [:span line3]
+         [:span.closer "\n"]]
+        [:span.keyval
+         [:span " :angle1 "]
+         [:span angle1]
+         [:span.closer "\n"]]
+        [:span.keyval
+         [:span " :angle2 "]
+         [:span angle2]
+         [:span.closer "\n"]]
+        [:span.keyval
+         [:span " :angle3 "]
+         [:span angle3]]]]
+      [:span.closer "}"]]]))
 
 (comment
   (let [rad (* (:angle1 @triangle) (/ js/Math.PI 180))

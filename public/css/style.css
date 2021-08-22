@@ -1,29 +1,28 @@
 body {
-  background-color: transparent !important;
-  background-image: linear-gradient(to bottom, #200933, #3d0b43);
-  background-size: auto 100vh;
-  background-position: top;
-
-  position: relative;
+  background-color: #3d0b43;
+  margin-left: 4px;
   color: #ffcc00;
   text-shadow: 0 0 2px #100c0f, 0 0 3px #ffaa0099, 0 0 5px #ffaa0099, 0 0 10px #ffaa0099;
-  
+  white-space: pre-wrap;
 }
 
 h1 {
   line-height: 0.2;
+  
 }
 
 h2 {
   color: #fc199a;
   text-shadow: 0 0 2px #393a33, 0 0 35px #ffffff44, 0 0 10px #fc199a, 0 0 2px #fc199a;
-
+  line-height: 0.1;
+  margin-top: 0;
 }
 
 h3 {
   color: #61e2ff;
   text-shadow: 0 0 2px #001716, 0 0 5px #03edf933, 0 0 10px #ffff6633;
   font-style: italic;
+  margin-bottom: 6px;
 }
 
 label {
