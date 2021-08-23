@@ -18,11 +18,13 @@
    label])
 
 (defn polygon [& points]
-  [:polygon
-   {:stroke       "#61e2ff"
-    :stroke-width 0.1
-    :fill         "none"
-    :points       (apply str (interpose " " points))}])
+  (let [{:keys [line1 line2 line3]} @triangle
+        max-side (max line1 line2 line3)]
+    [:polygon
+     {:stroke       "#61e2ff"
+      :stroke-width (/ max-side 100)
+      :fill         "none"
+      :points       (apply str (interpose " " points))}]))
 
 (defn right-angle-box [x-pos y-pos]
   [:rect
@@ -62,11 +64,15 @@
         max-side (max line1 line2 line3)]
     [:svg {:width    "100%"
            :view-box (str "-2 " (if (neg? cy)
-                                  (+ cy -2) -2) " " (+ 3 max-side) " " (+ 3 max-side))}
+                                  (+ cy -2) -2) " " (+ 3 max-side) " " (+ 4 max-side))}
      (apply polygon (conj place-line1 cx cy))
-     [:g [latex/render-letter (keyword label1) -1 -1]
-      [latex/render-letter (keyword label2) -1 line1]
-      [latex/render-letter (keyword label3) (+ 0.2 cx) (- cy 0.4)]]
+     [:g 
+      [latex/render-letter 
+       (keyword label1) -1 (- (/ max-side 20)) (/ max-side 20000)]
+      [latex/render-letter 
+       (keyword label2) -1 line1 (/ max-side 20000)]
+      [latex/render-letter 
+       (keyword label3) (+ 0.4 cx) (- cy 0.4) (/ max-side 20000)]]
      #_[:g [latex/render-num line2 -350 (+ 300 (* 40 line2))]
       [latex/render-num line1 (* line1 18) (+ 750 (* line2 30))]
       [latex/render-num line3 -200 (+ 200 (* 18 line2))]]

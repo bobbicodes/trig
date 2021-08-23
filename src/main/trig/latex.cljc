@@ -41,8 +41,8 @@
                     :stroke    "#000000"
                     :d         ((keyword (str (get digits d))) numbers)}]))))
 
-(defn render-letter [k x y]
-  [:path {:transform (str "translate(" x "," y ")" "scale(0.001)")
+(defn render-letter [k x y scale]
+  [:path {:transform (str "translate(" x "," y ")" "scale(" scale ")")
           :fill    "#ffcc00"
           :d         (k letters)}])
 
