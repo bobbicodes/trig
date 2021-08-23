@@ -64,20 +64,20 @@
         max-side (max line1 line2 line3)]
     [:svg {:width    "100%"
            :view-box
-           (str (- (/ max-side 30)) " "
+           (str (- (/ max-side 15)) " "
                 (if (neg? cy)
                   (+ cy (- (/ max-side 20)))
                   (- (/ max-side 18))) " "
                 (+ 3 max-side) " "
-                (* 1.4 line1))}
+                (* 1.4 max-side))}
      (apply polygon (conj place-line1 cx cy))
      [:g 
       [latex/render-letter 
-       (keyword label1) -1 (- (/ max-side 20)) (/ max-side 20000)]
+       (keyword label1) (- (/ max-side 20)) (- (/ max-side 20)) (/ max-side 20000)]
       [latex/render-letter 
-       (keyword label2) -1 line1 (/ max-side 20000)]
+       (keyword label2) (- (/ max-side 20)) line1 (/ max-side 20000)]
       [latex/render-letter 
-       (keyword label3) (+ 0.4 cx) (- cy 0.4) (/ max-side 20000)]]
+       (keyword label3) (+ (/ max-side 40) cx) (- cy (/ max-side 45)) (/ max-side 20000)]]
      #_[:g [latex/render-num line2 -350 (+ 300 (* 40 line2))]
       [latex/render-num line1 (* line1 18) (+ 750 (* line2 30))]
       [latex/render-num line3 -200 (+ 200 (* 18 line2))]]
@@ -108,7 +108,7 @@
     [:div#app
      ;[:h2 "Trigonometry with general triangles"]
      ;[:h3 "Solve for sides or angles"]
-     #_[:div [:div "Vertices: "
+     [:div "Vertices: "
             [input "text" "" label1 #(swap! triangle assoc :label1 (-> % .-target .-value))] " "
             [input "text" "" label2 #(swap! triangle assoc :label2 (-> % .-target .-value))] " "
             [input "text" "" label3 #(swap! triangle assoc :label3 (-> % .-target .-value))] " "]
@@ -124,7 +124,7 @@
        [button "Solve" #(swap! triangle tri/solve-triangle)]
        [button "Clear" #(swap! triangle assoc :line1 nil :line2 nil :line3 nil :angle1 nil :angle2 nil :angle3 nil)]]
       [render-triangle @triangle]]
-     [pythagoras/pythagorean-identity-cos "\\theta_1" "\\text{I}" 11 61]]))
+     #_[pythagoras/pythagorean-identity-sin "\\theta_1" "\\text{I}" 3 8]))
 
 (comment
   (let [rad (* (:angle1 @triangle) (/ js/Math.PI 180))
