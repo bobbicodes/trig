@@ -21,8 +21,8 @@
 
 (comment
   (gcd 310 180)
-  (degrees 29 15)
+  (degrees 14 9)
   (degrees 257 360.0)
   (degrees 5 12)
   (radians 310)
-  (radians 180))
+  (radians 260))
