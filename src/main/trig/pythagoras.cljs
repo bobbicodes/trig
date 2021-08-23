@@ -88,11 +88,11 @@
                "\\dfrac{" (.abs js/Math numer) "}{" denom "}\\right)^2 \\\\&=\\dfrac{" calc1-numer "}{" calc1-denom "}\\end{aligned}​​"))
      [:p]
      (tex (str "\\begin{aligned}\\sin(" angle ")&="
-               (when-not (= quad "\\text{II}") "-")
+               (when-not (or (= quad "\\text{I}") (= quad "\\text{II}")) "-")
                "\\sqrt{\\sin^2(" angle ")} \\\\&="
-               (when-not (= quad "\\text{II}") "-")
+               (when-not (or (= quad "\\text{I}") (= quad "\\text{II}")) "-")
                "\\sqrt{\\dfrac{" calc1-numer "}{" calc1-denom "}} \\\\&="
-               (when-not (= quad "\\text{II}") "-")
+               (when-not (or (= quad "\\text{I}") (= quad "\\text{II}")) "-")
                "\\dfrac{" 
                (if (float? (.sqrt js/Math calc1-numer))
                  (str "\\sqrt{" calc1-numer "}")
