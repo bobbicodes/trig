@@ -20,7 +20,7 @@
 (defn polygon [& points]
   [:polygon
    {:stroke       "#61e2ff"
-    :stroke-width 0.3
+    :stroke-width 0.1
     :fill         "none"
     :points       (apply str (interpose " " points))}])
 
@@ -46,6 +46,10 @@
   (.sqrt js/Math (+ (sq (- x2 x1))
                     (sq (- y2 y1)))))
 
+(let [{:keys [line1 line2 line3]} @triangle]
+  (/ (- (+ (sq line1) (sq line3)) (sq line2))
+      (* 2 line1)))
+
 ;; see https://math.stackexchange.com/questions/543961/determine-third-point-of-triangle-when-two-points-and-all-sides-are-known
 (defn render-triangle [triangle]
   (let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} triangle
@@ -54,13 +58,15 @@
         place-line1 [0 0 0 line1]
         cy (/ (- (+ (sq line1) (sq line3)) (sq line2))
               (* 2 line1))
-        cx (.sqrt js/Math (- (sq line3) (sq cy)))]
-    [:svg {:width    "80%"
-           :view-box (str "-2 -2 20 20")}
+        cx (.sqrt js/Math (- (sq line3) (sq cy)))
+        max-side (max line1 line2 line3)]
+    [:svg {:width    "100%"
+           :view-box (str "-2 " (if (neg? cy)
+                                  (+ cy -2) -2) " " (+ 3 max-side) " " (+ 3 max-side))}
      (apply polygon (conj place-line1 cx cy))
      [:g [latex/render-letter (keyword label1) -1 -1]
       [latex/render-letter (keyword label2) -1 line1]
-      [latex/render-letter (keyword label3) (+ 0.4 cx) cy]]
+      [latex/render-letter (keyword label3) (+ 0.2 cx) (- cy 0.4)]]
      #_[:g [latex/render-num line2 -350 (+ 300 (* 40 line2))]
       [latex/render-num line1 (* line1 18) (+ 750 (* line2 30))]
       [latex/render-num line3 -200 (+ 200 (* 18 line2))]]
@@ -89,8 +95,8 @@
 (defn app []
   (let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} @triangle]
     [:div#app
-     [:h2 "Trigonometry with general triangles"]
-     [:h3 "Solve for sides or angles"]
+     ;[:h2 "Trigonometry with general triangles"]
+     ;[:h3 "Solve for sides or angles"]
      [:div "Vertices: "
       [input "text" "" label1 #(swap! triangle assoc :label1 (-> % .-target .-value))] " "
       [input "text" "" label2 #(swap! triangle assoc :label2 (-> % .-target .-value))] " "
@@ -103,61 +109,14 @@
       [input "number" (str "∠" label1 ": ") (round (if (:angle1 @obtuse?) (- 180 angle1) angle1) 1) #(swap! triangle assoc :angle1 (-> % .-target .-value js/parseFloat))] "° "
       [input "number" (str "∠" label2 ": ") (round (if (:angle2 @obtuse?) (- 180 angle2) angle2) 1) #(swap! triangle assoc :angle2 (-> % .-target .-value js/parseFloat))] "° "
       [input "number" (str "∠" label3 ": ") (round (if (:angle3 @obtuse?) (- 180 angle3) angle3) 1) #(swap! triangle assoc :angle3 (-> % .-target .-value js/parseFloat))] "° "]
-     [:div
+     #_[:div
       [input "checkbox" "Obtuse" (:angle1 @obtuse?) #(swap! obtuse? update :angle1 not)]
       [input "checkbox" "Obtuse" (:angle2 @obtuse?) #(swap! obtuse? update :angle2 not)]
       [input "checkbox" "Obtuse" (:angle3 @obtuse?) #(swap! obtuse? update :angle3 not)]]
      [:div
       [button "Solve" #(swap! triangle tri/solve-triangle)]
       [button "Clear" #(swap! triangle assoc :line1 nil :line2 nil :line3 nil :angle1 nil :angle2 nil :angle3 nil)]]
-     [render-triangle @triangle]
-     ;[ratios @triangle]
-     ;(into [] (edn/html-edn @triangle))
-     #_[:div.edn-block
-      [:span
-       [:span.opener "{"]
-       [:span.contents
-        [:span.keyval
-         [:span ":label1 "]
-         [:span
-          [:span.contents label1]
-          [:span.closer "\n"]]]
-        [:span.seperator " "]
-        [:span.keyval
-         [:span ":label2 "]
-         [:span
-          [:span.contents label2]
-          [:span.closer "\n"]]]
-        [:span.keyval
-         [:span " :label3 "]
-         [:span
-          [:span.contents label3]
-          [:span.closer "\n"]]]
-        [:span.keyval
-         [:span " :line1 "]
-         [:span line1]
-         [:span.closer "\n"]]
-        [:span.seperator " "]
-        [:span.keyval
-         [:span ":line2 "]
-         [:span line2]
-         [:span.closer "\n"]]
-        [:span.keyval
-         [:span " :line3 "]
-         [:span line3]
-         [:span.closer "\n"]]
-        [:span.keyval
-         [:span " :angle1 "]
-         [:span angle1]
-         [:span.closer "\n"]]
-        [:span.keyval
-         [:span " :angle2 "]
-         [:span angle2]
-         [:span.closer "\n"]]
-        [:span.keyval
-         [:span " :angle3 "]
-         [:span angle3]]]]
-      [:span.closer "}"]]]))
+     [render-triangle @triangle]]))
 
 (comment
   (let [rad (* (:angle1 @triangle) (/ js/Math.PI 180))

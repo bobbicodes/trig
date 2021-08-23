@@ -25,3 +25,18 @@ clj꞉shadow.user꞉>  ; Use `alt+enter` to evaluate
 ;    (There is a button in the status bar for this)
 ; Jack-in done.
 cljs꞉cljs.user꞉>  ; Use `alt+enter` to evaluate
+
+; TypeError: (((trig.view.sq.call(...) + trig.view.sq.call(...)) - trig.view.sq.call(...)) / (2 * line1)).call is not a function
+;     at eval (eval at shadow$cljs$devtools$client$browser$global_eval (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js), <anonymous>:6:124)
+    at eval (eval at shadow$cljs$devtools$client$browser$global_eval (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js), <anonymous>:7:3)
+    at eval (<anonymous>)
+    at Object.shadow$cljs$devtools$client$browser$global_eval [as global_eval] (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js:806:16)
+    at eval (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js:815:44)
+    at Object.shadow$cljs$devtools$client$env$repl_call [as repl_call] (/js/cljs-runtime/shadow.cljs.devtools.client.env.js:162:108)
+    at Object.shadow$cljs$devtools$client$browser$repl_invoke [as repl_invoke] (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js:814:46)
+    at shadow$cljs$devtools$client$browser$handle_message (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js:892:37)
+    at eval (/js/cljs-runtime/shadow.cljs.devtools.client.env.js:302:151)
+    at Object.shadow$cljs$devtools$client$env$process_next_BANG_ [as process_next_BANG_] (/js/cljs-runtime/shadow.cljs.devtools.client.env.js:284:90)
+cljs꞉trig.view꞉> 
+-1.75
+cljs꞉trig.view꞉> 
