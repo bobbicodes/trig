@@ -1,9 +1,8 @@
 (ns trig.view
   (:require [reagent.core :as r]
             [trig.latex :as latex]
-            [trig.triangle :as tri :refer [triangle]]
-            [trig.edn :as edn]
-            ["katex" :as katex]))
+            [trig.pythagoras :as pythagoras]
+            [trig.triangle :as tri :refer [triangle]]))
 
 (defn input [type label value on-change]
   [:label label
@@ -104,42 +103,28 @@
 
 (defonce obtuse? (r/atom {:angle1 false :angle2 false :angle3 false}))
 
-(defn tex [text]
-  [:span {:ref (fn [el]
-                 (when el
-                   (try
-                     (katex/render text el (clj->js
-                                            {:throwOnError false}))
-                     (catch :default e
-                       (js/console.warn "Unexpected KaTeX error" e)
-                       (aset el "innerHTML" text)))))}])
-
 (defn app []
   (let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} @triangle]
     [:div#app
      ;[:h2 "Trigonometry with general triangles"]
      ;[:h3 "Solve for sides or angles"]
-     [:div "Vertices: "
-      [input "text" "" label1 #(swap! triangle assoc :label1 (-> % .-target .-value))] " "
-      [input "text" "" label2 #(swap! triangle assoc :label2 (-> % .-target .-value))] " "
-      [input "text" "" label3 #(swap! triangle assoc :label3 (-> % .-target .-value))] " "]
-     [:div
-      [input "number" (str label1 label2 ": ") (round line1 100) #(swap! triangle assoc :line1 (-> % .-target .-value js/parseFloat))] " "
-      [input "number" (str label2 label3 ": ") (round line2 100) #(swap! triangle assoc :line2 (-> % .-target .-value js/parseFloat))] " "
-      [input "number" (str label1 label3 ": ") (round line3 100) #(swap! triangle assoc :line3 (-> % .-target .-value js/parseFloat))] " "]
-     [:div
-      [input "number" (str "∠" label1 ": ") (round (if (:angle1 @obtuse?) (- 180 angle1) angle1) 1) #(swap! triangle assoc :angle1 (-> % .-target .-value js/parseFloat))] "° "
-      [input "number" (str "∠" label2 ": ") (round (if (:angle2 @obtuse?) (- 180 angle2) angle2) 1) #(swap! triangle assoc :angle2 (-> % .-target .-value js/parseFloat))] "° "
-      [input "number" (str "∠" label3 ": ") (round (if (:angle3 @obtuse?) (- 180 angle3) angle3) 1) #(swap! triangle assoc :angle3 (-> % .-target .-value js/parseFloat))] "° "]
-     #_[:div
-      [input "checkbox" "Obtuse" (:angle1 @obtuse?) #(swap! obtuse? update :angle1 not)]
-      [input "checkbox" "Obtuse" (:angle2 @obtuse?) #(swap! obtuse? update :angle2 not)]
-      [input "checkbox" "Obtuse" (:angle3 @obtuse?) #(swap! obtuse? update :angle3 not)]]
-     [:div
-      [button "Solve" #(swap! triangle tri/solve-triangle)]
-      [button "Clear" #(swap! triangle assoc :line1 nil :line2 nil :line3 nil :angle1 nil :angle2 nil :angle3 nil)]]
-     ;(tex "\\sin(\\theta_1)=\\dfrac{9}{41}")
-     [render-triangle @triangle]]))
+     #_[:div [:div "Vertices: "
+            [input "text" "" label1 #(swap! triangle assoc :label1 (-> % .-target .-value))] " "
+            [input "text" "" label2 #(swap! triangle assoc :label2 (-> % .-target .-value))] " "
+            [input "text" "" label3 #(swap! triangle assoc :label3 (-> % .-target .-value))] " "]
+      [:div
+       [input "number" (str label1 label2 ": ") (round line1 100) #(swap! triangle assoc :line1 (-> % .-target .-value js/parseFloat))] " "
+       [input "number" (str label2 label3 ": ") (round line2 100) #(swap! triangle assoc :line2 (-> % .-target .-value js/parseFloat))] " "
+       [input "number" (str label1 label3 ": ") (round line3 100) #(swap! triangle assoc :line3 (-> % .-target .-value js/parseFloat))] " "]
+      [:div
+       [input "number" (str "∠" label1 ": ") (round (if (:angle1 @obtuse?) (- 180 angle1) angle1) 1) #(swap! triangle assoc :angle1 (-> % .-target .-value js/parseFloat))] "° "
+       [input "number" (str "∠" label2 ": ") (round (if (:angle2 @obtuse?) (- 180 angle2) angle2) 1) #(swap! triangle assoc :angle2 (-> % .-target .-value js/parseFloat))] "° "
+       [input "number" (str "∠" label3 ": ") (round (if (:angle3 @obtuse?) (- 180 angle3) angle3) 1) #(swap! triangle assoc :angle3 (-> % .-target .-value js/parseFloat))] "° "]
+      [:div
+       [button "Solve" #(swap! triangle tri/solve-triangle)]
+       [button "Clear" #(swap! triangle assoc :line1 nil :line2 nil :line3 nil :angle1 nil :angle2 nil :angle3 nil)]]
+      [render-triangle @triangle]]
+     [pythagoras/pythagorean-identity]]))
 
 (comment
   (let [rad (* (:angle1 @triangle) (/ js/Math.PI 180))
