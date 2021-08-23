@@ -40,3 +40,12 @@ cljs꞉cljs.user꞉>  ; Use `alt+enter` to evaluate
 cljs꞉trig.view꞉> 
 -1.75
 cljs꞉trig.view꞉> 
+; Evaluating file: radians.clj
+nil
+clj꞉trig.radians꞉> 
+665/2
+clj꞉trig.radians꞉> 
+280
+clj꞉trig.radians꞉> 
+[13 9]
+clj꞉trig.radians꞉> 

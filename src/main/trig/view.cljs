@@ -2,7 +2,8 @@
   (:require [reagent.core :as r]
             [trig.latex :as latex]
             [trig.triangle :as tri :refer [triangle]]
-            [trig.edn :as edn]))
+            [trig.edn :as edn]
+            ["katex" :as katex]))
 
 (defn input [type label value on-change]
   [:label label
@@ -63,8 +64,13 @@
         cx (.sqrt js/Math (- (sq line3) (sq cy)))
         max-side (max line1 line2 line3)]
     [:svg {:width    "100%"
-           :view-box (str "-2 " (if (neg? cy)
-                                  (+ cy -2) -2) " " (+ 3 max-side) " " (+ 4 max-side))}
+           :view-box
+           (str (- (/ max-side 30)) " "
+                (if (neg? cy)
+                  (+ cy (- (/ max-side 20)))
+                  (- (/ max-side 18))) " "
+                (+ 3 max-side) " "
+                (* 1.4 line1))}
      (apply polygon (conj place-line1 cx cy))
      [:g 
       [latex/render-letter 
@@ -98,6 +104,16 @@
 
 (defonce obtuse? (r/atom {:angle1 false :angle2 false :angle3 false}))
 
+(defn tex [text]
+  [:span {:ref (fn [el]
+                 (when el
+                   (try
+                     (katex/render text el (clj->js
+                                            {:throwOnError false}))
+                     (catch :default e
+                       (js/console.warn "Unexpected KaTeX error" e)
+                       (aset el "innerHTML" text)))))}])
+
 (defn app []
   (let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} @triangle]
     [:div#app
@@ -122,6 +138,7 @@
      [:div
       [button "Solve" #(swap! triangle tri/solve-triangle)]
       [button "Clear" #(swap! triangle assoc :line1 nil :line2 nil :line3 nil :angle1 nil :angle2 nil :angle3 nil)]]
+     ;(tex "\\sin(\\theta_1)=\\dfrac{9}{41}")
      [render-triangle @triangle]]))
 
 (comment
