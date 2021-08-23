@@ -3,5 +3,6 @@
             [trig.triangle :as tri :refer [triangle]]))
 
 (defn app []
-    ;[tri/app @triangle]
-     [pythagoras/pythagorean-identity-sin "\\theta_1" "\\text{I}" 3 8])
+    [tri/app @triangle]
+     ;[pythagoras/pythagorean-identity-sin "\\theta_1" "\\text{I}" 3 8]
+  )
