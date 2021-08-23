@@ -124,7 +124,7 @@
        [button "Solve" #(swap! triangle tri/solve-triangle)]
        [button "Clear" #(swap! triangle assoc :line1 nil :line2 nil :line3 nil :angle1 nil :angle2 nil :angle3 nil)]]
       [render-triangle @triangle]]
-     [pythagoras/pythagorean-identity]]))
+     [pythagoras/pythagorean-identity-cos "\\theta_1" "\\text{I}" 11 61]]))
 
 (comment
   (let [rad (* (:angle1 @triangle) (/ js/Math.PI 180))

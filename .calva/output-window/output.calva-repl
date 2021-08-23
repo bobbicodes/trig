@@ -49,3 +49,35 @@ clj꞉trig.radians꞉> 
 clj꞉trig.radians꞉> 
 [13 9]
 clj꞉trig.radians꞉> 
+81
+cljs꞉trig.pythagoras꞉> 
+1681
+cljs꞉trig.pythagoras꞉> 
+1
+cljs꞉trig.pythagoras꞉> 
+#'trig.pythagoras/prime-factors
+cljs꞉trig.pythagoras꞉> 
+#'trig.pythagoras/perfect-squares
+cljs꞉trig.pythagoras꞉> 
+#'trig.pythagoras/simplify-sqrt
+cljs꞉trig.pythagoras꞉> 
+[40 1]
+; ------ WARNING - :fn-arity -----------------------------------------------------
+;  Resource: :1:1
+ Wrong number of args (2) passed to trig.pythagoras/simplify-sqrt
+--------------------------------------------------------------------------------
+cljs꞉trig.pythagoras꞉> 
+(1681)
+cljs꞉trig.pythagoras꞉> 
+(41 41)
+cljs꞉trig.pythagoras꞉> 
+(2 2 2 2 2 2 5 5)
+cljs꞉trig.pythagoras꞉> 
+[40 1]
+; ------ WARNING - :fn-arity -----------------------------------------------------
+;  Resource: :1:1
+ Wrong number of args (2) passed to trig.pythagoras/simplify-sqrt
+--------------------------------------------------------------------------------
+cljs꞉trig.pythagoras꞉> 
+40
+cljs꞉trig.pythagoras꞉> 
