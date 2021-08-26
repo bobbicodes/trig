@@ -26,58 +26,126 @@ clj꞉shadow.user꞉>  ; Use `alt+enter` to evaluate
 ; Jack-in done.
 cljs꞉cljs.user꞉>  ; Use `alt+enter` to evaluate
 
-; TypeError: (((trig.view.sq.call(...) + trig.view.sq.call(...)) - trig.view.sq.call(...)) / (2 * line1)).call is not a function
-;     at eval (eval at shadow$cljs$devtools$client$browser$global_eval (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js), <anonymous>:6:124)
-    at eval (eval at shadow$cljs$devtools$client$browser$global_eval (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js), <anonymous>:7:3)
+; ------ REPL Error while processing ---------------------------------------------
+; (some? #{"A" "B" "C"} "A")
+Error in phase :compilation
+Wrong number of args (2) passed to: cljs.core/some?
+clj꞉trig.triangle꞉> 
+true
+clj꞉trig.triangle꞉> 
+false
+clj꞉trig.triangle꞉> 
+true
+clj꞉trig.triangle꞉> 
+
+; Error: Unable to resolve spec: :trig.triangle/triangle
+;     at Object.cljs$spec$alpha$reg_resolve_BANG_ [as reg_resolve_BANG_] (/js/cljs-runtime/cljs.spec.alpha.js:188:8)
+    at Object.eval [as cljs$spec$alpha$Specize$specize_STAR_$arity$1] (/js/cljs-runtime/cljs.spec.alpha.js:374:84)
+    at Function.eval [as cljs$core$IFn$_invoke$arity$1] (/js/cljs-runtime/cljs.spec.alpha.js:331:10)
+    at Function.eval [as cljs$core$IFn$_invoke$arity$1] (/js/cljs-runtime/cljs.spec.alpha.js:473:38)
+    at Function.eval [as cljs$core$IFn$_invoke$arity$2] (/js/cljs-runtime/cljs.spec.alpha.js:1148:40)
+    at cljs$spec$alpha$valid_QMARK_ (/js/cljs-runtime/cljs.spec.alpha.js:1134:37)
+    at eval (eval at shadow$cljs$devtools$client$browser$global_eval (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js), <anonymous>:1:30)
+    at eval (<anonymous>)
+    at Object.shadow$cljs$devtools$client$browser$global_eval [as global_eval] (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js:806:16)
+    at eval (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js:815:44)
+clj꞉trig.triangle꞉> 
+false
+clj꞉trig.triangle꞉> 
+{:label2 "B", :label1 "A", :angle3 0, :line2 5, :line3 4, :angle1 0, :label3 "C", :angle2 0, :line1 5} - failed: (contains? % :trig.triangle/line1) spec: :trig.triangle/triangle
+{:label2 "B", :label1 "A", :angle3 0, :line2 5, :line3 4, :angle1 0, :label3 "C", :angle2 0, :line1 5} - failed: (contains? % :trig.triangle/line2) spec: :trig.triangle/triangle
+{:label2 "B", :label1 "A", :angle3 0, :line2 5, :line3 4, :angle1 0, :label3 "C", :angle2 0, :line1 5} - failed: (contains? % :trig.triangle/line3) spec: :trig.triangle/triangle
+{:label2 "B", :label1 "A", :angle3 0, :line2 5, :line3 4, :angle1 0, :label3 "C", :angle2 0, :line1 5} - failed: (contains? % :trig.triangle/angle1) spec: :trig.triangle/triangle
+{:label2 "B", :label1 "A", :angle3 0, :line2 5, :line3 4, :angle1 0, :label3 "C", :angle2 0, :line1 5} - failed: (contains? % :trig.triangle/angle2) spec: :trig.triangle/triangle
+{:label2 "B", :label1 "A", :angle3 0, :line2 5, :line3 4, :angle1 0, :label3 "C", :angle2 0, :line1 5} - failed: (contains? % :trig.triangle/angle3) spec: :trig.triangle/triangle
+
+nil
+clj꞉trig.triangle꞉> 
+true
+clj꞉trig.triangle꞉> 
+Success!
+nil
+clj꞉trig.triangle꞉> 
+nil
+clj꞉trig.triangle꞉> 
+5
+clj꞉trig.triangle꞉> 
+nil
+clj꞉trig.triangle꞉> 
+5
+clj꞉trig.triangle꞉> 
+{:label2 "B", :label1 "A", :angle3 0, :line2 5, :line3 4, :angle1 0, :label3 "C", :angle2 0, :line1 5} - failed: (contains? % :trig.triangle/line1) spec: :trig.triangle/triangle
+{:label2 "B", :label1 "A", :angle3 0, :line2 5, :line3 4, :angle1 0, :label3 "C", :angle2 0, :line1 5} - failed: (contains? % :trig.triangle/line2) spec: :trig.triangle/triangle
+{:label2 "B", :label1 "A", :angle3 0, :line2 5, :line3 4, :angle1 0, :label3 "C", :angle2 0, :line1 5} - failed: (contains? % :trig.triangle/line3) spec: :trig.triangle/triangle
+{:label2 "B", :label1 "A", :angle3 0, :line2 5, :line3 4, :angle1 0, :label3 "C", :angle2 0, :line1 5} - failed: (contains? % :trig.triangle/angle1) spec: :trig.triangle/triangle
+{:label2 "B", :label1 "A", :angle3 0, :line2 5, :line3 4, :angle1 0, :label3 "C", :angle2 0, :line1 5} - failed: (contains? % :trig.triangle/angle2) spec: :trig.triangle/triangle
+{:label2 "B", :label1 "A", :angle3 0, :line2 5, :line3 4, :angle1 0, :label3 "C", :angle2 0, :line1 5} - failed: (contains? % :trig.triangle/angle3) spec: :trig.triangle/triangle
+
+{:label2 "B", :label1 "A", :angle3 0, :line2 5, :line3 4, :angle1 0, :label3 "C", :angle2 0, :line1 5} - failed: (contains? % :trig.triangle/line1) spec: :trig.triangle/triangle
+{:label2 "B", :label1 "A", :angle3 0, :line2 5, :line3 4, :angle1 0, :label3 "C", :angle2 0, :line1 5} - failed: (contains? % :trig.triangle/line2) spec: :trig.triangle/triangle
+{:label2 "B", :label1 "A", :angle3 0, :line2 5, :line3 4, :angle1 0, :label3 "C", :angle2 0, :line1 5} - failed: (contains? % :trig.triangle/line3) spec: :trig.triangle/triangle
+{:label2 "B", :label1 "A", :angle3 0, :line2 5, :line3 4, :angle1 0, :label3 "C", :angle2 0, :line1 5} - failed: (contains? % :trig.triangle/angle1) spec: :trig.triangle/triangle
+{:label2 "B", :label1 "A", :angle3 0, :line2 5, :line3 4, :angle1 0, :label3 "C", :angle2 0, :line1 5} - failed: (contains? % :trig.triangle/angle2) spec: :trig.triangle/triangle
+{:label2 "B", :label1 "A", :angle3 0, :line2 5, :line3 4, :angle1 0, :label3 "C", :angle2 0, :line1 5} - failed: (contains? % :trig.triangle/angle3) spec: :trig.triangle/triangle
+
+nil
+clj꞉trig.triangle꞉> 
+
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: :1:2
+ Use of undeclared Var trig.law-of-sines/triangle
+--------------------------------------------------------------------------------
+; Error: No protocol method IDeref.-deref defined for type undefined: 
+;     at Object.cljs$core$missing_protocol [as missing_protocol] (/js/cljs-runtime/cljs.core.js:313:9)
+    at Object.cljs$core$_deref [as _deref] (/js/cljs-runtime/cljs.core.js:2190:17)
+    at cljs$core$deref (/js/cljs-runtime/cljs.core.js:4859:18)
+    at eval (eval at shadow$cljs$devtools$client$browser$global_eval (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js), <anonymous>:1:17)
     at eval (<anonymous>)
     at Object.shadow$cljs$devtools$client$browser$global_eval [as global_eval] (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js:806:16)
     at eval (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js:815:44)
     at Object.shadow$cljs$devtools$client$env$repl_call [as repl_call] (/js/cljs-runtime/shadow.cljs.devtools.client.env.js:162:108)
     at Object.shadow$cljs$devtools$client$browser$repl_invoke [as repl_invoke] (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js:814:46)
     at shadow$cljs$devtools$client$browser$handle_message (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js:892:37)
-    at eval (/js/cljs-runtime/shadow.cljs.devtools.client.env.js:302:151)
-    at Object.shadow$cljs$devtools$client$env$process_next_BANG_ [as process_next_BANG_] (/js/cljs-runtime/shadow.cljs.devtools.client.env.js:284:90)
-cljs꞉trig.view꞉> 
--1.75
-cljs꞉trig.view꞉> 
-; Evaluating file: radians.clj
+clj꞉trig.triangle꞉> 
+
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: :1:2
+ Use of undeclared Var trig.law-of-sines/triangle
+--------------------------------------------------------------------------------
+; Error: No protocol method IDeref.-deref defined for type undefined: 
+;     at Object.cljs$core$missing_protocol [as missing_protocol] (/js/cljs-runtime/cljs.core.js:313:9)
+    at Object.cljs$core$_deref [as _deref] (/js/cljs-runtime/cljs.core.js:2190:17)
+    at cljs$core$deref (/js/cljs-runtime/cljs.core.js:4859:18)
+    at eval (eval at shadow$cljs$devtools$client$browser$global_eval (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js), <anonymous>:1:17)
+    at eval (<anonymous>)
+    at Object.shadow$cljs$devtools$client$browser$global_eval [as global_eval] (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js:806:16)
+    at eval (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js:815:44)
+    at Object.shadow$cljs$devtools$client$env$repl_call [as repl_call] (/js/cljs-runtime/shadow.cljs.devtools.client.env.js:162:108)
+    at Object.shadow$cljs$devtools$client$browser$repl_invoke [as repl_invoke] (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js:814:46)
+    at shadow$cljs$devtools$client$browser$handle_message (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js:892:37)
+clj꞉trig.triangle꞉> 
+trig.triangle
+clj꞉trig.triangle꞉> 
 nil
-clj꞉trig.radians꞉> 
-665/2
-clj꞉trig.radians꞉> 
-280
-clj꞉trig.radians꞉> 
-[13 9]
-clj꞉trig.radians꞉> 
-81
-cljs꞉trig.pythagoras꞉> 
-1681
-cljs꞉trig.pythagoras꞉> 
-1
-cljs꞉trig.pythagoras꞉> 
-#'trig.pythagoras/prime-factors
-cljs꞉trig.pythagoras꞉> 
-#'trig.pythagoras/perfect-squares
-cljs꞉trig.pythagoras꞉> 
-#'trig.pythagoras/simplify-sqrt
-cljs꞉trig.pythagoras꞉> 
-[40 1]
-; ------ WARNING - :fn-arity -----------------------------------------------------
-;  Resource: :1:1
- Wrong number of args (2) passed to trig.pythagoras/simplify-sqrt
---------------------------------------------------------------------------------
-cljs꞉trig.pythagoras꞉> 
-(1681)
-cljs꞉trig.pythagoras꞉> 
-(41 41)
-cljs꞉trig.pythagoras꞉> 
-(2 2 2 2 2 2 5 5)
-cljs꞉trig.pythagoras꞉> 
-[40 1]
-; ------ WARNING - :fn-arity -----------------------------------------------------
-;  Resource: :1:1
- Wrong number of args (2) passed to trig.pythagoras/simplify-sqrt
---------------------------------------------------------------------------------
-cljs꞉trig.pythagoras꞉> 
-40
-cljs꞉trig.pythagoras꞉> 
+clj꞉trig.triangle꞉> 
+; Evaluating file: triangle.cljs
+nil
+clj꞉trig.triangle꞉> 
+{:label2 "A", :label1 "B", :angle3 nil, :line2 9, :line3 6, :angle1 63, :label3 "C", :angle2 nil, :line1 4}
+clj꞉trig.triangle꞉> 
+-3.625
+clj꞉trig.triangle꞉> 
+-0.375
+clj꞉trig.triangle꞉> 
+7.625
+clj꞉trig.triangle꞉> 
+3
+clj꞉trig.triangle꞉> 
+16.5
+clj꞉trig.triangle꞉> 
+12.714285714285714
+clj꞉trig.triangle꞉> 
+[12.714285714285714]
+clj꞉trig.triangle꞉> 
+[15.285714285714286 12.714285714285714]
+clj꞉trig.triangle꞉> 

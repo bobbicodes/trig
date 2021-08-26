@@ -1,18 +1,19 @@
 (ns trig.triangle
   (:require [reagent.core :as r]
-            [trig.latex :as latex]))
+            [trig.latex :as latex]
+            [trig.law-of-sines :as los]))
 
 (defonce triangle
-  (r/atom {:line1   nil
-           :line2 5
-           :line3 nil
-           :angle1 31
-           :angle2 108
-           :angle3 nil
+  (r/atom {:line1 0
+           :line2 11
+           :line3 15
+           :angle1 0
+           :angle2 81
+           :angle3 0
            :label1 "A"
            :label2 "B"
            :label3 "C"}))
-
+                  
 (defn sin [deg]
   (.sin js/Math (* deg (/ js/Math.PI 180))))
 
@@ -252,6 +253,7 @@
         cy (/ (- (+ (sq line1) (sq line3)) (sq line2))
               (* 2 line1))
         cx (.sqrt js/Math (- (sq line3) (sq cy)))
+        height (inc (max (inc line1) cy (inc (.abs js/Math (- cy line1)))))       
         max-side (max line1 line2 line3)]
     [:svg {:width    "100%"
            :view-box
@@ -260,7 +262,7 @@
                   (+ cy (- (/ max-side 20)))
                   (- (/ max-side 18))) " "
                 (+ 3 max-side) " "
-                (* 1.4 max-side))}
+                (inc height))}
      (apply polygon (conj place-line1 cx cy))
      [:g
       [latex/render-letter
@@ -269,11 +271,12 @@
        (keyword label2) (- (/ max-side 20)) line1 (/ max-side 20000)]
       [latex/render-letter
        (keyword label3) (+ (/ max-side 40) cx) (- cy (/ max-side 45)) (/ max-side 20000)]]
-     #_[:g [latex/render-num line2 -350 (+ 300 (* 40 line2))]
-        [latex/render-num line1 (* line1 18) (+ 750 (* line2 30))]
-        [latex/render-num line3 -200 (+ 200 (* 18 line2))]]
      ;[right-angle-box 1 line2]
      ]))
+(let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} @triangle
+      cy (/ (- (+ (sq line1) (sq line3)) (sq line2))
+            (* 2 line1))]
+  [cy (.abs js/Math (- cy line1))])
 
 (defn ratios [triangle]
   (let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} triangle]
@@ -314,8 +317,8 @@
      [:div
       [button "Solve" #(swap! triangle solve-triangle)]
       [button "Clear" #(swap! triangle assoc :line1 nil :line2 nil :line3 nil :angle1 nil :angle2 nil :angle3 nil)]]
-     [render-triangle @triangle]]
-    #_[pythagoras/pythagorean-identity-sin "\\theta_1" "\\text{I}" 3 8]))
+     [render-triangle @triangle]
+     [los/law-of-sines "A" @triangle]]))
 
 (comment
   (pos? (:angle2 @triangle))
