@@ -10,6 +10,8 @@ Learn trig with Clojure!
 
 ![Triangles](./trig2.png)
 
+![Law of sines](./trig3.png)
+
 ## Development
 
 ```bash
