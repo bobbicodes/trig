@@ -149,3 +149,54 @@ clj꞉trig.triangle꞉> 
 clj꞉trig.triangle꞉> 
 [15.285714285714286 12.714285714285714]
 clj꞉trig.triangle꞉> 
+
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: :1:78
+ Use of undeclared Var trig.law-of-sines/triangle
+--------------------------------------------------------------------------------
+; Error: No protocol method IDeref.-deref defined for type undefined: 
+;     at Object.cljs$core$missing_protocol [as missing_protocol] (/js/cljs-runtime/cljs.core.js:313:9)
+    at Object.cljs$core$_deref [as _deref] (/js/cljs-runtime/cljs.core.js:2190:17)
+    at cljs$core$deref (/js/cljs-runtime/cljs.core.js:4859:18)
+    at eval (eval at shadow$cljs$devtools$client$browser$global_eval (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js), <anonymous>:1:47)
+    at eval (eval at shadow$cljs$devtools$client$browser$global_eval (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js), <anonymous>:13:3)
+    at eval (<anonymous>)
+    at Object.shadow$cljs$devtools$client$browser$global_eval [as global_eval] (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js:806:16)
+    at eval (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js:815:44)
+    at Object.shadow$cljs$devtools$client$env$repl_call [as repl_call] (/js/cljs-runtime/shadow.cljs.devtools.client.env.js:162:108)
+    at Object.shadow$cljs$devtools$client$browser$repl_invoke [as repl_invoke] (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js:814:46)
+clj꞉trig.law-of-sines꞉> 
+
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: :1:78
+ Use of undeclared Var trig.law-of-sines/triangle
+--------------------------------------------------------------------------------
+; Error: No protocol method IDeref.-deref defined for type undefined: 
+;     at Object.cljs$core$missing_protocol [as missing_protocol] (/js/cljs-runtime/cljs.core.js:313:9)
+    at Object.cljs$core$_deref [as _deref] (/js/cljs-runtime/cljs.core.js:2190:17)
+    at cljs$core$deref (/js/cljs-runtime/cljs.core.js:4859:18)
+    at eval (eval at shadow$cljs$devtools$client$browser$global_eval (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js), <anonymous>:1:47)
+    at eval (eval at shadow$cljs$devtools$client$browser$global_eval (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js), <anonymous>:13:3)
+    at eval (<anonymous>)
+    at Object.shadow$cljs$devtools$client$browser$global_eval [as global_eval] (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js:806:16)
+    at eval (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js:815:44)
+    at Object.shadow$cljs$devtools$client$env$repl_call [as repl_call] (/js/cljs-runtime/shadow.cljs.devtools.client.env.js:162:108)
+    at Object.shadow$cljs$devtools$client$browser$repl_invoke [as repl_invoke] (/js/cljs-runtime/shadow.cljs.devtools.client.browser.js:814:46)
+clj꞉trig.law-of-sines꞉> 
+
+; ------ REPL Error while processing ---------------------------------------------
+; (ns trig.law-of-sines
+  (:require ["katex" :as katex]
+            [trig.triangle :refer [triangle]]))
+Circular dependency detected: trig.law-of-sines -> trig.triangle -> trig.law-of-sines
+clj꞉trig.law-of-sines꞉> 
+{:label2 "B", :label1 "A", :angle3 0, :line2 11, :line3 15, :angle1 0, :label3 "C", :angle2 81, :line1 12}
+clj꞉trig.triangle꞉> 
+12
+clj꞉trig.law-of-sines꞉> 
+#'trig.law-of-sines/law-of-sines
+clj꞉trig.law-of-sines꞉> 
+[:span {:ref #object[Function]}]
+clj꞉trig.law-of-sines꞉> 
+"\\qquad \\blue{\\sin(A)} = \\dfrac{\\blue{a}}{\\green{b}} \\green{\\sin(B)}"
+clj꞉trig.law-of-sines꞉> 

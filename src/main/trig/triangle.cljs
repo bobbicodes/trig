@@ -4,7 +4,7 @@
             [trig.law-of-sines :as los]))
 
 (defonce triangle
-  (r/atom {:line1 0
+  (r/atom {:line1 9
            :line2 11
            :line3 15
            :angle1 0
@@ -13,7 +13,7 @@
            :label1 "A"
            :label2 "B"
            :label3 "C"}))
-                  
+
 (defn sin [deg]
   (.sin js/Math (* deg (/ js/Math.PI 180))))
 
@@ -273,10 +273,6 @@
        (keyword label3) (+ (/ max-side 40) cx) (- cy (/ max-side 45)) (/ max-side 20000)]]
      ;[right-angle-box 1 line2]
      ]))
-(let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} @triangle
-      cy (/ (- (+ (sq line1) (sq line3)) (sq line2))
-            (* 2 line1))]
-  [cy (.abs js/Math (- cy line1))])
 
 (defn ratios [triangle]
   (let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} triangle]

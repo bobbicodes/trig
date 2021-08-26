@@ -111,6 +111,18 @@
    (and (pos? line3) (pos? angle1) (pos? angle2))
    (and (pos? line3) (pos? angle2) (pos? angle3))))
 
+(let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} {:label2 "B", :label1 "A", :angle3 0, :line2 11, :line3 15, :angle1 0, :label3 "C", :angle2 81, :line1 12}
+      angle "A"]
+(str "\\qquad \\blue{\\sin("
+     angle
+     ")} = \\dfrac{\\blue{"
+     (cond (= angle "A") "a" (= angle "B") "b")
+     "}}{\\green{"
+     (cond (= angle "A") "b" (= angle "B") "a")
+     "}} \\green{\\sin("
+     (cond (= angle "A") "B" (= angle "B") "A")
+     ")}"))
+
 (defn law-of-sines [angle triangle]
   (let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} triangle]
     [:div
