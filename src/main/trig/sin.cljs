@@ -291,12 +291,11 @@
             "}\\right)\\purple{"
             (if (= 0 (y-shift-tex w)) "" (y-shift-tex w)) "}}")))
 
-(defonce !max-x (r/atom "1"))
-(defonce !max-y (r/atom "1"))
-(defonce !mid-x (r/atom "1"))
-(defonce !mid-y (r/atom "1"))
-(defonce !min-x (r/atom "1"))
-(defonce !min-y (r/atom "1"))
+(defonce !max (r/atom "[nil nil]"))
+
+(defonce !mid (r/atom "[nil nil]"))
+
+(defonce !min (r/atom "[nil nil]"))
 
 (defn eval-all [s]
   (try (sci/eval-string s {:classes {'js goog/global :allow :all}})
@@ -304,63 +303,46 @@
          (str e))))
 
 (defn max-point []
-  [:div
-   [:p
-    "Max:"]
-   [editor/editor (str (:max-x @w)) !max-x {:eval? true}]
-   [editor/editor (str (:max-y @w)) !max-y {:eval? true}]
-   [:span
-    [:button {:on-click #(swap! w assoc 
-                                :max-x (eval-all (some-> @!max-x .-state .-doc str))
-                                :max-y (eval-all (some-> @!max-y .-state .-doc str)))
-              :style {:margin-top "1rem"}}
-     "Eval"]]])
+  [:span
+   [:button {:on-click #(swap! w assoc
+                               :max-x (first (eval-all (some-> @!max .-state .-doc str)))
+                               :max-y (last (eval-all (some-> @!max .-state .-doc str))))
+             :style {:margin-top "1rem"}}
+    "Max"]
+   [editor/editor (str [(:max-x @w) (:max-y @w)]) !max {:eval? true}]])
 
 (defn mid-point []
-  [:div
-   [:p
-    "Mid:"]
-   [editor/editor (str (:mid-x @w)) !mid-x {:eval? true}]
-   [editor/editor (str (:mid-y @w)) !mid-y {:eval? true}]
-   [:span
-    [:button {:on-click #(swap! w assoc
-                                :mid-x (eval-all (some-> @!mid-x .-state .-doc str))
-                                :mid-y (eval-all (some-> @!mid-y .-state .-doc str)))
-              :style {:margin-top "1rem"}}
-     "Eval"]]])
+  [:span
+   [:button {:on-click #(swap! w assoc
+                               :mid-x (first (eval-all (some-> @!mid .-state .-doc str)))
+                               :mid-y (last (eval-all (some-> @!mid .-state .-doc str))))
+             :style {:margin-top "1rem"}}
+    "Mid"]
+   [editor/editor (str [(:mid-x @w) (:mid-y @w)]) !mid {:eval? true}]])
 
 (defn min-point []
-  [:div
-   [:p
-    "Min:"]
-   [editor/editor (str (:min-x @w)) !min-x {:eval? true}]
-   [editor/editor (str (:min-y @w)) !min-y {:eval? true}]
-   [:span
-    [:button {:on-click #(swap! w assoc
-                                :min-x (eval-all (some-> @!min-x .-state .-doc str))
-                                :min-y (eval-all (some-> @!min-y .-state .-doc str)))
-              :style {:margin-top "1rem"}}
-     "Eval"]]])
+  [:span
+   [:button {:on-click #(swap! w assoc
+                               :min-x (first (eval-all (some-> @!min .-state .-doc str)))
+                               :min-y (last (eval-all (some-> @!min .-state .-doc str))))
+             :style {:margin-top "1rem"}}
+    "Min"]
+   [editor/editor (str [(:min-x @w) (:min-y @w)]) !min {:eval? true}]])
 
 (reset! w {:max-x 1.1 :max-y -50
            :min-x 2.6 :min-y 12
            :mid-x nil :mid-y nil})
 
-(reset! function-atom
-        (fn [x]
-          (+
-           (* (amplitude @w)
-              (cos (* (period @w)
-                      (+ x (x-shift @w)))))
-           (y-shift @w))))
 
 (reset! function-atom
         (fn [x]
           (+
-           (* 21.5
-              (cos (* (/ (* 2 pi) 3) (+ x -1.1))
+           (* (amplitude @w)
+              (cos (* (period @w) (+ x (x-shift @w)))
                       ))
-           33.5)))
+           (y-shift @w))))
+
+@w
 
 (comment
   (let [{:keys [max-x max-y min-x min-y mid-x mid-y]} @w]

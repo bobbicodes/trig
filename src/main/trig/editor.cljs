@@ -71,17 +71,7 @@
 
                                           :parent el)))))]
     [:div
-     [:div
-      {:ref mount!
-       :style {:background-color "white"
-               :width 120}}]
-     #_(when eval?
-       [:div
-        {:style {:white-space "pre-wrap"
-                 :margin-top "0.5rem"
-                 :color "#c3c3c3"
-                 :font-family "var(--code-font)"}}
-        [:span "user=> "]
-        (try (prn-str @last-result)
-             (catch :default e (str e)))])]
+     {:ref mount!
+      :style {:background-color "white"
+              :width 180}}]
     (finally (j/call @!view :destroy))))

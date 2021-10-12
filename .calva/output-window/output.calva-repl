@@ -5,6 +5,7 @@
 ; Happy coding! ♥️
 
 ; Jacking in...
+; nREPL Connection was closed
 ; Starting Jack-in Terminal: npx shadow-cljs -d cider/cider-nrepl:0.26.0 watch :app
 ; Hooking up nREPL sessions...
 ; Connected session: clj
@@ -24,6 +25,6 @@ clj꞉shadow.user꞉> 
 ;    *Calva: Toggle REPL connection*
 ;    (There is a button in the status bar for this)
 ; Jack-in done.
-cljs꞉cljs.user꞉> 
-#object[trig$sin$max_x]
-clj꞉trig.sin꞉> 
+cljs꞉cljs.user꞉>  ; Use `alt+enter` to evaluate
+{:max-x 1.8, :max-y -53, :min-x 2.6, :min-y 12, :mid-x nil, :mid-y nil}
+cljs꞉trig.sin꞉> 
