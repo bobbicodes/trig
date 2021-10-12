@@ -28,3 +28,13 @@ clj꞉shadow.user꞉> 
 cljs꞉cljs.user꞉>  ; Use `alt+enter` to evaluate
 {:max-x 1.8, :max-y -53, :min-x 2.6, :min-y 12, :mid-x nil, :mid-y nil}
 cljs꞉trig.sin꞉> 
+"\\pi"
+cljs꞉trig.sin꞉> 
+31
+cljs꞉trig.sin꞉> 
+{:max-x 1.1, :max-y -50, :min-x 2.6, :min-y 12, :mid-x nil, :mid-y nil}
+cljs꞉trig.sin꞉> 
+31
+cljs꞉trig.sin꞉> 
+"\\pi"
+cljs꞉trig.sin꞉> 

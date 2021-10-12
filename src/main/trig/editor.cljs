@@ -20,8 +20,8 @@
    EditorView
    (j/lit {".cm-content" {:white-space "pre-wrap", :padding "10px 0"}
            "&.cm-focused" {:outline "none"}
-           ".cm-line" {:padding "0 9px"
-                       :line-height "1"
+           ".cm-line" {:padding "0 10px"
+                       :line-height "1.6"
                        :font-size "16px"
                        :font-family "var(--code-font)"}
            ".cm-matchingBracket" {:border-bottom "1px solid var(--teal-color)"
@@ -73,5 +73,5 @@
     [:div
      {:ref mount!
       :style {:background-color "white"
-              :width 180}}]
+              :width 200}}]
     (finally (j/call @!view :destroy))))

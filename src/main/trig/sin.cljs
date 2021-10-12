@@ -31,6 +31,11 @@
            :mid-x (/ js/Math.PI 2)
            :mid-y 3.5}))
 
+(defonce points
+  (r/atom {:max [0.5 12]
+           :min [nil nil]
+           :mid [0 7]}))
+
 (defn x-point [x]
   (+ 150 (* x 18.75)))
 
@@ -82,7 +87,7 @@
 
 (defn x-slider
   [min max step]
-  [:div "x-scale"
+  [:div (str "x-scale: " @x-scale)
    [:input {:type      "range"
             :min       min
             :max       max
@@ -92,7 +97,7 @@
 
 (defn y-slider
   [min max step]
-  [:div "y-scale"
+  [:div (str "y-scale: " @y-scale)
    [:input {:type      "range"
             :min       min
             :max       max
@@ -119,20 +124,20 @@
         [axes]
         [ticks] [vals]]])))
 
-(defn reflection? [{:keys [max-x max-y min-x min-y mid-x mid-y]}]
-  (cond (and mid-y min-y)
-        (or (= min-x 0)
-            (and (= 0 mid-x) (pos? min-x) (> mid-y min-y)))
-        (and mid-y max-y)
-        (> mid-y max-y)
-        (and min-y max-y)
-        (zero? min-x)))
+(defn reflection? [{:keys [max min mid]}]
+  (cond (and (first mid) (first min))
+        (or (= (first min) 0)
+            (and (= 0 (first mid)) (pos? (first min)) (> (last mid) (last min))))
+        (and (first mid) (first max))
+        (> (last mid) (last max))
+        (and (first min) (first max))
+        (zero? (first min))))
 
-(defn amplitude [{:keys [max-x max-y min-x min-y mid-x mid-y] :as w}]
+(defn amplitude [{:keys [max min mid] :as w}]
   (let [abs-result
-        (cond (and mid-y min-y) (abs (- mid-y min-y))
-              (and mid-y max-y) (abs (- mid-y max-y))
-              (and max-y min-y) (/ (abs (- max-y min-y)) 2))]
+        (cond (and (first mid) (first min)) (abs (- (last mid) (last min)))
+              (and (first mid) (first max)) (abs (- (last mid) (last max)))
+              (and (first max) (first min)) (/ (abs (- (last max) (last min))) 2))]
     (if (reflection? w) (- abs-result) abs-result)))
 
 ;; builds a map of the first 1000 divisions of pi, beginning with pi/2.
@@ -181,92 +186,92 @@
               (get fractions-of-pi (/ (* 2 pi) (* 4 (abs (- mid x)))))
               (str "\\dfrac{2\\pi}{" (* 4 (abs (- mid x))) "}"))))
 
-(defn period [{:keys [max-x min-x mid-x]}]
-  (cond (and mid-x min-x)
-        (/ (* 2 pi) (* 4 (abs (- mid-x min-x))))
-        (and mid-x max-x)
-        (/ (* 2 pi) (* 4 (abs (- mid-x max-x))))
-        (and max-x min-x)
-        (/ (* 2 pi) (* 2 (abs (- max-x min-x))))))
+(defn period [{:keys [max min mid]}]
+  (cond (and (first mid) (first min))
+        (/ (* 2 pi) (* 4 (abs (- (first mid) (first min)))))
+        (and (first mid) (first max))
+        (/ (* 2 pi) (* 4 (abs (- (first mid) (first max)))))
+        (and (first max) (first min))
+        (/ (* 2 pi) (* 2 (abs (- (first max) (first min)))))))
 
-(defn period-tex [{:keys [max-x min-x mid-x]}]
-  (cond (and mid-x min-x)
-        (period-mid mid-x min-x)
-        (and mid-x max-x)
-        (period-mid mid-x max-x)
-        (and max-x min-x)
+(defn period-tex [{:keys [max min mid]}]
+  (cond (and (first mid) (first min))
+        (period-mid (first mid) (first min))
+        (and (first mid) (first max))
+        (period-mid (first mid) (first max))
+        (and (first max) (first min))
         (cond
-          (= (abs (- max-x min-x)) 0.5) "2\\pi"
+          (= (abs (- (first max) (first min))) 0.5) "2\\pi"
          ; (= (abs (- max-x min-x)) 3) "\\dfrac{\\pi}{3}"
           ;(= (abs (- max-x min-x)) 5) "\\dfrac{\\pi}{5}"
-          (= (abs (- max-x min-x)) (/ pi 4)) "4"
+          (= (abs (- (first max) (first min))) (/ pi 4)) "4"
           ;(= (abs (- max-x min-x)) (* 2 pi)) "\\dfrac{1}{2}"
           ;(= (abs (- max-x min-x)) (* 3 pi)) "\\dfrac{1}{3}"
           ;(= (abs (- max-x min-x)) (/ (* 3 pi) 2)) "\\dfrac{2}{3}"
           ;(= (abs (- max-x min-x)) (/ (* 7 pi) 4)) "\\dfrac{4}{7}"
           ;(= (abs (- max-x min-x)) (/ (* 5 pi) 4)) "\\dfrac{4}{5}"
           ;(= (abs (- max-x min-x)) (/ (* 3 pi) 4)) "\\dfrac{4}{3}"
-          (int? (/ (* 2 pi) (* 2 (abs (- max-x min-x)))))
-          (/ (* 2 pi) (* 2 (abs (- max-x min-x))))
-          :else (or (get simple-ratios (/ (* 2 pi) (* 2 (abs (- max-x min-x)))))
-                 (get fractions-of-pi (/ (* 2 pi) (* 2 (abs (- max-x min-x)))))
-                 (str "\\dfrac{2\\pi}{" (* 2 (abs (- max-x min-x))) "}")))))
+          (int? (/ (* 2 pi) (* 2 (abs (- (first max) (first min))))))
+          (/ (* 2 pi) (* 2 (abs (- (first max) (first min)))))
+          :else (or (get simple-ratios (/ (* 2 pi) (* 2 (abs (- (first max) (first min))))))
+                 (get fractions-of-pi (/ (* 2 pi) (* 2 (abs (- (first max) (first min))))))
+                 (str "\\dfrac{2\\pi}{" (* 2 (abs (- (first max) (first min)))) "}")))))
 
-(defn x-shift-tex [{:keys [max-x max-y min-x min-y mid-x mid-y]}]
-  (cond (and mid-y min-y)
+(defn x-shift-tex [{:keys [max min mid]}]
+  (cond (and (first mid) (first min))
         (cond
-          (= min-x 0) ""
-          (= mid-x pi) "-\\pi"
-          (= mid-x (/ pi 2)) "-\\dfrac{\\pi}{2}"
-          :else (if (pos? mid-x) (str "-" mid-x) (str "+" (abs mid-x))))
-        (and mid-y max-y)
+          (= (first min) 0) ""
+          (= (first mid) pi) "-\\pi"
+          (= (first mid) (/ pi 2)) "-\\dfrac{\\pi}{2}"
+          :else (if (pos? (first mid)) (str "-" (first mid)) (str "+" (abs (first mid)))))
+        (and (first mid) (first max))
         (cond
-          (= max-x 0) ""
-          (= mid-x (* (/ 3 4) pi)) "-\\dfrac{3}{4}\\pi"
-          (= mid-x (/ js/Math.PI 2)) "\\dfrac{\\pi}{2}"
-          (= mid-x (- pi)) "+\\pi"
-          (= mid-x (* -4 pi)) "+4\\pi"
-          :else (if (pos? mid-x) (str "-" mid-x) (str "+" (abs mid-x))))
-        (and max-y min-y)
+          (= (first max) 0) ""
+          (= (first mid) (* (/ 3 4) pi)) "-\\dfrac{3}{4}\\pi"
+          (= (first mid) (/ js/Math.PI 2)) "\\dfrac{\\pi}{2}"
+          (= (first mid) (- pi)) "+\\pi"
+          (= (first mid) (* -4 pi)) "+4\\pi"
+          :else (if (pos? (first mid)) (str "-" (first mid)) (str "+" (abs (first mid)))))
+        (and (first max) (first min))
         (cond
-          (= min-x 0) ""
-          (= max-x (- (/ pi 2))) "+\\dfrac{\\pi}{2}"
-          (= max-x (/ (* 3 pi) 4)) "-\\dfrac{3\\pi}{4}"
-          (= max-x (- (* 2 pi))) "+2\\pi"
-          (= max-x pi) "-\\pi"
-          :else (str (if (neg? max-x) (str "+" (abs max-x)) (str "-" max-x))))))
+          (= (first min) 0) ""
+          (= (first max) (- (/ pi 2))) "+\\dfrac{\\pi}{2}"
+          (= (first max) (/ (* 3 pi) 4)) "-\\dfrac{3\\pi}{4}"
+          (= (first max) (- (* 2 pi))) "+2\\pi"
+          (= (first max) pi) "-\\pi"
+          :else (str (if (neg? (first max)) (str "+" (abs (first max))) (str "-" (first max)))))))
 
-(defn x-shift [{:keys [max-x max-y min-x min-y mid-x mid-y]}]
-  (cond (and mid-y min-y)
+(defn x-shift [{:keys [max min mid]}]
+  (cond (and (first mid) (first min))
         (cond
-          (= min-x 0) 0
-          :else (- mid-x))
-        (and mid-y max-y)
+          (= (first min) 0) 0
+          :else (- (first mid)))
+        (and (first mid) (first max))
         (cond
-          (= max-x 0) 0
-          :else (- mid-x))
-        (and max-y min-y)
+          (= (first max) 0) 0
+          :else (- (first mid)))
+        (and (first max) (first min))
         (cond
-          (= min-x 0) 0
-          :else (- max-x))))
+          (= (first min) 0) 0
+          :else (- (first max)))))
 
-(defn y-shift-tex [{:keys [max-x max-y min-x min-y mid-x mid-y]}]
-  (cond (and mid-y min-y)
-        (if (pos? mid-y) (str "+" mid-y) mid-y)
-        (and mid-y max-y)
-        (if (pos? mid-y) (str "+" mid-y) mid-y)
-        (and max-y min-y)
-        (if (pos? (- max-y (/ (abs (- max-y min-y)) 2)))
-          (str "+" (- max-y (/ (abs (- max-y min-y)) 2)))
-          (- max-y (/ (.abs js/Math (- max-y min-y)) 2)))))
+(defn y-shift-tex [{:keys [max min mid]}]
+  (cond (and (first mid) (first min))
+        (if (pos? (last mid)) (str "+" (last mid)) (last mid))
+        (and (first mid) (first max))
+        (if (pos? (last mid)) (str "+" (last mid)) (last mid))
+        (and (first max) (first min))
+        (if (pos? (- (last max) (/ (abs (- (last max) (last min))) 2)))
+          (str "+" (- (last max) (/ (abs (- (last max) (last min))) 2)))
+          (- (last max) (/ (.abs js/Math (- (last max) (last min))) 2)))))
 
-(defn y-shift [{:keys [max-x max-y min-x min-y mid-x mid-y]}]
-  (cond (and mid-y min-y)
-        mid-y
-        (and mid-y max-y)
-        mid-y
-        (and max-y min-y)
-        (- max-y (/ (abs (- max-y min-y)) 2))))
+(defn y-shift [{:keys [max min mid]}]
+  (cond (and (first mid) (first min))
+        (last mid)
+        (and (first mid) (first max))
+        (last mid)
+        (and (first max) (first min))
+        (- (last max) (/ (abs (- (last max) (last min))) 2))))
 
 (defn tex [text]
   [:span {:ref (fn [el]
@@ -286,68 +291,36 @@
             "\\left({"
             (period-tex w)
             (if (contains? #{"" "+0" "-0"} (x-shift-tex w))
-              "x"
+              "{x}"
               (str "(x\\red{" (x-shift-tex w) "})"))
             "}\\right)\\purple{"
             (if (= 0 (y-shift-tex w)) "" (y-shift-tex w)) "}}")))
 
-(defonce !max (r/atom "[nil nil]"))
-
-(defonce !mid (r/atom "[nil nil]"))
-
-(defonce !min (r/atom "[nil nil]"))
+(defonce !points (r/atom @points))
 
 (defn eval-all [s]
   (try (sci/eval-string s {:classes {'js goog/global :allow :all}})
        (catch :default e
          (str e))))
 
-(defn max-point []
+(defn points-input []
   [:span
-   [:button {:on-click #(swap! w assoc
-                               :max-x (first (eval-all (some-> @!max .-state .-doc str)))
-                               :max-y (last (eval-all (some-> @!max .-state .-doc str))))
+   [:button {:on-click #(reset! points (eval-all 
+                                        (str "(def pi js/Math.PI)"
+                                             (some-> @!points .-state .-doc str))))
              :style {:margin-top "1rem"}}
-    "Max"]
-   [editor/editor (str [(:max-x @w) (:max-y @w)]) !max {:eval? true}]])
-
-(defn mid-point []
-  [:span
-   [:button {:on-click #(swap! w assoc
-                               :mid-x (first (eval-all (some-> @!mid .-state .-doc str)))
-                               :mid-y (last (eval-all (some-> @!mid .-state .-doc str))))
-             :style {:margin-top "1rem"}}
-    "Mid"]
-   [editor/editor (str [(:mid-x @w) (:mid-y @w)]) !mid {:eval? true}]])
-
-(defn min-point []
-  [:span
-   [:button {:on-click #(swap! w assoc
-                               :min-x (first (eval-all (some-> @!min .-state .-doc str)))
-                               :min-y (last (eval-all (some-> @!min .-state .-doc str))))
-             :style {:margin-top "1rem"}}
-    "Min"]
-   [editor/editor (str [(:min-x @w) (:min-y @w)]) !min {:eval? true}]])
-
-(reset! w {:max-x 1.1 :max-y -50
-           :min-x 2.6 :min-y 12
-           :mid-x nil :mid-y nil})
-
+    "Update Points"]
+   [editor/editor (str @points) !points {:eval? true}]])
 
 (reset! function-atom
         (fn [x]
           (+
-           (* (amplitude @w)
-              (cos (* (period @w) (+ x (x-shift @w)))
+           (* (amplitude @points)
+              (cos (* (period @points) (+ x (x-shift @points)))
                       ))
-           (y-shift @w))))
+           (y-shift @points))))
 
-@w
 
 (comment
-  (let [{:keys [max-x max-y min-x min-y mid-x mid-y]} @w]
-    (abs (- max-x min-x))
-    )
-  (/ (* 2 pi) 1)
-  (/ 96 16)
+
   )
