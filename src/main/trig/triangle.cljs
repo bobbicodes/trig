@@ -1,7 +1,11 @@
 (ns trig.triangle
   (:require [reagent.core :as r]
             [trig.latex :as latex]
-            [trig.law-of-sines :as los]))
+            ["katex" :as katex]
+            [trig.law-of-sines :as los]
+            [trig.uc :as uc]
+            [trig.sin :as sin]
+            [cljs.spec.alpha :as s]))
 
 (defonce triangle
   (r/atom {:line1 9
@@ -14,11 +18,7 @@
            :label2 "B"
            :label3 "C"}))
 
-(defn sin [deg]
-  (.sin js/Math (* deg (/ js/Math.PI 180))))
 
-(defn cos [deg]
-  (.cos js/Math (* deg (/ js/Math.PI 180))))
 
 (defn tan [deg]
   (.tan js/Math (* deg (/ js/Math.PI 180))))
@@ -53,7 +53,7 @@
   [a o]
   (/ a o))
 
-(defn solve-sides [triangle]
+#_(defn solve-sides [triangle]
   (let [{:keys [line1 line2 line3 angle1 angle2]} triangle]
     (cond
       (and (pos? angle1) (pos? line3))
@@ -112,7 +112,7 @@
                  :angle2  (atan (/ line2 line1))))
       :else triangle)))
 
-(defn law-of-sines [triangle]
+#_(defn law-of-sines [triangle]
   (let [{:keys [angle1 angle2 angle3 line1 line2 line3]} triangle]
     (cond
       (and (pos? angle1) (pos? angle2) (pos? line2))
@@ -150,7 +150,7 @@
       (and (pos? angle1) (pos? angle2) (pos? line2))
       "poop")))
 
-(defn loc-side
+#_(defn loc-side
   "Use law of cosines to solve for a side, given the opposite angle and 2 other sides."
   [s1 s2 a]
   (.sqrt js/Math
@@ -163,7 +163,7 @@
   (acos (/ (+ (* a1 a1) (* a2 a2) (- (* o o)))
            (* 2 a1 a2))))
 
-(defn law-of-cosines [triangle]
+#_(defn law-of-cosines [triangle]
   (let [{:keys [angle1 angle2 angle3 line1 line2 line3]} triangle]
     (cond
       (and (pos? angle1) (pos? line1) (pos? line3))
@@ -186,7 +186,7 @@
   (law-of-cosines @triangle)
   )
 
-(defn solve-triangle
+#_(defn solve-triangle
   "If 2 angles defined, will calculate the 3rd."
   [triangle]
   (let [{:keys [angle1 angle2 angle3]} triangle]
@@ -293,11 +293,16 @@
 
 (defonce obtuse? (r/atom {:angle1 false :angle2 false :angle3 false}))
 
-(defn app []
-  (let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} @triangle]
-    [:div#app
-     ;[:h2 "Trigonometry with general triangles"]
-     ;[:h3 "Solve for sides or angles"]
+(defonce w
+  (r/atom {:max-x 2 :max-y 11
+           :min-x 3.5 :min-y 1
+           :mid-x (/ js/Math.PI 2)
+           :mid-y 3.5}))
+
+(defn triangle-inputs []
+  (let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} @triangle
+        {:keys [max-x max-y min-x min-y mid-x mid-y]} @w]
+    [:div
      [:div "Vertices: "
       [input "text" "" label1 #(swap! triangle assoc :label1 (-> % .-target .-value))] " "
       [input "text" "" label2 #(swap! triangle assoc :label2 (-> % .-target .-value))] " "
@@ -310,13 +315,113 @@
       [input "number" (str "∠" label1 ": ") (round (if (:angle1 @obtuse?) (- 180 angle1) angle1) 1) #(swap! triangle assoc :angle1 (-> % .-target .-value js/parseFloat))] "° "
       [input "number" (str "∠" label2 ": ") (round (if (:angle2 @obtuse?) (- 180 angle2) angle2) 1) #(swap! triangle assoc :angle2 (-> % .-target .-value js/parseFloat))] "° "
       [input "number" (str "∠" label3 ": ") (round (if (:angle3 @obtuse?) (- 180 angle3) angle3) 1) #(swap! triangle assoc :angle3 (-> % .-target .-value js/parseFloat))] "° "]
+     #_[:div
+        [button "Solve" #(swap! triangle solve-triangle)]
+        [button "Clear" #(swap! triangle assoc :line1 nil :line2 nil :line3 nil :angle1 nil :angle2 nil :angle3 nil)]]]))
+
+(defn sin-inputs []
+  (let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} @triangle
+        {:keys [max-x max-y min-x min-y mid-x mid-y]} @w]
+    [:div
+     [:div "Max: "
+      [input "text" "" max-x #(swap! w assoc :max-x (-> % .-target .-value js/parseInt))] " "
+      [input "text" "" max-y #(swap! w assoc :max-y (-> % .-target .-value js/parseInt))] " "]
+     [:div "Mid: "
+      [input "text" "" mid-x #(swap! w assoc :mid-x (-> % .-target .-value js/parseInt))] " "
+      [input "text" "" mid-y #(swap! w assoc :mid-y (-> % .-target .-value js/parseInt))] " "]
+     [:div "Min: "
+      [input "text" "" min-x #(swap! w assoc :min-x (-> % .-target .-value js/parseInt))] " "
+      [input "text" "" min-y #(swap! w assoc :min-y (-> % .-target .-value js/parseInt))] " "]]))
+
+
+(defn abs [n]
+  (.abs js/Math n))
+
+(def pi js/Math.PI)
+
+(defn sin [n]
+  (.sin js/Math n))
+
+(defn cos [n]
+  (.cos js/Math n))
+
+(defonce function-atom
+  (r/atom (fn bell-curve [x]
+            (js/Math.pow
+             js/Math.E
+             (- (* x x))))))
+
+(defonce range-start (r/atom -8))
+
+(def view-box-width 300)
+(def view-box-height 326)
+
+(defn x-point [x]
+  (+ 150 (* x 18.75)))
+
+(defn y-point [y]
+  (- 175 (* y 18.75)))
+
+(defn make-path [points]
+  (str "M" (apply str (interpose " " (for [[x y] points]
+                                       (str (x-point x) " " (y-point y)))))))
+
+(defn closed-point []
+  [:ellipse {:cx "150" :cy "81.25" :rx "4" :ry "4" :fill "#11accd" :stroke "#11accd" :stroke-width "2" :stroke-dasharray "0"}])
+
+(defn open-point []
+  [:ellipse {:cx "150" :cy "268.329" :rx "4" :ry "4" :fill "#fff" :stroke "#11accd" :stroke-width "2" :stroke-dasharray "0"}])
+
+(defn tex [text]
+  [:span {:ref (fn [el]
+                 (when el
+                   (try
+                     (katex/render text el (clj->js
+                                            {:throwOnError false}))
+                     (catch :default e
+                       (js/console.warn "Unexpected KaTeX error" e)
+                       (aset el "innerHTML" text)))))}])
+
+
+(defonce trig-fn (r/atom "\\sin"))
+
+(reset! function-atom
+        (fn [x]
+          (+
+           (* 3
+              (cos (+ (* 2 x)
+                      (* pi 6))))
+           4)))
+
+(reset! w {:max-x 0 :max-y 5
+           :min-x (* 2 pi) :min-y -5
+           :mid-x nil :mid-y nil})
+
+(comment
+  (let [{:keys [max-x max-y min-x min-y mid-x mid-y]} @w]
+    (abs (- mid-x max-x))
+    )
+  (/ (* 7 pi) 4)
+  )
+
+
+
+(defn app []
+  (let [{:keys [max-x max-y min-x min-y mid-x mid-y]} @w]
+    [:div#app
+     ;[sin-inputs]
+     ;[triangle-inputs]
+     [sin/calc-graph]
+     [sin/render-fn @w]
      [:div
-      [button "Solve" #(swap! triangle solve-triangle)]
-      [button "Clear" #(swap! triangle assoc :line1 nil :line2 nil :line3 nil :angle1 nil :angle2 nil :angle3 nil)]]
+      [:button {:on-click #(reset! trig-fn "\\sin")
+                :style {:margin-top "1rem"}}
+       (tex "sin")]
+      [:button {:on-click #(reset! trig-fn "\\cos")
+                :style {:margin-top "1rem"}}
+       (tex "cos")]]
+     [:div
+      [uc/uc]]
      [render-triangle @triangle]
      [los/law-of-sines "A" @triangle]]))
 
-(comment
-  (pos? (:angle2 @triangle))
-  (law-of-sines @triangle)
-(solve-triangle @triangle))

@@ -1,9 +1,10 @@
 (ns trig.app
   (:require [reagent.core :as r]
+            [reagent.dom :as d]
             [trig.view :as view]))
 
 (defn render []
-  (r/render [view/app]
+  (d/render [view/app]
             (.getElementById js/document "root")))
 
 (defn ^:dev/after-load start []
