@@ -1,7 +1,12 @@
 (ns uc.generate
   (:require [clojure.java.shell :refer [sh]]))
 
-(def tex2svg "/usr/local/lib/nodejs/node-v14.17.0-linux-arm64/lib/node_modules/mathjax-node-cli/bin/tex2svg")
+(def tex2svg "/usr/local/lib/node_modules/mathjax-node-cli/bin/tex2svg")
+
+(def uppercase-letters
+  (for [letter (map char (range 65 91))]
+    {:n (str "letter-" letter)
+     :f (str letter)}))
 
 (def small-nums
   (for [n (range 10)]
@@ -14,7 +19,7 @@
      :f (str "\\small{\\llap{-}" n "}")}))
 
 small-nums
-
+uppercase-letters
 (def formulas [{:n "1"
                 :f "\small{1}"}
                {:n "-1"
@@ -70,6 +75,10 @@ small-nums
 
 (defn renderer [{:keys [n f]}]
   (spit (str "public/img/" n ".svg") (:out (sh tex2svg (str "\\begin{equation} " f "\\end{equation}")))))
+
+(comment
+  (doall (map renderer uppercase-letters))
+  )
 
 (defn -main [& args]
   (doall (map renderer small-neg-nums)))
