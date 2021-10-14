@@ -198,6 +198,10 @@
           law-of-sines
           law-of-cosines)))
 
+(solve-triangle @tri)
+
+@tri
+
 (defn input [type label value on-change]
   [:label label
    [:input
@@ -245,6 +249,10 @@
 (defonce selected-line (r/atom nil))
 (defonce selected-angle (r/atom nil))
 
+{:vertices ["A" "C" "B"]
+ :lines [4.9 nil 6]
+ :angles [0 90 55]}
+
 ;; see https://math.stackexchange.com/questions/543961/determine-third-point-of-triangle-when-two-points-and-all-sides-are-known
 (defn render-triangle [{[line1 line2 line3] :lines
                         [angle1 angle2 angle3] :angles
@@ -259,58 +267,61 @@
         max-side (max line1 line2 line3)
         hovered (r/atom nil)]
     (fn []
-      [:div [:svg {:width    "100%"
-                   :view-box
-                   (str (- (/ max-side 15)) " "
-                        (if (neg? cy)
-                          (+ cy (- (/ max-side 20)))
-                          (- (/ max-side 18))) " "
-                        (+ 3 max-side) " "
-                        (inc height))}
-             [:g
-              (when (= 90 angle2)
-                [right-angle-box 0 (- line1 0.45) (/ max-side 20)])
-              [:line {:x1 0 :x2 0 :y1 0 :y2 line1 :stroke-linecap "round"
-                      :stroke (if (or (= @selected-line 1)
-                                      (= @hovered 1)) "magenta" "#61e2ff")
-                      :stroke-width (if (= @hovered 1) (/ max-side 75) (/ max-side 75))
-                      :on-mouse-over #(reset! hovered 1) :on-mouse-out #(reset! hovered nil)
-                      :on-click #(reset! selected-line 1)}]
-              [:line {:x1 0 :x2 cx :y1 line1 :y2 cy :stroke-linecap "round"
-                      :stroke (if (or (= @selected-line 2)
-                                      (= @hovered 2)) "magenta" "#61e2ff")
-                      :stroke-width (if (= @hovered 2) (/ max-side 75) (/ max-side 75))
-                      :on-mouse-over #(reset! hovered 2) :on-mouse-out #(reset! hovered nil)
-                      :on-click #(reset! selected-line 2)}]
-              [:line {:x1 cx :x2 0 :y1 cy :y2 0 :stroke-linecap "round"
-                      :stroke (if (or (= @selected-line 3)
-                                      (= @hovered 3)) "magenta" "#61e2ff")
-                      :stroke-width (if (= @hovered 3) (/ max-side 75) (/ max-side 75))
-                      :on-mouse-over #(reset! hovered 3) :on-mouse-out #(reset! hovered nil)
-                      :on-click #(reset! selected-line 3)}]]
-             [:g
-              [latex/render-letter
-               (keyword label1) (- (/ max-side 20)) (+ (- (/ max-side 20)) 0.4) (/ max-side 20000)
-               #(reset! selected-angle 1) (if (or (= @hovered "Angle 1")
-                                                  (= @selected-angle 1)) "magenta" "#ffcc00")]
-              [latex/render-letter
-               (keyword label2) (+ (- (/ max-side 20)) -0.1) line1 (/ max-side 20000)
-               #(reset! selected-angle 2) (if (or (= @hovered "Angle 2")
-                                                  (= @selected-angle 2)) "magenta" "#ffcc00")]
-              [latex/render-letter
-               (keyword label3) (+ (/ max-side 40) cx) (+ (- cy (/ max-side 45)) 0.2) (/ max-side 20000)
-               #(reset! selected-angle 3) (if (or (= @hovered "Angle 3")
-                                                  (= @selected-angle 3)) "magenta" "#ffcc00")]]
-             [:g
-              [:circle {:cx (- (/ max-side 20)) :cy (+ (- (/ max-side 20)) 0.4) :r (/ max-side 15)
-                        :on-mouse-over #(reset! hovered "Angle 1") :on-mouse-out #(reset! hovered nil)
-                        :visibility "hidden" :on-click #(reset! selected-angle 1) :pointer-events "all"}]
-              [:circle {:cx (+ (- (/ max-side 20)) -0.1) :cy line1 :r (/ max-side 15)
-                        :on-mouse-over #(reset! hovered "Angle 2") :on-mouse-out #(reset! hovered nil)
-                        :visibility "hidden" :on-click #(reset! selected-angle 2) :pointer-events "all"}]
-              [:circle {:cx (+ (/ max-side 40) cx) :cy (+ (- cy (/ max-side 45)) 0.2) :r (/ max-side 15)
-                        :on-mouse-over #(reset! hovered "Angle 3") :on-mouse-out #(reset! hovered nil)
-                        :visibility "hidden" :on-click #(reset! selected-angle 3) :pointer-events "all"}]]]])))
+      (let [{[line1 line2 line3] :lines
+             [angle1 angle2 angle3] :angles
+             [label1 label2 label3] :vertices} @tri]
+        [:div [:svg {:width    "100%"
+                     :view-box
+                     (str (- (/ max-side 15)) " "
+                          (if (neg? cy)
+                            (+ cy (- (/ max-side 20)))
+                            (- (/ max-side 18))) " "
+                          (+ 3 max-side) " "
+                          (- height 1))}
+               [:g
+                (when (= 90 angle2)
+                  [right-angle-box 0 (- line1 0.45) (/ max-side 20)])
+                [:line {:x1 0 :x2 0 :y1 0 :y2 line1 :stroke-linecap "round"
+                        :stroke (if (or (= @selected-line 1)
+                                        (= @hovered 1)) "magenta" "#61e2ff")
+                        :stroke-width (if (= @hovered 1) (/ max-side 75) (/ max-side 75))
+                        :on-mouse-over #(reset! hovered 1) :on-mouse-out #(reset! hovered nil)
+                        :on-click #(reset! selected-line 1)}]
+                [:line {:x1 0 :x2 cx :y1 line1 :y2 cy :stroke-linecap "round"
+                        :stroke (if (or (= @selected-line 2)
+                                        (= @hovered 2)) "magenta" "#61e2ff")
+                        :stroke-width (if (= @hovered 2) (/ max-side 75) (/ max-side 75))
+                        :on-mouse-over #(reset! hovered 2) :on-mouse-out #(reset! hovered nil)
+                        :on-click #(reset! selected-line 2)}]
+                [:line {:x1 cx :x2 0 :y1 cy :y2 0 :stroke-linecap "round"
+                        :stroke (if (or (= @selected-line 3)
+                                        (= @hovered 3)) "magenta" "#61e2ff")
+                        :stroke-width (if (= @hovered 3) (/ max-side 75) (/ max-side 75))
+                        :on-mouse-over #(reset! hovered 3) :on-mouse-out #(reset! hovered nil)
+                        :on-click #(reset! selected-line 3)}]]
+               [:g
+                [latex/render-letter
+                 (keyword label1) (- (/ max-side 20)) (+ (- (/ max-side 20)) 0.4) (/ max-side 20000)
+                 #(reset! selected-angle 1) (if (or (= @hovered "Angle 1")
+                                                    (= @selected-angle 1)) "cyan" "#ffcc00")]
+                [latex/render-letter
+                 (keyword label2) (+ (- (/ max-side 20)) -0.1) line1 (/ max-side 20000)
+                 #(reset! selected-angle 2) (if (or (= @hovered "Angle 2")
+                                                    (= @selected-angle 2)) "cyan" "#ffcc00")]
+                [latex/render-letter
+                 (keyword label3) (+ (/ max-side 40) cx) (+ (- cy (/ max-side 45)) 0.2) (/ max-side 20000)
+                 #(reset! selected-angle 3) (if (or (= @hovered "Angle 3")
+                                                    (= @selected-angle 3)) "cyan" "#ffcc00")]]
+               [:g ; enlarged click targets for selecting angles
+                [:circle {:cx (- (/ max-side 20)) :cy (+ (- (/ max-side 20)) 0.4) :r (/ max-side 15)
+                          :on-mouse-over #(reset! hovered "Angle 1") :on-mouse-out #(reset! hovered nil)
+                          :visibility "hidden" :on-click #(reset! selected-angle 1) :pointer-events "all"}]
+                [:circle {:cx (+ (- (/ max-side 20)) -0.1) :cy line1 :r (/ max-side 15)
+                          :on-mouse-over #(reset! hovered "Angle 2") :on-mouse-out #(reset! hovered nil)
+                          :visibility "hidden" :on-click #(reset! selected-angle 2) :pointer-events "all"}]
+                [:circle {:cx (+ (/ max-side 40) cx) :cy (+ (- cy (/ max-side 45)) 0.2) :r (/ max-side 15)
+                          :on-mouse-over #(reset! hovered "Angle 3") :on-mouse-out #(reset! hovered nil)
+                          :visibility "hidden" :on-click #(reset! selected-angle 3) :pointer-events "all"}]]]]))))
 
 (defn ratios [triangle]
   (let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} triangle]
@@ -351,6 +362,9 @@
        (catch :default e
          (str e))))
 
+(defn update-editor! [text]
+  (.dispatch @!tri #js{:changes #js{:from 0 :to (count (some-> @!tri .-state .-doc str)) :insert text}}))
+
 (defn app []
     [:div#app
      [editor/editor (str @tri) !tri {:eval? true}]
@@ -360,7 +374,7 @@
                :style {:margin-top "1rem"}}
       "Eval"]
      [button "Solve" #(do (swap! tri solve-triangle)
-                          (reset! !tri @tri))]
+                          (update-editor! (str @tri)))]
      #_[:div
       [:button {:on-click #(reset! trig-fn "\\sin")
                 :style {:margin-top "1rem"}}
@@ -371,10 +385,54 @@
      #_[:div
       [uc/uc]]
      [render-triangle @tri]
-     [:span "Line "
-              (let [p1 (get-in @tri [:vertices (dec @selected-line)])
-                    p2 (get-in @tri [:vertices (mod @selected-line 3)])]
-                (tex (str p1 p2)))]
-     [:div "Angle "
-        (tex (str (get-in @tri [:vertices (dec @selected-angle)])))]
-     #_[los/law-of-sines "A" @tri]])
+     (let [degrees (get-in @tri [:angles (dec @selected-angle)])
+           {[line1 line2 line3] :lines
+            [angle1 angle2 angle3] :angles
+            [label1 label2 label3] :vertices} @tri]
+     [:div [:h3 "Line "
+            (let [p1 (get-in @tri [:vertices (dec @selected-line)])
+                  p2 (get-in @tri [:vertices (mod @selected-line 3)])]
+              (tex (str p2 p1)))]
+      [:p]
+      (tex (str line3 "\\cdot\\cos(" angle3 "\\degree)"))
+      [:p]
+      (tex (str "\\dfrac{" line1 "}{\\tan(" angle3 "\\degree)}"))
+      [:p]
+       (tex (str line3 "\\cdot\\sin(" angle1 "\\degree)"))
+      [:p]
+      (tex (str line1 "\\cdot\\tan(" angle1 "\\degree)"))
+      [:h3 "Angle "
+       (tex (str (get-in @tri [:vertices (dec @selected-angle)]) "="
+                 degrees "\\degree"))]
+       [:p]
+       (tex (str "\\sin(" degrees
+                 "\\degree)=\\dfrac{"
+                 (cond (= @selected-angle 1) (str label3 label2)
+                       :else (str label1 label2))
+                 "}{" (str label1 label3) "}=\\dfrac{"
+                 (cond (= @selected-angle 1) (str label3 label2)
+                       :else line1)
+                 "}{" line3 "}"))
+       [:p]
+       (tex (str "\\cos(" degrees
+                 "\\degree)=\\dfrac{"
+                 (cond (= @selected-angle 1) (str label1 label2)
+                       :else (str label3 label2))
+                 "}{" (str label1 label3) "}=\\dfrac{"
+                 (cond (= @selected-angle 1) line1
+                 :else (str label3 label2))
+                 "}{" line3 "}"))
+       [:p]
+       (tex (str "\\tan(" degrees
+                 "\\degree)=\\dfrac{"
+                 (cond (= @selected-angle 1) (str label3 label2)
+                       :else (str label1 label2))
+                 "}{" 
+                       (cond (= @selected-angle 1) (str label1 label2)
+                       :else (str label3 label2)) "}=\\dfrac{"
+                 (cond (= @selected-angle 1) (str label3 label2)
+                             :else line1)
+                 "}{" 
+                       (cond (= @selected-angle 1) line1
+                       :else (str label3 label2)) "}"))]
+      #_[los/law-of-sines "A" @tri])])

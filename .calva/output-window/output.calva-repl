@@ -154,3 +154,132 @@ cljs꞉trig.triangle꞉> 
 cljs꞉trig.triangle꞉> 
 "G"
 cljs꞉trig.triangle꞉> 
+We can solve equations #2 and #3 to represent HIHIH, I. The resulting expressions are 8.3\cdot\cos(75\degree)8.3⋅cos(75°)8, point, 3, dot, cosine, left parenthesis, 75, degree, right parenthesis and \dfrac{8}{\tan(75\degree)} 
+tan(75°)
+8
+​
+ start fraction, 8, divided by, tangent, left parenthesis, 75, degree, right parenthesis, end fraction.
+nil
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:1:1
+ Use of undeclared Var trig.triangle/fraction
+--------------------------------------------------------------------------------
+
+cljs꞉trig.triangle꞉> 
+8.3\cdot\sin(90\degree-75\degree)
+
+8\cdot\tan(90\degree-75\degree)
+{:vertices ["A" "C" "B"], :lines [4.9 nil 6], :angles [nil 90 55]}
+cljs꞉trig.triangle꞉> 
+nil
+cljs꞉trig.triangle꞉> 
+{:vertices ["A" "C" "B"], :lines [4.9 nil 6], :angles [35 90 55]}
+cljs꞉trig.triangle꞉> 
+{:vertices ["A" "C" "B"], :lines [4.9 nil 6], :angles [35 90 55]}
+cljs꞉trig.triangle꞉> 
+{:vertices ["A" "C" "B"], :lines [4.9 nil 6], :angles [35 90 55]}
+cljs꞉trig.triangle꞉> 
+{:vertices ["A" "C" "B"], :lines [4.9 nil 6], :angles [35 90 55]}
+cljs꞉trig.triangle꞉> 
+{:vertices ["A" "C" "B"], :lines [4.9 nil 6], :angles [35 90 55]}
+cljs꞉trig.triangle꞉> 
+{:vertices ["A" "C" "B"], :lines [4.9 nil 6], :angles [35 90 55]}
+cljs꞉trig.triangle꞉> 
+"{:vertices [\"A\" \"C\" \"B\"], :lines [4.9 nil 6], :angles [35 90 55]}"
+cljs꞉trig.triangle꞉> 
+#object[EditorView [object Object]]
+cljs꞉trig.triangle꞉> 
+(let*
+ [G__77810
+  @!tri
+  G__77810
+  (if (clojure.core/nil? G__77810) nil (clojure.core/-> G__77810 .-state))
+  G__77810
+  (if (clojure.core/nil? G__77810) nil (clojure.core/-> G__77810 .-doc))]
+ (if (clojure.core/nil? G__77810) nil (clojure.core/-> G__77810 str)))
+cljs꞉trig.triangle꞉> 
+(let* [G__78586 #js [extensions]] G__78586)
+cljs꞉trig.editor꞉> 
+:repl/exception!
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+cljs.core.deref.call(...).setValue is not a function
+cljs꞉trig.triangle꞉> 
+nil
+; ------ REPL Error while processing ---------------------------------------------
+; (.-setValue @!tri (editor/create-state "new"))
+null
+dot prop access with args
+{:form (. (clojure.core/deref !tri) -setValue (editor/create-state "new"))}
+ExceptionInfo: dot prop access with args
+	shadow.build.cljs-hacks/shadow-analyze-dot (cljs_hacks.cljc:498)
+	shadow.build.cljs-hacks/shadow-analyze-dot (cljs_hacks.cljc:453)
+	shadow.build.cljs-hacks/eval10611/fn--10613 (cljs_hacks.cljc:525)
+	clojure.lang.MultiFn.invoke (MultiFn.java:252)
+	cljs.analyzer/analyze-seq* (analyzer.cljc:3943)
+	cljs.analyzer/analyze-seq* (analyzer.cljc:3941)
+	cljs.analyzer/analyze-seq*-wrap (analyzer.cljc:3948)
+	cljs.analyzer/analyze-seq*-wrap (analyzer.cljc:3946)
+	cljs.analyzer/analyze-seq (analyzer.cljc:3972)
+	cljs.analyzer/analyze-seq (analyzer.cljc:3950)
+	cljs.analyzer/analyze-form (analyzer.cljc:4159)
+	cljs.analyzer/analyze-form (analyzer.cljc:4156)
+	cljs.analyzer/analyze* (analyzer.cljc:4212)
+	cljs.analyzer/analyze* (analyzer.cljc:4204)
+	cljs.analyzer/analyze (analyzer.cljc:4232)
+	cljs.analyzer/analyze (analyzer.cljc:4215)
+	cljs.analyzer/analyze-seq (analyzer.cljc:3973)
+	cljs.analyzer/analyze-seq (analyzer.cljc:3950)
+	cljs.analyzer/analyze-form (analyzer.cljc:4159)
+	cljs.analyzer/analyze-form (analyzer.cljc:4156)
+	cljs.analyzer/analyze* (analyzer.cljc:4212)
+	cljs.analyzer/analyze* (analyzer.cljc:4204)
+	shadow.build.compiler/analyze/fn--13775 (compiler.clj:264)
+	shadow.build.compiler/analyze (compiler.clj:252)
+	shadow.build.compiler/analyze (compiler.clj:211)
+	shadow.cljs.repl/repl-compile/fn--15628/fn--15629 (repl.clj:440)
+	shadow.cljs.repl/repl-compile/fn--15628 (repl.clj:413)
+	shadow.cljs.repl/repl-compile (repl.clj:411)
+	shadow.cljs.repl/repl-compile (repl.clj:408)
+	shadow.cljs.repl/process-read-result (repl.clj:499)
+	shadow.cljs.repl/process-read-result (repl.clj:475)
+	shadow.cljs.repl/process-input (repl.clj:659)
+	shadow.cljs.repl/process-input (repl.clj:637)
+	shadow.cljs.devtools.server.worker.impl/eval16193/fn--16196 (impl.clj:685)
+	clojure.lang.MultiFn.invoke (MultiFn.java:234)
+	shadow.cljs.devtools.server.util/server-thread/fn--15837/fn--15838/fn--15846 (util.clj:284)
+	shadow.cljs.devtools.server.util/server-thread/fn--15837/fn--15838 (util.clj:283)
+	shadow.cljs.devtools.server.util/server-thread/fn--15837 (util.clj:256)
+	java.lang.Thread.run (Thread.java:745)
+
+cljs꞉trig.triangle꞉> 
+#object[EditorView [object Object]]
+cljs꞉trig.triangle꞉> 
+nil
+cljs꞉trig.triangle꞉> 
+{:vertices ["A" "C" "B"], :lines [4.9 nil 6], :angles [nil 90 55]}
+cljs꞉trig.triangle꞉> 
+{:vertices ["A" "C" "B"], :lines [4.9 nil 6], :angles [35 90 55]}
+cljs꞉trig.triangle꞉> 
+{:vertices ["A" "C" "B"], :lines [4.9 nil 6], :angles [35 90 55]}
+cljs꞉trig.triangle꞉> 
+{:vertices ["A" "C" "B"], :lines [4.9 3.441490926300298 6], :angles [35 90 55]}
+cljs꞉trig.triangle꞉> 
+:repl/exception!
+; 
+; Execution error (RangeError) at (<cljs repl>:1).
+Invalid position 1 in document of length 0
+cljs꞉trig.triangle꞉> 
+{:vertices ["A" "C" "B"], :lines [4.9 3.441490926300298 6], :angles [35 90 55]}
+cljs꞉trig.triangle꞉> 
+"{:vertices [\"A\" \"C\" \"B\"], :lines [4.9 nil 6], :angles [nil 90 55]}"
+cljs꞉trig.triangle꞉> 
+66
+cljs꞉trig.triangle꞉> 
+{:vertices ["A" "C" "B"], :lines [4.9 3.441523434430718 6.00005632761734], :angles [35 90 55]}
+cljs꞉trig.triangle꞉> 
+:repl/exception!
+; 
+; Execution error (RangeError) at (<cljs repl>:1).
+Invalid position 1 in document of length 0
+cljs꞉trig.triangle꞉> 

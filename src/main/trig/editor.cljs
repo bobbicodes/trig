@@ -4,14 +4,14 @@
             ["@codemirror/gutter" :refer [lineNumbers]]
             ["@codemirror/highlight" :as highlight]
             ["@codemirror/history" :refer [history historyKeymap]]
-            ["@codemirror/state" :refer [EditorState]]
+            ["@codemirror/state" :refer [EditorState EditorSelection]]
             ["@codemirror/view" :as view :refer [EditorView]]
             [trig.sci :as sci]
+            [clojure.string :as str]
             [applied-science.js-interop :as j]
             [nextjournal.clojure-mode.extensions.close-brackets :as close-brackets]
             [nextjournal.clojure-mode :as cm-clj]
             [nextjournal.clojure-mode.live-grammar :as live-grammar]
-            [nextjournal.clojure-mode.test-utils :as test-utils]
             [reagent.core :as r]))
 
 
@@ -49,6 +49,27 @@
     (.of view/keymap cm-clj/complete-keymap)
     (.of view/keymap historyKeymap)])
 
+(defn make-state [extensions doc]
+  (let [[doc ranges] (->> (re-seq #"\||<[^>]*?>|[^<>|]+" doc)
+                          (reduce (fn [[^string doc ranges] match]
+                                    (cond (= match "|")
+                                          [doc (conj ranges (.cursor EditorSelection (count doc)))]
+
+                                          (str/starts-with? match "<")
+                                          [(str doc (subs match 1 (dec (count match))))
+                                           (conj ranges (.range EditorSelection
+                                                                (count doc)
+                                                                (+ (count doc) (- (count match) 2))))]
+                                          :else
+                                          [(str doc match) ranges])) ["" []]))]
+    (.create EditorState
+             #js{:doc doc
+                 :selection (if (seq ranges)
+                              (.create EditorSelection (to-array ranges))
+                              js/undefined)
+                 :extensions (cond-> #js[(.. EditorState -allowMultipleSelections (of true))]
+                               extensions
+                               (j/push! extensions))})))
 
 (defn editor
   [source !view {:keys [eval?]}]
@@ -57,7 +78,7 @@
      mount! (fn [el]
               (when el
                 (reset! !view (new EditorView
-                                   (j/obj :state (test-utils/make-state
+                                   (j/obj :state (make-state
                                                   (cond-> #js [extensions]
                                                     eval? (.concat
                                                            #js
