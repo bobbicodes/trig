@@ -242,6 +242,8 @@
   (.sqrt js/Math (+ (sq (- x2 x1))
                     (sq (- y2 y1)))))
 
+(defonce selected-line (r/atom nil))
+
 ;; see https://math.stackexchange.com/questions/543961/determine-third-point-of-triangle-when-two-points-and-all-sides-are-known
 (defn render-triangle [{[line1 line2 line3] :lines
                         [angle1 angle2 angle3] :angles
@@ -265,18 +267,26 @@
                         (+ 3 max-side) " "
                         (inc height))}
              [:g
+              (when (= 90 angle2)
+                [right-angle-box 0 (- line1 0.45) (/ max-side 20)])
               [:line {:x1 0 :x2 0 :y1 0 :y2 line1 :stroke-linecap "round"
-                      :stroke (if (= @hovered 1) "magenta" "#61e2ff")
+                      :stroke (if (or (= @selected-line 1)
+                                   (= @hovered 1)) "magenta" "#61e2ff")
                       :stroke-width (if (= @hovered 1) (/ max-side 75) (/ max-side 75))
-                      :on-mouse-over #(reset! hovered 1) :on-mouse-out #(reset! hovered nil)}]
+                      :on-mouse-over #(reset! hovered 1) :on-mouse-out #(reset! hovered nil)
+                      :on-click #(reset! selected-line 1)}]
               [:line {:x1 0 :x2 cx :y1 line1 :y2 cy :stroke-linecap "round"
-                      :stroke (if (= @hovered 2) "magenta" "#61e2ff")
+                      :stroke (if (or (= @selected-line 2)
+                                      (= @hovered 2)) "magenta" "#61e2ff")
                       :stroke-width (if (= @hovered 2) (/ max-side 75) (/ max-side 75))
-                      :on-mouse-over #(reset! hovered 2) :on-mouse-out #(reset! hovered nil)}]
+                      :on-mouse-over #(reset! hovered 2) :on-mouse-out #(reset! hovered nil)
+                      :on-click #(reset! selected-line 2)}]
               [:line {:x1 cx :x2 0 :y1 cy :y2 0 :stroke-linecap "round"
-                      :stroke (if (= @hovered 3) "magenta" "#61e2ff")
+                      :stroke (if (or (= @selected-line 3)
+                                      (= @hovered 3)) "magenta" "#61e2ff")
                       :stroke-width (if (= @hovered 3) (/ max-side 75) (/ max-side 75))
-                      :on-mouse-over #(reset! hovered 3) :on-mouse-out #(reset! hovered nil)}]]
+                      :on-mouse-over #(reset! hovered 3) :on-mouse-out #(reset! hovered nil)
+                      :on-click #(reset! selected-line 3)}]]
              [:g
               [latex/render-letter
                (keyword label1) (- (/ max-side 20)) (+ (- (/ max-side 20)) 0.4) (/ max-side 20000)]
@@ -284,8 +294,7 @@
                (keyword label2) (+ (- (/ max-side 20)) -0.1) line1 (/ max-side 20000)]
               [latex/render-letter
                (keyword label3) (+ (/ max-side 40) cx) (+ (- cy (/ max-side 45)) 0.2) (/ max-side 20000)]]
-             (when (= 90 angle2)
-               [right-angle-box 0 (- line1 0.45) (/ max-side 20)])]])))
+             ]])))
 
 (defn ratios [triangle]
   (let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} triangle]
@@ -346,4 +355,8 @@
      #_[:div
       [uc/uc]]
      [render-triangle @tri]
-     [los/law-of-sines "A" @tri]])
+     [:span "Line "
+              (let [p1 (get-in @tri [:vertices (dec @selected-line)])
+                    p2 (get-in @tri [:vertices (mod @selected-line 3)])]
+                (tex (str p1 p2)))]
+     #_[los/law-of-sines "A" @tri]])
