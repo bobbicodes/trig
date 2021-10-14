@@ -247,14 +247,6 @@
           (= min-x 0) 0
           :else (- max-x))))
 
-(defn test-fn [{[max-x max-y] :max
-                [mid-x mid-y] :mid
-                [min-x min-y] :min}]
-  [mid-x mid-y])
-
-@points
-(test-fn @points)
-
 (defn y-shift-tex [{[max-x max-y] :max
                     [mid-x mid-y] :mid
                     [min-x min-y] :min}]
@@ -323,5 +315,5 @@
               (cos (* (period @points) (+ x (x-shift @points)))))
            (y-shift @points))))
 
-
-(comment)
+(comment
+  )

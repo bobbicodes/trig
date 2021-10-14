@@ -5,7 +5,6 @@
 ; Happy coding! ♥️
 
 ; Jacking in...
-; nREPL Connection was closed
 ; Starting Jack-in Terminal: npx shadow-cljs -d cider/cider-nrepl:0.26.0 watch :app
 ; Hooking up nREPL sessions...
 ; Connected session: clj
@@ -25,16 +24,117 @@ clj꞉shadow.user꞉> 
 ;    *Calva: Toggle REPL connection*
 ;    (There is a button in the status bar for this)
 ; Jack-in done.
-cljs꞉cljs.user꞉>  ; Use `alt+enter` to evaluate
-{:max-x 1.8, :max-y -53, :min-x 2.6, :min-y 12, :mid-x nil, :mid-y nil}
+cljs꞉cljs.user꞉> 
+#'trig.sin/test-fn
 cljs꞉trig.sin꞉> 
-"\\pi"
+0
 cljs꞉trig.sin꞉> 
-31
+{:max [0.5 12], :min [nil nil], :mid [0 7]}
 cljs꞉trig.sin꞉> 
-{:max-x 1.1, :max-y -50, :min-x 2.6, :min-y 12, :mid-x nil, :mid-y nil}
+#'trig.sin/test-fn
 cljs꞉trig.sin꞉> 
-31
+[0.5 12]
 cljs꞉trig.sin꞉> 
-"\\pi"
+#'trig.sin/test-fn
 cljs꞉trig.sin꞉> 
+[0 7]
+cljs꞉trig.sin꞉> 
+{:lines [9 11 15], :angles [0 81 0], :vertices ["A" "B" "C"]}
+cljs꞉trig.triangle꞉> 
+{:lines [9 11 15], :angles [0 81 0], :vertices ["A" "B" "C"]}
+cljs꞉trig.triangle꞉> 
+{:lines [9 11 15], :angles [0 81 0], :vertices ["A" "B" "C"]}
+cljs꞉trig.triangle꞉> 
+{:lines [1 2 3], :angles [0 81 0], :vertices ["A" "B" "C"]}
+cljs꞉trig.triangle꞉> 
+nil
+cljs꞉trig.triangle꞉> 
+{:lines [8 0 8.3], :angles [0 90 75], :vertices ["A" "B" "C"]}
+cljs꞉trig.triangle꞉> 
+nil
+cljs꞉trig.triangle꞉> 
+nil
+cljs꞉trig.triangle꞉> 
+{:lines [8 nil 8.3], :angles [15 90 75], :vertices ["A" "B" "C"]}
+cljs꞉trig.triangle꞉> 
+{:lines [8 nil 8.3], :angles [15 90 75], :vertices ["A" "B" "C"]}
+cljs꞉trig.triangle꞉> 
+{:lines [8 nil 8.3], :angles [15 90 75], :vertices ["A" "B" "C"]}
+cljs꞉trig.triangle꞉> 
+{:lines [8 2.1482668057789582 8.3], :angles [15 90 75], :vertices ["A" "B" "C"]}
+cljs꞉trig.triangle꞉> 
+{:lines [8 2.1482668057789582 8.3], :angles [15 90 75], :vertices ["A" "B" "C"]}
+cljs꞉trig.triangle꞉> 
+(\a \b \c \d \e \f \g \h \i \j \k \l \m \n \o \p \q \r \s \t \u \v \w \x \y \z)
+clj꞉uc.generate꞉> 
+(\{ \| \} \~ \ \ \)
+clj꞉uc.generate꞉> 
+(\< \= \> \? \@ \A \B \C \D \E \F \G \H \I \J \K \L \M \N \O \P \Q \R \S \T \U \V \W \X \Y \Z \[ \\ \] \^ \_ \`)
+clj꞉uc.generate꞉> 
+(\? \@ \A \B \C \D \E \F \G \H \I \J \K \L \M \N \O \P \Q \R \S \T \U \V \W \X \Y \Z \[ \\ \] \^ \_ \`)
+clj꞉uc.generate꞉> 
+(\A \B \C \D \E \F \G \H \I \J \K \L \M \N \O \P \Q \R \S \T \U \V \W \X \Y \Z \[ \\ \] \^ \_ \`)
+clj꞉uc.generate꞉> 
+(\A \B \C \D \E \F \G \H \I \J \K \L \M \N \O \P \Q \R \S \T \U \V \W \X \Y \Z \[ \\ \] \^)
+clj꞉uc.generate꞉> 
+(\A \B \C \D \E \F \G \H \I \J \K \L \M \N \O \P \Q \R \S \T \U \V \W \X \Y \Z \[ \\)
+clj꞉uc.generate꞉> 
+(\A \B \C \D \E \F \G \H \I \J \K \L \M \N \O \P \Q \R \S \T \U \V \W \X \Y \Z)
+clj꞉uc.generate꞉> 
+; Syntax error compiling at (generate.clj:0:0).
+; Unable to resolve symbol: small-nums in this context
+clj꞉uc.generate꞉> 
+nil
+clj꞉uc.generate꞉> 
+#'uc.generate/tex2svg
+clj꞉uc.generate꞉> 
+#'uc.generate/uppercase-letters
+clj꞉uc.generate꞉> 
+#'uc.generate/small-nums
+clj꞉uc.generate꞉> 
+#'uc.generate/small-neg-nums
+clj꞉uc.generate꞉> 
+({:n "small-0", :f "\\small{0}"}
+ {:n "small-1", :f "\\small{1}"}
+ {:n "small-2", :f "\\small{2}"}
+ {:n "small-3", :f "\\small{3}"}
+ {:n "small-4", :f "\\small{4}"}
+ {:n "small-5", :f "\\small{5}"}
+ {:n "small-6", :f "\\small{6}"}
+ {:n "small-7", :f "\\small{7}"}
+ {:n "small-8", :f "\\small{8}"}
+ {:n "small-9", :f "\\small{9}"})
+clj꞉uc.generate꞉> 
+#'uc.generate/uppercase-letters
+clj꞉uc.generate꞉> 
+({:n "letter-A", :f "A"}
+ {:n "letter-B", :f "B"}
+ {:n "letter-C", :f "C"}
+ {:n "letter-D", :f "D"}
+ {:n "letter-E", :f "E"}
+ {:n "letter-F", :f "F"}
+ {:n "letter-G", :f "G"}
+ {:n "letter-H", :f "H"}
+ {:n "letter-I", :f "I"}
+ {:n "letter-J", :f "J"}
+ {:n "letter-K", :f "K"}
+ {:n "letter-L", :f "L"}
+ {:n "letter-M", :f "M"}
+ {:n "letter-N", :f "N"}
+ {:n "letter-O", :f "O"}
+ {:n "letter-P", :f "P"}
+ {:n "letter-Q", :f "Q"}
+ {:n "letter-R", :f "R"}
+ {:n "letter-S", :f "S"}
+ {:n "letter-T", :f "T"}
+ {:n "letter-U", :f "U"}
+ {:n "letter-V", :f "V"}
+ {:n "letter-W", :f "W"}
+ {:n "letter-X", :f "X"}
+ {:n "letter-Y", :f "Y"}
+ {:n "letter-Z", :f "Z"})
+clj꞉uc.generate꞉> 
+#'uc.generate/renderer
+clj꞉uc.generate꞉> 
+(nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil)
+clj꞉uc.generate꞉> 
