@@ -47,10 +47,14 @@
                     :stroke    "#000000"
                     :d         ((keyword (str (get digits d))) numbers)}]))))
 
-(defn render-letter [k x y scale]
-  [:path {:transform (str "translate(" x "," y ")" "scale(" scale "," (- scale) ")")
-          :fill    "#ffcc00"
-          :d         (k letters)}])
+(defn render-letter 
+  ([k x y scale on-click]
+   (render-letter k x y scale "#ffcc00"))
+  ([k x y scale on-click color]
+   [:path {:transform (str "translate(" x "," y ")" "scale(" scale "," (- scale) ")")
+           :fill    color
+           :d         (k letters)
+           :on-click on-click}]))
 
 (defn render-letters [[letters] x y]
   (let [count  (count letters)]

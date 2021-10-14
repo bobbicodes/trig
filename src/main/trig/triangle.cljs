@@ -243,6 +243,7 @@
                     (sq (- y2 y1)))))
 
 (defonce selected-line (r/atom nil))
+(defonce selected-angle (r/atom nil))
 
 ;; see https://math.stackexchange.com/questions/543961/determine-third-point-of-triangle-when-two-points-and-all-sides-are-known
 (defn render-triangle [{[line1 line2 line3] :lines
@@ -271,7 +272,7 @@
                 [right-angle-box 0 (- line1 0.45) (/ max-side 20)])
               [:line {:x1 0 :x2 0 :y1 0 :y2 line1 :stroke-linecap "round"
                       :stroke (if (or (= @selected-line 1)
-                                   (= @hovered 1)) "magenta" "#61e2ff")
+                                      (= @hovered 1)) "magenta" "#61e2ff")
                       :stroke-width (if (= @hovered 1) (/ max-side 75) (/ max-side 75))
                       :on-mouse-over #(reset! hovered 1) :on-mouse-out #(reset! hovered nil)
                       :on-click #(reset! selected-line 1)}]
@@ -289,12 +290,27 @@
                       :on-click #(reset! selected-line 3)}]]
              [:g
               [latex/render-letter
-               (keyword label1) (- (/ max-side 20)) (+ (- (/ max-side 20)) 0.4) (/ max-side 20000)]
+               (keyword label1) (- (/ max-side 20)) (+ (- (/ max-side 20)) 0.4) (/ max-side 20000)
+               #(reset! selected-angle 1) (if (or (= @hovered "Angle 1")
+                                                  (= @selected-angle 1)) "magenta" "#ffcc00")]
               [latex/render-letter
-               (keyword label2) (+ (- (/ max-side 20)) -0.1) line1 (/ max-side 20000)]
+               (keyword label2) (+ (- (/ max-side 20)) -0.1) line1 (/ max-side 20000)
+               #(reset! selected-angle 2) (if (or (= @hovered "Angle 2")
+                                                  (= @selected-angle 2)) "magenta" "#ffcc00")]
               [latex/render-letter
-               (keyword label3) (+ (/ max-side 40) cx) (+ (- cy (/ max-side 45)) 0.2) (/ max-side 20000)]]
-             ]])))
+               (keyword label3) (+ (/ max-side 40) cx) (+ (- cy (/ max-side 45)) 0.2) (/ max-side 20000)
+               #(reset! selected-angle 3) (if (or (= @hovered "Angle 3")
+                                                  (= @selected-angle 3)) "magenta" "#ffcc00")]]
+             [:g
+              [:circle {:cx (- (/ max-side 20)) :cy (+ (- (/ max-side 20)) 0.4) :r (/ max-side 15)
+                        :on-mouse-over #(reset! hovered "Angle 1") :on-mouse-out #(reset! hovered nil)
+                        :visibility "hidden" :on-click #(reset! selected-angle 1) :pointer-events "all"}]
+              [:circle {:cx (+ (- (/ max-side 20)) -0.1) :cy line1 :r (/ max-side 15)
+                        :on-mouse-over #(reset! hovered "Angle 2") :on-mouse-out #(reset! hovered nil)
+                        :visibility "hidden" :on-click #(reset! selected-angle 2) :pointer-events "all"}]
+              [:circle {:cx (+ (/ max-side 40) cx) :cy (+ (- cy (/ max-side 45)) 0.2) :r (/ max-side 15)
+                        :on-mouse-over #(reset! hovered "Angle 3") :on-mouse-out #(reset! hovered nil)
+                        :visibility "hidden" :on-click #(reset! selected-angle 3) :pointer-events "all"}]]]])))
 
 (defn ratios [triangle]
   (let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} triangle]
@@ -359,4 +375,6 @@
               (let [p1 (get-in @tri [:vertices (dec @selected-line)])
                     p2 (get-in @tri [:vertices (mod @selected-line 3)])]
                 (tex (str p1 p2)))]
+     [:div "Angle "
+        (tex (str (get-in @tri [:vertices (dec @selected-angle)])))]
      #_[los/law-of-sines "A" @tri]])

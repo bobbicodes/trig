@@ -138,3 +138,19 @@ clj꞉uc.generate꞉> 
 clj꞉uc.generate꞉> 
 (nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil)
 clj꞉uc.generate꞉> 
+2.148563348974647
+cljs꞉trig.triangle꞉> 
+"I"
+cljs꞉trig.triangle꞉> 
+"I"
+cljs꞉trig.triangle꞉> 
+"H"
+cljs꞉trig.triangle꞉> 
+nil
+cljs꞉trig.triangle꞉> 
+"G"
+cljs꞉trig.triangle꞉> 
+0
+cljs꞉trig.triangle꞉> 
+"G"
+cljs꞉trig.triangle꞉> 
