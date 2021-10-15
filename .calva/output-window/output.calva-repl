@@ -283,3 +283,42 @@ cljs꞉trig.triangle꞉> 
 ; Execution error (RangeError) at (<cljs repl>:1).
 Invalid position 1 in document of length 0
 cljs꞉trig.triangle꞉> 
+{:vertices ["E" "D" "F"], :lines [nil 3.8 5], :angles [50 90 40]}
+cljs꞉trig.triangle꞉> 
+{:vertices ["E" "D" "F"], :lines [3.1885785984736637 3.8 4.9605476994626585], :angles [50 90 40]}
+cljs꞉trig.triangle꞉> 
+{:vertices ["E" "D" "F"], :lines [nil 3.8 5], :angles [nil 90 40]}
+cljs꞉trig.triangle꞉> 
+1
+cljs꞉trig.triangle꞉> 
+3
+cljs꞉trig.triangle꞉> 
+1
+cljs꞉trig.triangle꞉> 
+nil
+; ------ WARNING - :fn-arity -----------------------------------------------------
+;  Resource: <eval>:1:1
+ Wrong number of args (1) passed to trig.triangle/line-data
+--------------------------------------------------------------------------------
+
+cljs꞉trig.triangle꞉> 
+{:vertices ["E" "D" "F"], :lines [nil 3.8 5], :angles [50 90 40]}
+cljs꞉trig.triangle꞉> 
+1
+cljs꞉trig.triangle꞉> 
+[:div [:h3 "Line " [:span {:ref #object[Function]}]] [:div [:span {:ref #object[Function]}] [:p] [:span {:ref #object[Function]}] [:p] [:span {:ref #object[Function]}] [:p] [:span {:ref #object[Function]}]] [:p] [:span {:ref #object[Function]}] [:p] [:span {:ref #object[Function]}] [:p] [:span {:ref #object[Function]}] [:p] [:span {:ref #object[Function]}] [:p] [:span {:ref #object[Function]}]]
+cljs꞉trig.triangle꞉> 
+3
+cljs꞉trig.triangle꞉> 
+1
+cljs꞉trig.triangle꞉> 
+2
+cljs꞉trig.triangle꞉> 
+3
+cljs꞉trig.triangle꞉> 
+2
+cljs꞉trig.triangle꞉> 
+1
+cljs꞉trig.triangle꞉> 
+1
+cljs꞉trig.triangle꞉> 

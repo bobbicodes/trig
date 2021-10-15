@@ -198,10 +198,6 @@
           law-of-sines
           law-of-cosines)))
 
-(solve-triangle @tri)
-
-@tri
-
 (defn input [type label value on-change]
   [:label label
    [:input
@@ -249,10 +245,6 @@
 (defonce selected-line (r/atom nil))
 (defonce selected-angle (r/atom nil))
 
-{:vertices ["A" "C" "B"]
- :lines [4.9 nil 6]
- :angles [0 90 55]}
-
 ;; see https://math.stackexchange.com/questions/543961/determine-third-point-of-triangle-when-two-points-and-all-sides-are-known
 (defn render-triangle [{[line1 line2 line3] :lines
                         [angle1 angle2 angle3] :angles
@@ -277,10 +269,10 @@
                             (+ cy (- (/ max-side 20)))
                             (- (/ max-side 18))) " "
                           (+ 3 max-side) " "
-                          (- height 1))}
+                          (- (* 1.1 height) 1))}
                [:g
                 (when (= 90 angle2)
-                  [right-angle-box 0 (- line1 0.45) (/ max-side 20)])
+                  [right-angle-box 0 (- line1 0.45) (/ height 15)])
                 [:line {:x1 0 :x2 0 :y1 0 :y2 line1 :stroke-linecap "round"
                         :stroke (if (or (= @selected-line 1)
                                         (= @hovered 1)) "magenta" "#61e2ff")
@@ -301,15 +293,15 @@
                         :on-click #(reset! selected-line 3)}]]
                [:g
                 [latex/render-letter
-                 (keyword label1) (- (/ max-side 20)) (+ (- (/ max-side 20)) 0.4) (/ max-side 20000)
+                 (keyword label1) (- (/ height 16)) (+ (- (/ max-side 20)) 0.4) (/ height 16000)
                  #(reset! selected-angle 1) (if (or (= @hovered "Angle 1")
                                                     (= @selected-angle 1)) "cyan" "#ffcc00")]
                 [latex/render-letter
-                 (keyword label2) (+ (- (/ max-side 20)) -0.1) line1 (/ max-side 20000)
+                 (keyword label2) (+ (- (/ max-side 20)) -0.1) line1 (/ height 16000)
                  #(reset! selected-angle 2) (if (or (= @hovered "Angle 2")
                                                     (= @selected-angle 2)) "cyan" "#ffcc00")]
                 [latex/render-letter
-                 (keyword label3) (+ (/ max-side 40) cx) (+ (- cy (/ max-side 45)) 0.2) (/ max-side 20000)
+                 (keyword label3) (+ (/ max-side 40) cx) (+ (- cy (/ max-side 45)) 0.2) (/ height 16000)
                  #(reset! selected-angle 3) (if (or (= @hovered "Angle 3")
                                                     (= @selected-angle 3)) "cyan" "#ffcc00")]]
                [:g ; enlarged click targets for selecting angles
@@ -363,7 +355,139 @@
          (str e))))
 
 (defn update-editor! [text]
-  (.dispatch @!tri #js{:changes #js{:from 0 :to (count (some-> @!tri .-state .-doc str)) :insert text}}))
+  (let [end (count (some-> @!tri .-state .-doc str))]
+    (.dispatch @!tri #js{:changes #js{:from 0 :to end :insert text}})))
+
+@selected-angle
+
+(defn angle-tex [f deg n1 d1 n2 d2]
+  (tex (str f deg
+            "\\degree)=\\dfrac{"
+            n1 "}{" d1
+            "}=\\dfrac{"
+            n2 "}{" d2 "}")))
+
+(defn angle-sin []
+  (let [degrees (get-in @tri [:angles (dec @selected-angle)])
+        {[line1 line2 line3] :lines
+         [angle1 angle2 angle3] :angles
+         [label1 label2 label3] :vertices} @tri]
+    (angle-tex "\\sin(" degrees
+               (cond (= @selected-angle 1)
+                     (str label3 label2)
+                     (= @selected-angle 3)
+                     (str label2 label1)
+                     :else (str label1 label2))
+               (str label1 label3)
+               (cond (= @selected-angle 1)
+                     (or line2 (str label3 label2))
+                     (= @selected-angle 3)
+                     (str label2 label1)
+                     :else line1)
+               (or line3 (str label1 label3)))))
+
+(defn angle-cos []
+  (let [degrees (get-in @tri [:angles (dec @selected-angle)])
+        {[line1 line2 line3] :lines
+         [angle1 angle2 angle3] :angles
+         [label1 label2 label3] :vertices} @tri]
+    (angle-tex "\\cos(" degrees
+               (cond (= @selected-angle 1)
+                     (str label1 label2)
+                     (= @selected-angle 3)
+                     (str label2 label3)
+                     :else (str label3 label2))
+               (str label1 label3)
+               (cond (= @selected-angle 1)
+                     (or line1 (str label1 label2))
+                     (= @selected-angle 3)
+                     line2
+                     :else (str label3 label2))
+               (or line3 (str label1 label3)))))
+
+(defn angle-tan []
+  (let [degrees (get-in @tri [:angles (dec @selected-angle)])
+        {[line1 line2 line3] :lines
+         [angle1 angle2 angle3] :angles
+         [label1 label2 label3] :vertices} @tri]
+    (angle-tex "\\tan(" degrees
+               (cond (= @selected-angle 1)
+                     (str label3 label2)
+                     (= @selected-angle 3)
+                     (str label2 label1)
+                     :else (str label1 label2))
+               (cond (= @selected-angle 1)
+                     (str label1 label2)
+                     (= @selected-angle 3)
+                     (str label2 label3)
+                     :else (str label3 label2))
+               (cond (= @selected-angle 1)
+                     (or line2 (str label3 label2))
+                     (= @selected-angle 3)
+                     (str label2 label1)
+                     :else line1)
+               (cond (= @selected-angle 1)
+                     (or line1 (str label1 label2))
+                     (= @selected-angle 3) line2
+                     :else (str label3 label2)))))
+
+(defn angle-data []
+  (let [degrees (get-in @tri [:angles (dec @selected-angle)])]
+  [:div [:h3 "Angle "
+         (tex (str (get-in @tri [:vertices (dec @selected-angle)]) "="
+                   degrees "\\degree"))]
+   [:p]
+   [angle-sin]
+   [:p]
+   [angle-cos]
+   [:p]
+   [angle-tan]]))
+
+{:vertices ["E" "D" "F"]
+ :lines [nil 3.8 5]
+ :angles [nil 90 40]}
+(reset! selected-line 1)
+(reset! selected-angle 1)
+
+(defn line-data []
+  (let [degrees (get-in @tri [:angles (dec @selected-angle)])
+        {[line1 line2 line3] :lines
+         [angle1 angle2 angle3] :angles
+         [label1 label2 label3] :vertices} @tri]
+    [:div [:h3 "Line "
+           (let [p1 (get-in @tri [:vertices (dec @selected-line)])
+                 p2 (get-in @tri [:vertices (mod @selected-line 3)])]
+             (tex (str p2 p1)))]
+     (cond
+       (= @selected-line 1)
+       [:div
+        (tex (str line3 "\\cdot\\sin(" angle3 "\\degree)")) [:p]
+        (tex (str line2 "\\cdot\\tan(" angle3 "\\degree)")) [:p]
+        (tex (str line3 "\\cdot\\cos(" angle1 "\\degree)")) [:p]
+        (tex (str "\\dfrac{" line2 "}{\\tan(" angle1 "\\degree)}"))]
+       (= @selected-line 2) nil
+       (= @selected-line 3) 
+       [:div
+        (tex (str "\\dfrac{" line2 "}{\\sin(" angle1 "\\degree)}")) [:p]
+        (tex (str "\\dfrac{" line1 "}{\\cos(" angle1 "\\degree)}")) [:p]
+        (tex (str "\\dfrac{" line1 "}{\\sin(" angle3 "\\degree)}")) [:p]
+        (tex (str "\\dfrac{" line2 "}{\\cos(" angle3 "\\degree)}"))
+        ]
+       )
+     #_[:div [:p]
+      (tex (str line3 "\\cdot\\sin(" angle3 "\\degree)"))
+      [:p]
+      (tex (str line3 "\\cdot\\cos(" angle3 "\\degree)"))
+      [:p]
+      (tex (str "\\dfrac{" line1 "}{\\tan(" angle3 "\\degree)}"))
+      [:p]
+      (tex (str line3 "\\cdot\\sin(" angle1 "\\degree)"))
+      [:p]
+      (tex (str line1 "\\cdot\\tan(" angle1 "\\degree)"))]]))
+
+@selected-line
+@tri
+(line-data)
 
 (defn app []
     [:div#app
@@ -385,54 +509,7 @@
      #_[:div
       [uc/uc]]
      [render-triangle @tri]
-     (let [degrees (get-in @tri [:angles (dec @selected-angle)])
-           {[line1 line2 line3] :lines
-            [angle1 angle2 angle3] :angles
-            [label1 label2 label3] :vertices} @tri]
-     [:div [:h3 "Line "
-            (let [p1 (get-in @tri [:vertices (dec @selected-line)])
-                  p2 (get-in @tri [:vertices (mod @selected-line 3)])]
-              (tex (str p2 p1)))]
-      [:p]
-      (tex (str line3 "\\cdot\\cos(" angle3 "\\degree)"))
-      [:p]
-      (tex (str "\\dfrac{" line1 "}{\\tan(" angle3 "\\degree)}"))
-      [:p]
-       (tex (str line3 "\\cdot\\sin(" angle1 "\\degree)"))
-      [:p]
-      (tex (str line1 "\\cdot\\tan(" angle1 "\\degree)"))
-      [:h3 "Angle "
-       (tex (str (get-in @tri [:vertices (dec @selected-angle)]) "="
-                 degrees "\\degree"))]
-       [:p]
-       (tex (str "\\sin(" degrees
-                 "\\degree)=\\dfrac{"
-                 (cond (= @selected-angle 1) (str label3 label2)
-                       :else (str label1 label2))
-                 "}{" (str label1 label3) "}=\\dfrac{"
-                 (cond (= @selected-angle 1) (str label3 label2)
-                       :else line1)
-                 "}{" line3 "}"))
-       [:p]
-       (tex (str "\\cos(" degrees
-                 "\\degree)=\\dfrac{"
-                 (cond (= @selected-angle 1) (str label1 label2)
-                       :else (str label3 label2))
-                 "}{" (str label1 label3) "}=\\dfrac{"
-                 (cond (= @selected-angle 1) line1
-                 :else (str label3 label2))
-                 "}{" line3 "}"))
-       [:p]
-       (tex (str "\\tan(" degrees
-                 "\\degree)=\\dfrac{"
-                 (cond (= @selected-angle 1) (str label3 label2)
-                       :else (str label1 label2))
-                 "}{" 
-                       (cond (= @selected-angle 1) (str label1 label2)
-                       :else (str label3 label2)) "}=\\dfrac{"
-                 (cond (= @selected-angle 1) (str label3 label2)
-                             :else line1)
-                 "}{" 
-                       (cond (= @selected-angle 1) line1
-                       :else (str label3 label2)) "}"))]
-      #_[los/law-of-sines "A" @tri])])
+     [:div
+      [angle-data]
+      [line-data]]
+      #_[los/law-of-sines "A" @tri]])
