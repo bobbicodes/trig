@@ -29,8 +29,6 @@
                                                  :angle1 56
                                                  :line1  300})) 1))))
 
-
-
 (comment
   (- 180 58)
   (:angle3 @tri/triangle)

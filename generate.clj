@@ -76,8 +76,15 @@ uppercase-letters
 (defn renderer [{:keys [n f]}]
   (spit (str "public/img/" n ".svg") (:out (sh tex2svg (str "\\begin{equation} " f "\\end{equation}")))))
 
+uppercase-letters
+
+(def pi-fracs
+  (for [n (range 1 10)]
+    {:n (str "pi-over-" n)
+     :f (str "\\dfrac{\\pi}{" n "}")}))
+
 (comment
-  (doall (map renderer uppercase-letters))
+  (doall (map renderer pi-fracs))
   )
 
 (defn -main [& args]
