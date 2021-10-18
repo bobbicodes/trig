@@ -14,6 +14,8 @@
            :lines [9 11 15]
            :angles [0 81 0]}))
 
+(def pi js/Math.PI)
+
 (defn sin [deg]
   (.sin js/Math (* deg (/ js/Math.PI 180))))
 
@@ -97,30 +99,32 @@
      (nil? angle3)
      (assoc triangle :angles [angle1 angle2 (- 180 angle2 angle1)])))
 
+(infer-angle @tri)
 
-(defn solve-angles [{[line1 line2 line3] :lines
-                     [angle1 angle2 angle3] :angles
-                     [label1 label2 label3] :vertices
-                     :as triangle}]
-    (cond
-      (= 2 (count (filter pos? [angle1 angle2 angle3])))
-      (infer-angle triangle)
-      (and (pos? line1) (pos? line3))
-      (-> triangle
-          (assoc :angles [(asin (/ line1 line3))
-                          (acos (/ line1 line3))
-                          angle3]))
-      (and (pos? line2) (pos? line3))
-      (-> triangle
-          (assoc :angles [(acos (/ line2 line3))
-                          (asin (/ line2 line3))
-                          angle3]))
-      (and (pos? line2) (pos? line1))
-      (-> triangle
-          (assoc :angles [(atan (/ line1 line2))
-                          (atan (/ line2 line1))
-                          angle3]))
-      :else triangle))
+(defn solve-angles
+  [{[line1 line2 line3] :lines
+    [angle1 angle2 angle3] :angles
+    [label1 label2 label3] :vertices
+    :as triangle}]
+  (cond
+    (= 2 (count (filter pos? [angle1 angle2 angle3])))
+    (infer-angle triangle)
+    (and (pos? line1) (pos? line3))
+    (-> triangle
+        (assoc :angles [(asin (/ line1 line3))
+                        (acos (/ line1 line3))
+                        angle3]))
+    (and (pos? line2) (pos? line3))
+    (-> triangle
+        (assoc :angles [(acos (/ line2 line3))
+                        (asin (/ line2 line3))
+                        angle3]))
+    (and (pos? line2) (pos? line1))
+    (-> triangle
+        (assoc :angles [(atan (/ line1 line2))
+                        (atan (/ line2 line1))
+                        angle3]))
+    :else triangle))
 
 (defn law-of-sines [{[line1 line2 line3] :lines
                      [angle1 angle2 angle3] :angles
@@ -245,7 +249,8 @@
 (defonce selected-line (r/atom nil))
 (defonce selected-angle (r/atom nil))
 
-;; see https://math.stackexchange.com/questions/543961/determine-third-point-of-triangle-when-two-points-and-all-sides-are-known
+;; see https://math.stackexchange.com/questions/543961/
+;; determine-third-point-of-triangle-when-two-points-and-all-sides-are-known
 (defn render-triangle [{[line1 line2 line3] :lines
                         [angle1 angle2 angle3] :angles
                         [label1 label2 label3] :vertices}]
@@ -306,14 +311,20 @@
                                                     (= @selected-angle 3)) "cyan" "#ffcc00")]]
                [:g ; enlarged click targets for selecting angles
                 [:circle {:cx (- (/ max-side 20)) :cy (+ (- (/ max-side 20)) 0.4) :r (/ max-side 15)
-                          :on-mouse-over #(reset! hovered "Angle 1") :on-mouse-out #(reset! hovered nil)
-                          :visibility "hidden" :on-click #(reset! selected-angle 1) :pointer-events "all"}]
+                          :on-mouse-over #(reset! hovered "Angle 1") 
+                          :on-mouse-out #(reset! hovered nil)
+                          :visibility "hidden" 
+                          :on-click #(reset! selected-angle 1) :pointer-events "all"}]
                 [:circle {:cx (+ (- (/ max-side 20)) -0.1) :cy line1 :r (/ max-side 15)
-                          :on-mouse-over #(reset! hovered "Angle 2") :on-mouse-out #(reset! hovered nil)
-                          :visibility "hidden" :on-click #(reset! selected-angle 2) :pointer-events "all"}]
+                          :on-mouse-over #(reset! hovered "Angle 2") 
+                          :on-mouse-out #(reset! hovered nil)
+                          :visibility "hidden" 
+                          :on-click #(reset! selected-angle 2) :pointer-events "all"}]
                 [:circle {:cx (+ (/ max-side 40) cx) :cy (+ (- cy (/ max-side 45)) 0.2) :r (/ max-side 15)
-                          :on-mouse-over #(reset! hovered "Angle 3") :on-mouse-out #(reset! hovered nil)
-                          :visibility "hidden" :on-click #(reset! selected-angle 3) :pointer-events "all"}]]]]))))
+                          :on-mouse-over #(reset! hovered "Angle 3") 
+                          :on-mouse-out #(reset! hovered nil)
+                          :visibility "hidden" 
+                          :on-click #(reset! selected-angle 3) :pointer-events "all"}]]]]))))
 
 (defn ratios [triangle]
   (let [{:keys [line1 line2 line3 angle1 angle2 angle3 label1 label2 label3]} triangle]
@@ -357,8 +368,6 @@
 (defn update-editor! [text]
   (let [end (count (some-> @!tri .-state .-doc str))]
     (.dispatch @!tri #js{:changes #js{:from 0 :to end :insert text}})))
-
-@selected-angle
 
 (defn angle-tex [f deg n1 d1 n2 d2]
   (tex (str f deg
@@ -431,23 +440,28 @@
                      (= @selected-angle 3) line2
                      :else (str label3 label2)))))
 
+(defn infer-angle-rad
+  [{[line1 line2 line3] :lines
+    [angle1 angle2 angle3] :angles
+    [label1 label2 label3] :vertices
+    :as triangle}]
+  (cond
+    (nil? angle1)
+    (assoc triangle :angles [(- pi angle2 angle3)
+                             angle2 angle3])
+    (nil? angle2)
+    (assoc triangle :angles [angle1 (- pi angle1 angle3) angle3])
+    (nil? angle3)
+    (assoc triangle :angles [angle1 angle2 (- pi angle2 angle1)])))
+
 (defn angle-data []
   (let [degrees (get-in @tri [:angles (dec @selected-angle)])]
   [:div [:h3 "Angle "
          (tex (str (get-in @tri [:vertices (dec @selected-angle)]) "="
                    degrees "\\degree"))]
-   [:p]
-   [angle-sin]
-   [:p]
-   [angle-cos]
-   [:p]
-   [angle-tan]]))
-
-{:vertices ["E" "D" "F"]
- :lines [nil 3.8 5]
- :angles [nil 90 40]}
-(reset! selected-line 1)
-(reset! selected-angle 1)
+   [:p] [angle-sin]
+   [:p] [angle-cos]
+   [:p] [angle-tan]]))
 
 (defn line-data []
   (let [degrees (get-in @tri [:angles (dec @selected-angle)])
@@ -466,50 +480,148 @@
         (tex (str line3 "\\cdot\\cos(" angle1 "\\degree)")) [:p]
         (tex (str "\\dfrac{" line2 "}{\\tan(" angle1 "\\degree)}"))]
        (= @selected-line 2) nil
-       (= @selected-line 3) 
+       (= @selected-line 3)
        [:div
         (tex (str "\\dfrac{" line2 "}{\\sin(" angle1 "\\degree)}")) [:p]
         (tex (str "\\dfrac{" line1 "}{\\cos(" angle1 "\\degree)}")) [:p]
         (tex (str "\\dfrac{" line1 "}{\\sin(" angle3 "\\degree)}")) [:p]
-        (tex (str "\\dfrac{" line2 "}{\\cos(" angle3 "\\degree)}"))
-        ]
-       )
-     #_[:div [:p]
-      (tex (str line3 "\\cdot\\sin(" angle3 "\\degree)"))
-      [:p]
-      (tex (str line3 "\\cdot\\cos(" angle3 "\\degree)"))
-      [:p]
-      (tex (str "\\dfrac{" line1 "}{\\tan(" angle3 "\\degree)}"))
-      [:p]
-      (tex (str line3 "\\cdot\\sin(" angle1 "\\degree)"))
-      [:p]
-      (tex (str line1 "\\cdot\\tan(" angle1 "\\degree)"))]]))
+        (tex (str "\\dfrac{" line2 "}{\\cos(" angle3 "\\degree)}"))])]))
 
-@selected-line
-@tri
-(line-data)
+{:vertices ["R" "T" "S"]
+ :lines [3 nil nil]
+ :angles [nil (/ pi 2) (/ pi 4)]}
+(reset! selected-line 1)
+(reset! selected-angle 1)
+
+(defn pi-frac [n]
+  (cond 
+    (= n pi) (tex "\\pi")
+    (int? (/ pi n))
+    (tex (str "\\dfrac{\\pi}{" (/ pi n) "}"))
+    :else n))
+
+(defn isosceles? [tri]
+  (= #{1 2}
+     (set (vals (frequencies (:angles tri))))))
+
+(defn iso-sides?
+  "Returns true if the 2 opposite sides of the congruent
+   angles of an isosceles triangle have both been defined."
+  [triangle]
+  (let [common-angle-rad
+        (ffirst (filter #(= 2 (val %))
+                        (frequencies (:angles triangle))))
+        common-angles
+        (for [angle (range 1 4)
+              :when (= (get (:angles triangle) (dec angle))
+                       common-angle-rad)]
+          angle)
+        length (apply max (for [side common-angles]
+                            (get (:lines triangle) (dec side))))]
+    (and (pos? length)
+         (= (get (:lines triangle) (mod (first common-angles) 3))
+            (get (:lines triangle) (mod (last common-angles) 3))))))
+
+(iso-sides? @tri)
+
+(defn iso-sides
+  "Takes a triangle with 2 angles of a common length.
+   If one of their opposite sides are defined,
+   will fill in the other with the same value."
+  [triangle]
+  (let [common-angle-rad
+        (ffirst (filter #(= 2 (val %))
+                        (frequencies (:angles triangle))))
+        common-angles
+        (for [angle (range 1 4)
+              :when (= (get (:angles triangle) (dec angle))
+                       common-angle-rad)]
+          angle)
+        length (apply max (for [side common-angles]
+                            (get (:lines triangle) (dec side))))]
+    (assoc-in
+     (assoc-in triangle
+               [:lines (mod (first common-angles) 3)] length)
+     [:lines (mod (last common-angles) 3)] length)))
+
+(iso-sides @tri)
+
+(defn iso [triangle]
+  (let [common-angle-rad
+        (ffirst (filter #(= 2 (val %)) (frequencies (:angles triangle))))
+        common-angles
+        (for [angle (range 1 4)
+              :when (= (get (:angles triangle) (dec angle)) common-angle-rad)]
+          angle)
+        vertices (for [angle common-angles]
+                   (get (:vertices triangle) (dec angle)))
+        sides (for [side common-angles]
+                (str (get (:vertices triangle) (mod side 3))
+                     (get (:vertices triangle) (inc (mod side 3)))))
+        length (apply max (for [side common-angles]
+                            (get (:lines @tri) (dec side))))]
+    [:div
+     [:span "This triangle is isosceles because angles "
+      (str (apply str (interpose " and " vertices))
+           " both equal ")
+      (pi-frac common-angle-rad) "."]
+     [:p "The sides opposite the congruent angles in an isosceles triangle have equal lengths."] [:p]
+     [:span 
+      (str "So sides ") 
+      (tex (str "\\overline{" (first sides) "}")) " and "
+      (tex (str "\\overline{" (last sides) "}"))
+      " both measure " length " units."]
+     [button
+      [:span "Compute sides"
+       ]
+      #(do (swap! tri iso-sides)
+           (update-editor! (str triangle)))]]))
+
+(defn tri-data
+  [{[line1 line2 line3] :lines
+    [angle1 angle2 angle3] :angles
+    [label1 label2 label3] :vertices
+    :as triangle}]
+  [:div
+   [:div (tex (str "\\angle{" label1 "}=")) " "
+    (pi-frac angle1)] [:p]
+   [:div (tex (str "\\angle{" label2 "}=")) " "
+    (pi-frac angle2)] [:p]
+   [:div (tex (str "\\angle{" label3 "}=")) " "
+    (pi-frac angle3)] [:p]
+   (when (and (isosceles? triangle)
+              (not (iso-sides? triangle)))
+      [iso triangle])
+   (when (= 2 (count (filter pos? [angle1 angle2 angle3])))
+     [:div 
+      [:div "The interior angle measures of a triangle always add up to " (tex "\\pi") "."]
+      [button
+       [:span "Compute "
+        (tex (str "\\angle{" 
+                  (cond (nil? angle1) label1
+                        (nil? angle2) label2
+                        (nil? angle3) label3) "}"))]
+       #(do (swap! tri infer-angle-rad)
+            (update-editor! (str @tri)))]])])
 
 (defn app []
     [:div#app
      [editor/editor (str @tri) !tri {:eval? true}]
-     [:button {:on-click #(reset! tri (eval-all
-                                       (str "(def pi js/Math.PI)"
-                                            (some-> @!tri .-state .-doc str))))
-               :style {:margin-top "1rem"}}
-      "Eval"]
-     [button "Solve" #(do (swap! tri solve-triangle)
-                          (update-editor! (str @tri)))]
+     [:button
+      {:on-click
+       #(reset! tri (eval-all
+                     (str "(def pi js/Math.PI)"
+                          (some-> @!tri .-state .-doc str))))
+       :style {:margin-top "1rem"}}
+      "Eval"] [:p]
+     [tri-data @tri] [:p]
+     #_[button "Solve" #(do (swap! tri solve-triangle)
+                            (update-editor! (str @tri)))]
      #_[:div
-      [:button {:on-click #(reset! trig-fn "\\sin")
-                :style {:margin-top "1rem"}}
-       (tex "sin")]
-      [:button {:on-click #(reset! trig-fn "\\cos")
-                :style {:margin-top "1rem"}}
-       (tex "cos")]]
-     #_[:div
-      [uc/uc]]
+        [uc/uc]]
      [render-triangle @tri]
      [:div
       [angle-data]
       [line-data]]
-      #_[los/law-of-sines "A" @tri]])
+      ;[los/law-of-sines "A" @tri]
+     ])

@@ -15,7 +15,7 @@
 ;   - `alt+up` and `alt+down` traverse up and down the REPL command history
 ;      when the cursor is after the last contents at the prompt
 ;   - Clojure lines in stack traces are peekable and clickable.
-clj꞉shadow.user꞉> 
+clj꞉shadow.user꞉>  ; Use `alt+enter` to evaluate
 ; Creating cljs repl session...
 ; Connecting cljs repl: shadow-cljs...
 ;   The Calva Connection Log might have more connection progress information.
@@ -24,86 +24,20 @@ clj꞉shadow.user꞉> 
 ;    *Calva: Toggle REPL connection*
 ;    (There is a button in the status bar for this)
 ; Jack-in done.
-cljs꞉cljs.user꞉> 
-#'trig.sin/test-fn
-cljs꞉trig.sin꞉> 
-0
-cljs꞉trig.sin꞉> 
-{:max [0.5 12], :min [nil nil], :mid [0 7]}
-cljs꞉trig.sin꞉> 
-#'trig.sin/test-fn
-cljs꞉trig.sin꞉> 
-[0.5 12]
-cljs꞉trig.sin꞉> 
-#'trig.sin/test-fn
-cljs꞉trig.sin꞉> 
-[0 7]
-cljs꞉trig.sin꞉> 
-{:lines [9 11 15], :angles [0 81 0], :vertices ["A" "B" "C"]}
-cljs꞉trig.triangle꞉> 
-{:lines [9 11 15], :angles [0 81 0], :vertices ["A" "B" "C"]}
-cljs꞉trig.triangle꞉> 
-{:lines [9 11 15], :angles [0 81 0], :vertices ["A" "B" "C"]}
-cljs꞉trig.triangle꞉> 
-{:lines [1 2 3], :angles [0 81 0], :vertices ["A" "B" "C"]}
-cljs꞉trig.triangle꞉> 
-nil
-cljs꞉trig.triangle꞉> 
-{:lines [8 0 8.3], :angles [0 90 75], :vertices ["A" "B" "C"]}
-cljs꞉trig.triangle꞉> 
-nil
-cljs꞉trig.triangle꞉> 
-nil
-cljs꞉trig.triangle꞉> 
-{:lines [8 nil 8.3], :angles [15 90 75], :vertices ["A" "B" "C"]}
-cljs꞉trig.triangle꞉> 
-{:lines [8 nil 8.3], :angles [15 90 75], :vertices ["A" "B" "C"]}
-cljs꞉trig.triangle꞉> 
-{:lines [8 nil 8.3], :angles [15 90 75], :vertices ["A" "B" "C"]}
-cljs꞉trig.triangle꞉> 
-{:lines [8 2.1482668057789582 8.3], :angles [15 90 75], :vertices ["A" "B" "C"]}
-cljs꞉trig.triangle꞉> 
-{:lines [8 2.1482668057789582 8.3], :angles [15 90 75], :vertices ["A" "B" "C"]}
-cljs꞉trig.triangle꞉> 
-(\a \b \c \d \e \f \g \h \i \j \k \l \m \n \o \p \q \r \s \t \u \v \w \x \y \z)
-clj꞉uc.generate꞉> 
-(\{ \| \} \~ \ \ \)
-clj꞉uc.generate꞉> 
-(\< \= \> \? \@ \A \B \C \D \E \F \G \H \I \J \K \L \M \N \O \P \Q \R \S \T \U \V \W \X \Y \Z \[ \\ \] \^ \_ \`)
-clj꞉uc.generate꞉> 
-(\? \@ \A \B \C \D \E \F \G \H \I \J \K \L \M \N \O \P \Q \R \S \T \U \V \W \X \Y \Z \[ \\ \] \^ \_ \`)
-clj꞉uc.generate꞉> 
-(\A \B \C \D \E \F \G \H \I \J \K \L \M \N \O \P \Q \R \S \T \U \V \W \X \Y \Z \[ \\ \] \^ \_ \`)
-clj꞉uc.generate꞉> 
-(\A \B \C \D \E \F \G \H \I \J \K \L \M \N \O \P \Q \R \S \T \U \V \W \X \Y \Z \[ \\ \] \^)
-clj꞉uc.generate꞉> 
-(\A \B \C \D \E \F \G \H \I \J \K \L \M \N \O \P \Q \R \S \T \U \V \W \X \Y \Z \[ \\)
-clj꞉uc.generate꞉> 
-(\A \B \C \D \E \F \G \H \I \J \K \L \M \N \O \P \Q \R \S \T \U \V \W \X \Y \Z)
-clj꞉uc.generate꞉> 
-; Syntax error compiling at (generate.clj:0:0).
-; Unable to resolve symbol: small-nums in this context
-clj꞉uc.generate꞉> 
+cljs꞉cljs.user꞉>  ; Use `alt+enter` to evaluate
+0.7853981633974483
+clj꞉trig.triangle꞉> 
+0.7853981633974483
+clj꞉trig.triangle꞉> 
+4
+clj꞉trig.triangle꞉> 
+{:vertices ["R" "T" "S"], :lines [3 nil nil], :angles [177.64380550980766 1.5707963267948966 0.7853981633974483]}
+clj꞉trig.triangle꞉> 
 nil
 clj꞉uc.generate꞉> 
 #'uc.generate/tex2svg
 clj꞉uc.generate꞉> 
 #'uc.generate/uppercase-letters
-clj꞉uc.generate꞉> 
-#'uc.generate/small-nums
-clj꞉uc.generate꞉> 
-#'uc.generate/small-neg-nums
-clj꞉uc.generate꞉> 
-({:n "small-0", :f "\\small{0}"}
- {:n "small-1", :f "\\small{1}"}
- {:n "small-2", :f "\\small{2}"}
- {:n "small-3", :f "\\small{3}"}
- {:n "small-4", :f "\\small{4}"}
- {:n "small-5", :f "\\small{5}"}
- {:n "small-6", :f "\\small{6}"}
- {:n "small-7", :f "\\small{7}"}
- {:n "small-8", :f "\\small{8}"}
- {:n "small-9", :f "\\small{9}"})
 clj꞉uc.generate꞉> 
 #'uc.generate/uppercase-letters
 clj꞉uc.generate꞉> 
@@ -134,191 +68,177 @@ clj꞉uc.generate꞉> 
  {:n "letter-Y", :f "Y"}
  {:n "letter-Z", :f "Z"})
 clj꞉uc.generate꞉> 
+#'uc.generate/pi-fracs
+clj꞉uc.generate꞉> 
 #'uc.generate/renderer
 clj꞉uc.generate꞉> 
-(nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil nil)
+(nil nil nil nil nil nil nil nil nil)
 clj꞉uc.generate꞉> 
-2.148563348974647
-cljs꞉trig.triangle꞉> 
-"I"
-cljs꞉trig.triangle꞉> 
-"I"
-cljs꞉trig.triangle꞉> 
-"H"
-cljs꞉trig.triangle꞉> 
-nil
-cljs꞉trig.triangle꞉> 
-"G"
-cljs꞉trig.triangle꞉> 
-0
-cljs꞉trig.triangle꞉> 
-"G"
-cljs꞉trig.triangle꞉> 
-We can solve equations #2 and #3 to represent HIHIH, I. The resulting expressions are 8.3\cdot\cos(75\degree)8.3⋅cos(75°)8, point, 3, dot, cosine, left parenthesis, 75, degree, right parenthesis and \dfrac{8}{\tan(75\degree)} 
-tan(75°)
-8
-​
- start fraction, 8, divided by, tangent, left parenthesis, 75, degree, right parenthesis, end fraction.
+#'uc.generate/pi-fracs
+clj꞉uc.generate꞉> 
+(nil nil nil nil nil nil nil nil nil)
+clj꞉uc.generate꞉> 
+[0.7853981633974483 1.5707963267948966 0.7853981633974483]
+clj꞉trig.triangle꞉> 
+{0.7853981633974483 2, 1.5707963267948966 1}
+clj꞉trig.triangle꞉> 
+(2 1)
+clj꞉trig.triangle꞉> 
+#{1 2}
+clj꞉trig.triangle꞉> 
+(1 2)
+clj꞉trig.triangle꞉> 
+(1 2 3)
+clj꞉trig.triangle꞉> 
 nil
 ; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:1:1
- Use of undeclared Var trig.triangle/fraction
+;  Resource: <eval>:1:77
+ Use of undeclared Var trig.triangle/triangle
 --------------------------------------------------------------------------------
 
-cljs꞉trig.triangle꞉> 
-8.3\cdot\sin(90\degree-75\degree)
+clj꞉trig.triangle꞉> 
+(1 2 3)
+clj꞉trig.triangle꞉> 
+(1 2 3)
+clj꞉trig.triangle꞉> 
+()
+clj꞉trig.triangle꞉> 
+(2)
+clj꞉trig.triangle꞉> 
+(1 3)
+clj꞉trig.triangle꞉> 
+{:vertices ["R" "T" "S"], :lines [3 nil nil], :angles [0.7853981633974483 1.5707963267948966 0.7853981633974483]}
+clj꞉trig.triangle꞉> 
+{:vertices ["R" "T" "S"], :lines [3 3 nil], :angles [0.7853981633974483 1.5707963267948966 0.7853981633974483]}
+clj꞉trig.triangle꞉> 
+nil
+clj꞉trig.triangle-test꞉> 
+#'trig.triangle-test/round
+clj꞉trig.triangle-test꞉> 
+nil
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:1:10
+ Use of undeclared Var trig.triangle-test/two-angles-test
+--------------------------------------------------------------------------------
 
-8\cdot\tan(90\degree-75\degree)
-{:vertices ["A" "C" "B"], :lines [4.9 nil 6], :angles [nil 90 55]}
-cljs꞉trig.triangle꞉> 
+clj꞉trig.triangle-test꞉> 
 nil
-cljs꞉trig.triangle꞉> 
-{:vertices ["A" "C" "B"], :lines [4.9 nil 6], :angles [35 90 55]}
-cljs꞉trig.triangle꞉> 
-{:vertices ["A" "C" "B"], :lines [4.9 nil 6], :angles [35 90 55]}
-cljs꞉trig.triangle꞉> 
-{:vertices ["A" "C" "B"], :lines [4.9 nil 6], :angles [35 90 55]}
-cljs꞉trig.triangle꞉> 
-{:vertices ["A" "C" "B"], :lines [4.9 nil 6], :angles [35 90 55]}
-cljs꞉trig.triangle꞉> 
-{:vertices ["A" "C" "B"], :lines [4.9 nil 6], :angles [35 90 55]}
-cljs꞉trig.triangle꞉> 
-{:vertices ["A" "C" "B"], :lines [4.9 nil 6], :angles [35 90 55]}
-cljs꞉trig.triangle꞉> 
-"{:vertices [\"A\" \"C\" \"B\"], :lines [4.9 nil 6], :angles [35 90 55]}"
-cljs꞉trig.triangle꞉> 
-#object[EditorView [object Object]]
-cljs꞉trig.triangle꞉> 
-(let*
- [G__77810
-  @!tri
-  G__77810
-  (if (clojure.core/nil? G__77810) nil (clojure.core/-> G__77810 .-state))
-  G__77810
-  (if (clojure.core/nil? G__77810) nil (clojure.core/-> G__77810 .-doc))]
- (if (clojure.core/nil? G__77810) nil (clojure.core/-> G__77810 str)))
-cljs꞉trig.triangle꞉> 
-(let* [G__78586 #js [extensions]] G__78586)
-cljs꞉trig.editor꞉> 
-:repl/exception!
-; 
-; Execution error (TypeError) at (<cljs repl>:1).
-cljs.core.deref.call(...).setValue is not a function
-cljs꞉trig.triangle꞉> 
-nil
-; ------ REPL Error while processing ---------------------------------------------
-; (.-setValue @!tri (editor/create-state "new"))
-null
-dot prop access with args
-{:form (. (clojure.core/deref !tri) -setValue (editor/create-state "new"))}
-ExceptionInfo: dot prop access with args
-	shadow.build.cljs-hacks/shadow-analyze-dot (cljs_hacks.cljc:498)
-	shadow.build.cljs-hacks/shadow-analyze-dot (cljs_hacks.cljc:453)
-	shadow.build.cljs-hacks/eval10611/fn--10613 (cljs_hacks.cljc:525)
-	clojure.lang.MultiFn.invoke (MultiFn.java:252)
-	cljs.analyzer/analyze-seq* (analyzer.cljc:3943)
-	cljs.analyzer/analyze-seq* (analyzer.cljc:3941)
-	cljs.analyzer/analyze-seq*-wrap (analyzer.cljc:3948)
-	cljs.analyzer/analyze-seq*-wrap (analyzer.cljc:3946)
-	cljs.analyzer/analyze-seq (analyzer.cljc:3972)
-	cljs.analyzer/analyze-seq (analyzer.cljc:3950)
-	cljs.analyzer/analyze-form (analyzer.cljc:4159)
-	cljs.analyzer/analyze-form (analyzer.cljc:4156)
-	cljs.analyzer/analyze* (analyzer.cljc:4212)
-	cljs.analyzer/analyze* (analyzer.cljc:4204)
-	cljs.analyzer/analyze (analyzer.cljc:4232)
-	cljs.analyzer/analyze (analyzer.cljc:4215)
-	cljs.analyzer/analyze-seq (analyzer.cljc:3973)
-	cljs.analyzer/analyze-seq (analyzer.cljc:3950)
-	cljs.analyzer/analyze-form (analyzer.cljc:4159)
-	cljs.analyzer/analyze-form (analyzer.cljc:4156)
-	cljs.analyzer/analyze* (analyzer.cljc:4212)
-	cljs.analyzer/analyze* (analyzer.cljc:4204)
-	shadow.build.compiler/analyze/fn--13775 (compiler.clj:264)
-	shadow.build.compiler/analyze (compiler.clj:252)
-	shadow.build.compiler/analyze (compiler.clj:211)
-	shadow.cljs.repl/repl-compile/fn--15628/fn--15629 (repl.clj:440)
-	shadow.cljs.repl/repl-compile/fn--15628 (repl.clj:413)
-	shadow.cljs.repl/repl-compile (repl.clj:411)
-	shadow.cljs.repl/repl-compile (repl.clj:408)
-	shadow.cljs.repl/process-read-result (repl.clj:499)
-	shadow.cljs.repl/process-read-result (repl.clj:475)
-	shadow.cljs.repl/process-input (repl.clj:659)
-	shadow.cljs.repl/process-input (repl.clj:637)
-	shadow.cljs.devtools.server.worker.impl/eval16193/fn--16196 (impl.clj:685)
-	clojure.lang.MultiFn.invoke (MultiFn.java:234)
-	shadow.cljs.devtools.server.util/server-thread/fn--15837/fn--15838/fn--15846 (util.clj:284)
-	shadow.cljs.devtools.server.util/server-thread/fn--15837/fn--15838 (util.clj:283)
-	shadow.cljs.devtools.server.util/server-thread/fn--15837 (util.clj:256)
-	java.lang.Thread.run (Thread.java:745)
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:1:10
+ Use of undeclared Var trig.triangle-test/two-angles-test
+--------------------------------------------------------------------------------
 
-cljs꞉trig.triangle꞉> 
-#object[EditorView [object Object]]
-cljs꞉trig.triangle꞉> 
+clj꞉trig.triangle-test꞉> 
 nil
-cljs꞉trig.triangle꞉> 
-{:vertices ["A" "C" "B"], :lines [4.9 nil 6], :angles [nil 90 55]}
-cljs꞉trig.triangle꞉> 
-{:vertices ["A" "C" "B"], :lines [4.9 nil 6], :angles [35 90 55]}
-cljs꞉trig.triangle꞉> 
-{:vertices ["A" "C" "B"], :lines [4.9 nil 6], :angles [35 90 55]}
-cljs꞉trig.triangle꞉> 
-{:vertices ["A" "C" "B"], :lines [4.9 3.441490926300298 6], :angles [35 90 55]}
-cljs꞉trig.triangle꞉> 
-:repl/exception!
-; 
-; Execution error (RangeError) at (<cljs repl>:1).
-Invalid position 1 in document of length 0
-cljs꞉trig.triangle꞉> 
-{:vertices ["A" "C" "B"], :lines [4.9 3.441490926300298 6], :angles [35 90 55]}
-cljs꞉trig.triangle꞉> 
-"{:vertices [\"A\" \"C\" \"B\"], :lines [4.9 nil 6], :angles [nil 90 55]}"
-cljs꞉trig.triangle꞉> 
-66
-cljs꞉trig.triangle꞉> 
-{:vertices ["A" "C" "B"], :lines [4.9 3.441523434430718 6.00005632761734], :angles [35 90 55]}
-cljs꞉trig.triangle꞉> 
-:repl/exception!
-; 
-; Execution error (RangeError) at (<cljs repl>:1).
-Invalid position 1 in document of length 0
-cljs꞉trig.triangle꞉> 
-{:vertices ["E" "D" "F"], :lines [nil 3.8 5], :angles [50 90 40]}
-cljs꞉trig.triangle꞉> 
-{:vertices ["E" "D" "F"], :lines [3.1885785984736637 3.8 4.9605476994626585], :angles [50 90 40]}
-cljs꞉trig.triangle꞉> 
-{:vertices ["E" "D" "F"], :lines [nil 3.8 5], :angles [nil 90 40]}
-cljs꞉trig.triangle꞉> 
+clj꞉trig.triangle-test꞉> 
+#'trig.triangle-test/round
+clj꞉trig.triangle-test꞉> 
+#'trig.triangle-test/two-angles-test
+clj꞉trig.triangle-test꞉> 
+#'trig.triangle-test/one-side-all-angles-test
+clj꞉trig.triangle-test꞉> 
+#'trig.triangle-test/two-sides-one-angle-test
+clj꞉trig.triangle-test꞉> 
+
+Testing trig.triangle-test
+
+
+FAIL in (two-angles-test) (repl-input.cljs:2:7)
+
+expected: (= 35 (:angle3 (tri/solve-triangle {:angle1 40, :angle2 105})))
+
+  actual: (not (= 35 nil))
+
+
+FAIL in (one-side-all-angles-test) (repl-input.cljs:2:7)
+
+expected: (= 5.27 (round (:line2 (tri/solve-triangle {:angle3 35, :angle1 40, :angle2 105, :line1 4.7})) 100))
+
+  actual: (not (= 5.27 0))
+
+
+FAIL in (one-side-all-angles-test) (repl-input.cljs:6:7)
+
+expected: (= 36 (round (:line2 (tri/solve-triangle {:angle3 109, :angle1 47, :angle2 24, :line1 46})) 1))
+
+  actual: (not (= 36 0))
+
+
+FAIL in (two-sides-one-angle-test) (repl-input.cljs:2:7)
+
+expected: (= 184 (round (:line1 (tri/solve-triangle {:angle3 3, :line2 915, :line3 736})) 1))
+
+  actual: (not (= 184 0))
+
+
+FAIL in (two-sides-one-angle-test) (repl-input.cljs:5:7)
+
+expected: (= 262 (round (:line2 (tri/solve-triangle {:line3 250, :angle1 56, :line1 300})) 1))
+
+  actual: (not (= 262 0))
+
+
+Ran 3 tests containing 5 assertions.
+
+5 failures, 0 errors.
+
+nil
+clj꞉trig.triangle-test꞉> 
+#'trig.triangle/iso-sides
+clj꞉trig.triangle꞉> 
+0.7853981633974483
+clj꞉trig.triangle꞉> 
+nil
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:20:3
+ Use of undeclared Var trig.triangle/sides
+--------------------------------------------------------------------------------
+
+clj꞉trig.triangle꞉> 
+0.7853981633974483
+clj꞉trig.triangle꞉> 
+#'trig.triangle/iso-sides
+clj꞉trig.triangle꞉> 
+("TS" "RT")
+clj꞉trig.triangle꞉> 
+#'trig.triangle/iso-sides
+clj꞉trig.triangle꞉> 
+(1 3)
+clj꞉trig.triangle꞉> 
+#'trig.triangle/iso-sides
+clj꞉trig.triangle꞉> 
+{:vertices ["R" "T" "S"], :lines [3 nil "poo"], :angles [0.7853981633974483 1.5707963267948966 0.7853981633974483]}
+clj꞉trig.triangle꞉> 
 1
-cljs꞉trig.triangle꞉> 
-3
-cljs꞉trig.triangle꞉> 
-1
-cljs꞉trig.triangle꞉> 
+clj꞉trig.triangle꞉> 
+#'trig.triangle/iso-sides
+clj꞉trig.triangle꞉> 
+{:vertices ["R" "T" "S"], :lines [3 "poo" nil], :angles [0.7853981633974483 1.5707963267948966 0.7853981633974483]}
+clj꞉trig.triangle꞉> 
+{:vertices ["R" "T" "S"], :lines [3 "poo" nil], :angles [0.7853981633974483 1.5707963267948966 0.7853981633974483]}
+clj꞉trig.triangle꞉> 
 nil
 ; ------ WARNING - :fn-arity -----------------------------------------------------
-;  Resource: <eval>:1:1
- Wrong number of args (1) passed to trig.triangle/line-data
+;  Resource: <eval>:24:5
+ Wrong number of args (5) passed to cljs.core/assoc-in
 --------------------------------------------------------------------------------
 
-cljs꞉trig.triangle꞉> 
-{:vertices ["E" "D" "F"], :lines [nil 3.8 5], :angles [50 90 40]}
-cljs꞉trig.triangle꞉> 
-1
-cljs꞉trig.triangle꞉> 
-[:div [:h3 "Line " [:span {:ref #object[Function]}]] [:div [:span {:ref #object[Function]}] [:p] [:span {:ref #object[Function]}] [:p] [:span {:ref #object[Function]}] [:p] [:span {:ref #object[Function]}]] [:p] [:span {:ref #object[Function]}] [:p] [:span {:ref #object[Function]}] [:p] [:span {:ref #object[Function]}] [:p] [:span {:ref #object[Function]}] [:p] [:span {:ref #object[Function]}]]
-cljs꞉trig.triangle꞉> 
-3
-cljs꞉trig.triangle꞉> 
-1
-cljs꞉trig.triangle꞉> 
-2
-cljs꞉trig.triangle꞉> 
-3
-cljs꞉trig.triangle꞉> 
-2
-cljs꞉trig.triangle꞉> 
-1
-cljs꞉trig.triangle꞉> 
-1
-cljs꞉trig.triangle꞉> 
+clj꞉trig.triangle꞉> 
+{:vertices ["R" "T" "S"], :lines [3 "poo" nil], :angles [0.7853981633974483 1.5707963267948966 0.7853981633974483]}
+clj꞉trig.triangle꞉> 
+#'trig.triangle/iso-sides
+clj꞉trig.triangle꞉> 
+{:vertices ["R" "T" "S"], :lines ["poo2" "poo" nil], :angles [0.7853981633974483 1.5707963267948966 0.7853981633974483]}
+clj꞉trig.triangle꞉> 
+#'trig.triangle/iso-sides
+clj꞉trig.triangle꞉> 
+{:vertices ["R" "T" "S"], :lines [3 3 nil], :angles [0.7853981633974483 1.5707963267948966 0.7853981633974483]}
+clj꞉trig.triangle꞉> 
+#'trig.triangle/iso-sides?
+clj꞉trig.triangle꞉> 
+true
+clj꞉trig.triangle꞉> 
+false
+clj꞉trig.triangle꞉> 
+true
+clj꞉trig.triangle꞉> 

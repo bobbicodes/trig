@@ -13,6 +13,7 @@
     [sin/calc-graph]
     [sin/x-slider -10 10 0.01]
     [sin/y-slider -1 1 0.01]]
-     ;[pythagoras/pythagorean-identity-sin "\\theta_1" "\\text{I}" 3 8]
+     #_[pythagoras/pythagorean-identity-sin 
+      "\\theta_1" "\\text{IV}" 3 5]
    ]
   )
