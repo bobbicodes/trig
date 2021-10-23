@@ -96,3 +96,14 @@
       :style {:background-color "gray"
               :width 350}}]
     (finally (j/call @!view :destroy))))
+
+(defonce !tri (r/atom ""))
+
+(defn eval-all [s]
+  (try (sci.core/eval-string s {:classes {'js goog/global :allow :all}})
+       (catch :default e
+         (str e))))
+
+(defn update-editor! [text]
+  (let [end (count (some-> @!tri .-state .-doc str))]
+    (.dispatch @!tri #js{:changes #js{:from 0 :to end :insert text}})))
