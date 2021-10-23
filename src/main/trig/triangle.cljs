@@ -185,6 +185,8 @@
                           (rad 105)
                           nil]})
 
+(cos (/ pi 4))
+(/ 3 4.242640687119285)
 (defn dist [x1 y1 x2 y2]
   (.sqrt js/Math (+ (sq (- x2 x1))
                     (sq (- y2 y1)))))
@@ -528,11 +530,10 @@
      [ratio-buttons] [:p]
      [ratio @tri] [:p]
      [button "Solve" #(do (swap! tri solve-triangle)
-                            (update-editor! (str @tri)))]
-     
+                          (update-editor! (str @tri)))]
+
      [render-triangle @tri]
-     [:div
-      [uc/uc]]
+     [uc/uc-1]
      [:div
       [angle-data]
       [line-data]]

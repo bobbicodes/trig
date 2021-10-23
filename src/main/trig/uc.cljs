@@ -1,4 +1,5 @@
-(ns trig.uc)
+(ns trig.uc
+  (:require [trig.latex :refer [render-letter letters]]))
 
 (defn grid []
   [:g
@@ -105,3 +106,27 @@
      [point]
      [arcs]
      [arc]]))
+
+(def uc-1
+  (fn []
+    [:svg {:width "100%" :view-box "0 0 265 265"}
+     [:defs [:clip-path {:id "a"} [:path {:d "M0 25h240v240H0z"}]]]
+     [:path {:fill "none" :stroke "#ffcc00" :d "M20.87 265V25M229.565 265V25M0 244.13h240M0 35.435h240" :stroke-width 2 :opacity 0.1}]
+     [:path {:fill "none" :stroke "#000" :d "M7.05 238.53c-.35 2.1-4.2 5.25-5.25 5.6 1.05.35 4.9 3.5 5.25 5.6" :stroke-width "2" :stroke-linejoin "round" :stroke-linecap "round"}]
+     [:path {:fill "none" :stroke "#000" :d "M20.87 244.13H1.05" :stroke-width "2"}]
+     [:path {:fill "none" :stroke "#000" :d "M234.45 249.73c.35-2.1 4.2-5.25 5.25-5.6-1.05-.35-4.9-3.5-5.25-5.6" :stroke-width "2" :stroke-linejoin "round" :stroke-linecap "round"}]
+     [:path {:fill "none" :stroke "#000" :d "M20.87 244.13h218.08" :stroke-width "2"}]
+     [:path {:fill "none" :stroke "#000" :d "M15.3 258.7c2.1.35 5.25 4.2 5.6 5.25.35-1.05 3.5-4.9 5.6-5.25" :stroke-width "2" :stroke-linejoin "round" :stroke-linecap "round"}]
+     [:path {:fill "none" :stroke "#000" :d "M20.87 244.13v19.82" :stroke-width "2"}]
+     [:path {:fill "none" :stroke "#000" :d "M26.5 31.3c-2.1-.35-5.25-4.2-5.6-5.25-.35 1.05-3.5 4.9-5.6 5.25" :stroke-width "2" :stroke-linejoin "round" :stroke-linecap "round"}]
+     [:path {:fill "none" :stroke "#000" :d "M20.87 244.13V26.05" :stroke-width "2"}]
+     [:path {:fill "none" :stroke "#000" :d "M125.217 249.13v-10M229.565 249.13v-10M15.87 139.783h10M15.87 35.435h10"}]
+     [:ellipse {:cx "20.87" :cy "244.13" :rx "208.696" :ry "208.696" :fill "none" :stroke "#11accd" :stroke-width "2" :clip-path "url(#a)" :stroke-dasharray "0"}]
+     [:path {:stroke "#ca337c" :d "M51.322 244.13a30.453 30.453 0 0 0-4.08-15.226M201.605 230.756H188.23M188.23 244.13v-13.374" :stroke-width "2" :clip-path "url(#a)" :stroke-dasharray "0" :fill "none"}]
+     [:path {:stroke "#ca337c" :d "M20.87 244.13l180.735-104.347V244.13z" :stroke-width "2" :stroke-dasharray "0" :fill "none"}]
+     [:ellipse {:cx "20.87" :cy "244.13" :rx "3" :ry "3" :fill "#ca337c" :stroke "#ca337c" :stroke-width "2" :clip-path "url(#a)" :stroke-dasharray "0"}]
+     [:ellipse {:cx "201.605" :cy "139.783" :rx "3" :ry "3" :fill "#ca337c" :stroke "#ca337c" :stroke-width "2" :clip-path "url(#a)" :stroke-dasharray "0"}]
+     [:ellipse {:cx "201.605" :cy "244.13" :rx "3" :ry "3" :fill "#ca337c" :stroke "#ca337c" :stroke-width "2" :clip-path "url(#a)" :stroke-dasharray "0"}]
+     [:path {:transform (str "translate(" 205 "," 130 ")" "scale(" 0.02 "," (- 0.02) ")")
+             :fill    "#ffcc00"
+             :d         (:A letters)}]]))
