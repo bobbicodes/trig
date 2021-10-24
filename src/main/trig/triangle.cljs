@@ -534,6 +534,7 @@
 
      [render-triangle @tri]
      [uc/uc-1]
+     
      [:div
       [angle-data]
       [line-data]]
