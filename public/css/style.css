@@ -65,3 +65,17 @@ textarea, input {
   border: 1px solid rgb(100, 20, 96);
   background-color:rgba(77, 24, 82, 0.842);
 }
+
+.flex-container {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: flex-start;
+}
+
+  .flex-item {
+  width: 150px;
+  height: 70px;
+  line-height: 60px;
+  font-weight: bold;
+  text-align: center;
+}

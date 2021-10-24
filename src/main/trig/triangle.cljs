@@ -223,8 +223,9 @@
   (let [{[numer1 denom1] :angle1
          [numer3 denom3] :angle3}
         ((keyword (str/replace @trig-fn "\\" "")) (trig-ratios triangle))]
-    [:div (tex (str @trig-fn "(\\angle{" label1 "})=\\dfrac{" numer1 "}{" denom1 "}")) [:p]
-     (tex (str @trig-fn "(\\angle{" label3 "})=\\dfrac{" numer3 "}{" denom3 "}"))]))
+    [:div.flex-container
+     [:div.flex-item (tex (str @trig-fn "(\\angle{" label1 "})=\\dfrac{" numer1 "}{" denom1 "}"))]
+     [:div.flex-item (tex (str @trig-fn "(\\angle{" label3 "})=\\dfrac{" numer3 "}{" denom3 "}"))]]))
 
 (defonce obtuse? (r/atom {:angle1 false :angle2 false :angle3 false}))
 
@@ -332,11 +333,21 @@
         (tex (str "\\dfrac{" line1 "}{\\sin(" angle3 "\\degree)}")) [:p]
         (tex (str "\\dfrac{" line2 "}{\\cos(" angle3 "\\degree)}"))])]))
 
+(defn round
+  "Rounds n to decimal precision x: (round 9.278 10) -> 9.3"
+  [n x]
+  (/ (.round js/Math (* x n)) x))
+
+(* 220 0.5)
+
 (defn pi-frac [n] 
   (cond 
+    (= n 1) 1
     (= n pi) (tex "\\pi")
-    (int? (/ pi n))
-    (tex (str "\\dfrac{\\pi}{" (/ pi n) "}"))
+    (> 0.000000000000001 (-
+                           (round (/ pi n) 1)
+                           (/ pi n)))
+    (tex (str "\\dfrac{\\pi}{" (round (/ pi n) 1) "}"))
     :else n))
 
 (defn isosceles? [tri]
@@ -455,25 +466,30 @@
   [{[angle1 angle2 angle3] :angles
     [label1 label2 label3] :vertices
     :as triangle}]
-  [:div
-   [:div (tex (str "\\angle{" label1 "}=")) " "
+  [:div.flex-container
+   [:div.flex-item (tex (str "\\angle{" label1 "}=")) " "
     (pi-frac (if (= @deg-rad "deg") (deg angle1) angle1))] [:p]
-   [:div (tex (str "\\angle{" label2 "}=")) " "
+   [:div.flex-item (tex (str "\\angle{" label2 "}=")) " "
     (pi-frac (if (= @deg-rad "deg") (deg angle2) angle2))] [:p]
-   [:div (tex (str "\\angle{" label3 "}=")) " "
+   [:div.flex-item (tex (str "\\angle{" label3 "}=")) " "
     (pi-frac (if (= @deg-rad "deg") (deg angle3) angle3))] [:p]])
 
 (defn tri-sides
   [{[line1 line2 line3] :lines
     [label1 label2 label3] :vertices
     :as triangle}]
-  [:div
-   [:div (tex (str "\\overline{" label1 label2 "}=")) " "
+  [:div.flex-container
+   [:div.flex-item (tex (str "\\overline{" label1 label2 "}=")) " "
     (pi-frac line1)] [:p]
-   [:div (tex (str "\\overline{" label2 label3 "}=")) " "
+   [:div.flex-item (tex (str "\\overline{" label2 label3 "}=")) " "
     (pi-frac line2)] [:p]
-   [:div (tex (str "\\overline{" label3 label1 "}=")) " "
+   [:div.flex-item (tex (str "\\overline{" label3 label1 "}=")) " "
     (tex (latex/sqrt-tex (pi-frac line3)))] [:p]])
+
+(defn rad-deg-buttons []
+  [:span
+   [button "Rad" #(reset! deg-rad "rad")]
+   [button "Deg" #(reset! deg-rad "deg")]])
 
 (defn tri-data
   [{[line1 line2 line3] :lines
@@ -481,14 +497,15 @@
     [label1 label2 label3] :vertices
     :as triangle}]
   [:div
-   [:div
-    [button "Rad" #(reset! deg-rad "rad")]
-    [button "Deg" #(reset! deg-rad "deg")] [:p]]
    [tri-angles triangle]
    [tri-sides triangle]
    (when (right? triangle)
      [:div
       [:p (str "This is a right triangle.")]])
+   (when (and
+          (contains? (set (:angles triangle)) (/ pi 6))
+          (contains? (set (:angles triangle)) (/ pi 2)))
+     [:div "A " (tex "\\dfrac{\\pi}{6}-\\dfrac{\\pi}{3}-\\dfrac{\\pi}{2}") "triangle is half of an equilateral triangle."])
    (when (and (isosceles? triangle)
               (not (iso-sides? triangle)))
      [iso triangle])
@@ -512,7 +529,7 @@
             (update-editor! (str @tri)))]])])
 
 (defn ratio-buttons []
-  (into [:div]
+  (into [:span]
    (for [function ["\\sin" "\\csc" "\\cos" "\\sec" "\\tan" "\\cot"]]
      [button (tex function) #(reset! trig-fn function)])))
 
@@ -525,18 +542,21 @@
                      (str "(def pi js/Math.PI)
                            (defn rad [deg] (* deg (/ pi 180)))"
                           (some-> @!tri .-state .-doc str))))}
-      "Eval"] [:p]
-     [tri-data @tri] [:p]
-     [ratio-buttons] [:p]
-     [ratio @tri] [:p]
+      "Eval"]
+     [rad-deg-buttons]
      [button "Solve" #(do (swap! tri solve-triangle)
                           (update-editor! (str @tri)))]
-
-     [render-triangle @tri]
-     [uc/uc-1]
+     [ratio-buttons]
+     [tri-data @tri] [:p]
+      [:p]
+     [ratio @tri] [:p]
      
+     [uc/uc-1]
+     [render-triangle @tri]
      [:div
       [angle-data]
       [line-data]]
       ;[los/law-of-sines "A" @tri]
      ])
+
+(/ pi 3)

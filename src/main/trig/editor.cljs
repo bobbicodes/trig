@@ -94,7 +94,8 @@
     [:div
      {:ref mount!
       :style {:background-color "gray"
-              :width 350}}]
+              ;:width 550
+              }}]
     (finally (j/call @!view :destroy))))
 
 (defonce !tri (r/atom ""))

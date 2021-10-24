@@ -554,3 +554,93 @@ clj꞉trig.triangle꞉> 
 nil
 clj꞉trig.triangle꞉> 
 >>>>>>> 962715e48fe01db50497f77bdf38e3af62e655e6
+1.0471975511965976
+cljs꞉trig.triangle꞉> 
+2.9999999999999996
+cljs꞉trig.triangle꞉> 
+2.9999999999999996
+cljs꞉trig.triangle꞉> 
+nil
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:1:2
+ Use of undeclared Var trig.triangle/round
+--------------------------------------------------------------------------------
+
+cljs꞉trig.triangle꞉> 
+nil
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:1:2
+ Use of undeclared Var trig.triangle/round
+--------------------------------------------------------------------------------
+
+cljs꞉trig.triangle꞉> 
+#'trig.triangle/round
+cljs꞉trig.triangle꞉> 
+3
+cljs꞉trig.triangle꞉> 
+4.440892098500626E-16
+cljs꞉trig.triangle꞉> 
+3
+cljs꞉trig.triangle꞉> 
+2.9999999999999996
+cljs꞉trig.triangle꞉> 
+4.440892098500626E-16
+cljs꞉trig.triangle꞉> 
+false
+cljs꞉trig.triangle꞉> 
+false
+cljs꞉trig.triangle꞉> 
+false
+cljs꞉trig.triangle꞉> 
+false
+cljs꞉trig.triangle꞉> 
+false
+cljs꞉trig.triangle꞉> 
+false
+cljs꞉trig.triangle꞉> 
+false
+cljs꞉trig.triangle꞉> 
+false
+cljs꞉trig.triangle꞉> 
+false
+cljs꞉trig.triangle꞉> 
+false
+cljs꞉trig.triangle꞉> 
+false
+cljs꞉trig.triangle꞉> 
+false
+cljs꞉trig.triangle꞉> 
+false
+cljs꞉trig.triangle꞉> 
+false
+cljs꞉trig.triangle꞉> 
+true
+cljs꞉trig.triangle꞉> 
+2
+cljs꞉trig.triangle꞉> 
+false
+cljs꞉trig.triangle꞉> 
+[:span {:ref #object[Function]}]
+cljs꞉trig.triangle꞉> 
+2
+cljs꞉trig.triangle꞉> 
+110
+cljs꞉trig.triangle꞉> 
+1.0471975511965976
+cljs꞉trig.triangle꞉> 
+[1.0471975511965979 1.5707963267948966 0.5235987755982988]
+cljs꞉trig.triangle꞉> 
+#{1.5707963267948966 1.0471975511965979 0.5235987755982988}
+cljs꞉trig.triangle꞉> 
+false
+cljs꞉trig.triangle꞉> 
+1.5707963267948966
+cljs꞉trig.triangle꞉> 
+true
+cljs꞉trig.triangle꞉> 
+true
+cljs꞉trig.triangle꞉> 
+1.5707963267948966
+cljs꞉trig.triangle꞉> 
+3
+cljs꞉trig.triangle꞉> 
