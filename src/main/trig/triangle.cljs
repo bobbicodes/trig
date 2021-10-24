@@ -175,18 +175,10 @@
           law-of-sines
           law-of-cosines))
 
-(infer-angle-rad @tri)
-
 (defn rad [deg] (* deg (/ pi 180)))
 
 (defn deg [rad] (/ rad (/ pi 180)))
 
-(solve-triangle {:angles [(rad 40)
-                          (rad 105)
-                          nil]})
-
-(cos (/ pi 4))
-(/ 3 4.242640687119285)
 (defn dist [x1 y1 x2 y2]
   (.sqrt js/Math (+ (sq (- x2 x1))
                     (sq (- y2 y1)))))
@@ -210,9 +202,6 @@
          :angle3 [line1 line2]}
    :cot {:angle1 [line1 line2]
          :angle3 [line2 line1]}})
-
-@tri
-(trig-ratios {:vertices ["B" "C" "A"], :lines [3 4 5], :angles [nil 1.5707963267948966 nil]})
 
 (defn ratio
   "Renders the trig ratios for angle1 and angle3 for the
@@ -338,15 +327,12 @@
   [n x]
   (/ (.round js/Math (* x n)) x))
 
-(* 220 0.5)
-
 (defn pi-frac [n] 
   (cond 
     (= n 1) 1
     (= n pi) (tex "\\pi")
-    (> 0.000000000000001 (-
-                           (round (/ pi n) 1)
-                           (/ pi n)))
+    (> 0.000000000000001
+       (.abs js/Math (- (round (/ pi n) 1) (/ pi n))))
     (tex (str "\\dfrac{\\pi}{" (round (/ pi n) 1) "}"))
     :else n))
 
@@ -486,6 +472,8 @@
    [:div.flex-item (tex (str "\\overline{" label3 label1 "}=")) " "
     (tex (latex/sqrt-tex (pi-frac line3)))] [:p]])
 
+(pi-frac 15)
+
 (defn rad-deg-buttons []
   [:span
    [button "Rad" #(reset! deg-rad "rad")]
@@ -550,10 +538,9 @@
      [tri-data @tri] [:p]
       [:p]
      [ratio @tri] [:p]
-     
      [uc/uc-1]
-     [render-triangle @tri]
-     [:div
+     #_[render-triangle @tri]
+     #_[:div
       [angle-data]
       [line-data]]
       ;[los/law-of-sines "A" @tri]

@@ -644,3 +644,29 @@ cljs꞉trig.triangle꞉> 
 cljs꞉trig.triangle꞉> 
 3
 cljs꞉trig.triangle꞉> 
+[:span {:ref #object[Function]}]
+cljs꞉trig.triangle꞉> 
+[:span {:ref #object[Function]}]
+cljs꞉trig.triangle꞉> 
+true
+cljs꞉trig.triangle꞉> 
+0.20943951023931953
+cljs꞉trig.triangle꞉> 
+0
+cljs꞉trig.triangle꞉> 
+0.20943951023931953
+cljs꞉trig.triangle꞉> 
+-0.20943951023931953
+cljs꞉trig.triangle꞉> 
+[:span {:ref #object[Function]}]
+cljs꞉trig.triangle꞉> 
+#'trig.triangle/pi-frac
+cljs꞉trig.triangle꞉> 
+[:span {:ref #object[Function]}]
+cljs꞉trig.triangle꞉> 
+false
+cljs꞉trig.triangle꞉> 
+[:span {:ref #object[Function]}]
+cljs꞉trig.triangle꞉> 
+#'trig.triangle/pi-frac
+cljs꞉trig.triangle꞉> 
