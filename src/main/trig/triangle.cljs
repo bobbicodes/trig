@@ -13,8 +13,8 @@
 
 (defonce tri
   (r/atom {:vertices ["A" "B" "C"]
-           :lines [9 11 15]
-           :angles [0 81 0]}))
+           :lines [nil nil 1]
+           :angles [nil (/ pi 2) (/ pi 6)]}))
 
 (defn solve-sides
   "Given a triangle with at least one side and one angle defined,
@@ -472,8 +472,6 @@
    [:div.flex-item (tex (str "\\overline{" label3 label1 "}=")) " "
     (tex (latex/sqrt-tex (pi-frac line3)))] [:p]])
 
-(pi-frac 15)
-
 (defn rad-deg-buttons []
   [:span
    [button "Rad" #(reset! deg-rad "rad")]
@@ -490,13 +488,6 @@
    (when (right? triangle)
      [:div
       [:p (str "This is a right triangle.")]])
-   (when (and
-          (contains? (set (:angles triangle)) (/ pi 6))
-          (contains? (set (:angles triangle)) (/ pi 2)))
-     [:div "A " (tex "\\dfrac{\\pi}{6}-\\dfrac{\\pi}{3}-\\dfrac{\\pi}{2}") "triangle is half of an equilateral triangle."])
-   (when (and (isosceles? triangle)
-              (not (iso-sides? triangle)))
-     [iso triangle])
    (when (= 2 (count (filter pos? [angle1 angle2 angle3])))
      [:div
       [:div "The interior angle measures of a triangle always add up to " (tex "\\pi") "."]
@@ -507,7 +498,19 @@
                         (nil? angle2) label2
                         (nil? angle3) label3) "}"))]
        #(do (swap! tri infer-angle-rad)
+            (update-editor! (str @tri)))] [:p]])
+   (when (and (nil? line1)
+          (contains? (set (:angles triangle)) (/ pi 6))
+          (contains? (set (:angles triangle)) (/ pi 2)))
+     [:div
+      [:div "A " (tex "\\dfrac{\\pi}{6}-\\dfrac{\\pi}{3}-\\dfrac{\\pi}{2}") "triangle is half of an equilateral triangle."]
+      [button
+       [:span "Compute short side"]
+       #(do (swap! tri assoc-in [:lines 0] 0.5)
             (update-editor! (str @tri)))]])
+   (when (and (isosceles? triangle)
+              (not (iso-sides? triangle)))
+     [iso triangle])
    (when (pythagoras? triangle)
      [:div
       [:p "The hypotenuse can be calculated by the Pythagorean Theorem."]
@@ -535,15 +538,14 @@
      [button "Solve" #(do (swap! tri solve-triangle)
                           (update-editor! (str @tri)))]
      [ratio-buttons]
+     [uc/uc-1]
      [tri-data @tri] [:p]
       [:p]
      [ratio @tri] [:p]
-     [uc/uc-1]
+     
      #_[render-triangle @tri]
      #_[:div
       [angle-data]
       [line-data]]
       ;[los/law-of-sines "A" @tri]
      ])
-
-(/ pi 3)
