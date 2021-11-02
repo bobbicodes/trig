@@ -4,6 +4,7 @@
  {reagent/reagent {:mvn/version "1.1.0"}
   thheller/shadow-cljs {:mvn/version "2.14.5"}
   borkdude/sci {:mvn/version "0.2.6"}
+  hyperfiddle/rcf {:git/url "https://github.com/hyperfiddle/rcf.git" :sha "6fa497f0013ea6611cced2cdbc67e7f364cf79c9"}
   applied-science/js-interop {:mvn/version "0.2.5"}
   nextjournal/clojure-mode {:git/url "https://github.com/nextjournal/clojure-mode"
                             :sha "a83c87cd2bd2049b70613f360336a096d15c5518"}}}

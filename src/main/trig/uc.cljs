@@ -1,5 +1,6 @@
 (ns trig.uc
-  (:require [trig.latex :as latex :refer [render-letter letters]]))
+  (:require [trig.latex :as latex :refer [render-letter letters]]
+            [trig.math :refer [sq pi sqrt]]))
 
 (defn grid []
   [:g
@@ -59,13 +60,6 @@
    [:path {:fill "none" :stroke "#ffcc00" :d "M 195.5,429.55 C 195.85,427.45 199.7,424.3 200.75,423.95 C 199.7,423.6 195.85,420.45 195.5,418.35" :transform "rotate(90 200.75000000000003 423.95)" :stroke-width "2" :opacity 1 :stroke-linejoin "round" :stroke-linecap "round"}]
    [:path {:fill "none" :stroke "#ffcc00" :d "M 195.5,31.65 C 195.85,29.55 199.7,26.4 200.75,26.05 C 199.7,25.7 195.85,22.55 195.5,20.45" :transform "rotate(-90 200.75000000000003 26.05000000000001)" :stroke-width "2" :opacity 1 :stroke-linejoin "round" :stroke-linecap "round"}]])
 
-(defn axes []
-  [:g
-  [:path {:fill "none" :stroke "#ffcc00" :d "M 200,225 S 200,225 1.05,225" :stroke-width "2" :opacity 1}]
-[:path {:fill "none" :stroke "#ffcc00" :d "M 200,225 S 200,225 398.95,225" :stroke-width "2" :opacity 1}]
-[:path {:fill "none" :stroke "#ffcc00" :d "M 200,225 S 200,225 200,423.95" :stroke-width "2" :opacity 1}]
-[:path {:fill "none" :stroke "#ffcc00" :d "M 200,225 S 200,225 200,26.05" :stroke-width "2" :opacity 1}]])
-
 (defn ticks []
   [:g
    [:path {:fill "none" :stroke "#ffcc00" :d "M 283.333,230 L 283.333,220" :stroke-width 1 :opacity 1}]
@@ -73,41 +67,59 @@
    [:path {:fill "none" :stroke "#ffcc00" :d "M 195,141.667 L 205,141.667" :stroke-width 1 :opacity 1}]
    [:path {:fill "none" :stroke "#ffcc00" :d "M 195,308.333 L 205,308.333" :stroke-width 1 :opacity 1}]])
 
-(defn radius []
- [:path {:fill "none" :stroke "#ffcc00" :d "M 200,225 L 82.1489,342.851"  :stroke-width "3" :clip-path "url(#clip-1)"}])
-
-(defn circumference []
- [:ellipse {:cx 200 :cy 225 :rx 166.66666666666669 :ry 166.66666666666669 :fill "#29abca" :stroke "#29abca" :stroke-width "3" :clip-path "url(#clip-1)" :stroke-opacity 1 :stroke-dasharray "0" :fill-opacity "0"}])
-
-(defn side []
-  [:path {:fill "none" :stroke "#ffcc00" :d "M 82.1489,225 L 82.1489,342.851"  :stroke-width 1 :clip-path "url(#clip-1)" :stroke-dasharray "4,3"}])
-
-(defn point []
- [:ellipse {:cx "82.14886980224206" :cy "342.851130197758" :rx 5 :ry 5 :fill "#e1a158" :stroke "#e1a158"  :stroke-width "3" :clip-path "url(#clip-1)"}])
-
 (defn arcs []
   [:g [:path {:fill "#ffcc00" :stroke "#a24d61" :d "M 141.667,225 A 58.3333,58.3333 0 0,0 158.752,266.248" :stroke-width "2" :clip-path "url(#clip-1)" :stroke-opacity 1 :stroke-dasharray "0" :fill-opacity "0"}]
    [:path {:fill "#ffcc00" :stroke "#a24d61" :d "M 138.333,225 A 61.6667,61.6667 0 0,0 156.395,268.605" :stroke-width "2" :clip-path "url(#clip-1)" :stroke-opacity 1 :stroke-dasharray "0" :fill-opacity "0"}]])
 
-(defn arc []
-  [:path {:fill "#ffcc00" :stroke "#ffcc00" :d "M 266.667,225 A 66.6667,66.6667 0 1,0 152.86,272.14" :stroke-width "2" :clip-path "url(#clip-1)" :stroke-opacity 1 :stroke-dasharray "8,6" :fill-opacity "0"}])
+(defn axes []
+  [:g
+   [:path {:fill "none" :stroke "#ffcc00" 
+           :d "M 368,225 H 32,225" :stroke-width 1 :opacity 1}]
+   [:path {:fill "none" :stroke "#ffcc00" 
+           :d "M 200,393 V 200,58" :stroke-width 1 :opacity 1}]])
 
-(def uc
-  (fn []
-    [:svg {:width 425 :height 425 :view-box "0 0 425 425"}
-     [:defs [:clip-path {:id "clip-1"} [:rect {:x 0 :y 25 :width 400 :height 400}]]]
-     [grid]
-     [arrows]
-     [axes]
-     [ticks]
-     [circumference]
-     [radius]
-     [side]
-     [point]
-     [arcs]
-     [arc]]))
+(defn circle [cx cy]
+  [:ellipse {:cx cx :cy cy :rx 166.66666666666669 :ry 166.66666666666669 
+             :fill "#29abca" :stroke "#29abca" :stroke-width "3" 
+             :clip-path "url(#clip-1)" :stroke-opacity 1 :stroke-dasharray "0" :fill-opacity "0"}])
 
-(def pi-over-6 "M17 6h23M15 7h25M14 8h26M13 9h26M12 10h4M21 10h3M29 10h2M11 11h3M21 11h3M29 11h2M11 12h2M21 12h2M29 12h2M10 13h2M20 13h3M28 13h3M20 14h3M28 14h3M20 15h3M28 15h3M19 16h3M28 16h3M19 17h3M28 17h3M19 18h3M27 18h4M18 19h3M27 19h4M18 20h3M27 20h4M17 21h4M27 21h4M17 22h4M27 22h4M16 23h4M27 23h4M16 24h4M27 24h5M16 25h4M27 25h5M15 26h5M27 26h5M15 27h4M28 27h5M15 28h4M28 28h4M15 29h3M29 29h3M6 51h38M6 52h38M6 53h38M23 68h9M21 69h12M20 70h5M31 70h3M19 71h4M30 71h4M18 72h4M29 72h6M17 73h4M29 73h6M17 74h4M29 74h6M16 75h4M29 75h5M15 76h5M30 76h3M15 77h5M15 78h5M14 79h6M14 80h5M24 80h4M14 81h5M22 81h8M14 82h5M21 82h3M27 82h5M14 83h8M28 83h5M14 84h7M29 84h5M13 85h8M30 85h4M13 86h7M30 86h5M13 87h7M30 87h5M13 88h7M30 88h6M13 89h6M30 89h6M14 90h5M30 90h6M14 91h5M30 91h6M14 92h5M30 92h6M14 93h5M30 93h6M14 94h5M30 94h6M14 95h5M30 95h6M15 96h4M30 96h6M15 97h5M30 97h5M15 98h5M30 98h5M16 99h4M30 99h4M17 100h4M29 100h5M17 101h5M28 101h5M18 102h5M27 102h5M20 103h11M21 104h8")
+(defn hypotenuse [x y]
+ [:path {:fill "none" :stroke "#ffcc00" 
+         :d (str "M 200,225 L " x "," y) :stroke-width "2" :clip-path "url(#clip-1)"}])
+
+(defn side [x1 y1 x2 y2]
+  [:path {:fill "none" :stroke "#ffcc00" 
+          :d (str "M " x1 "," y1 " L " x2 "," y2)  :stroke-width 2 :clip-path "url(#clip-1)"}])
+
+(defn point [cx cy]
+ [:ellipse {:cx cx :cy cy :rx 3 :ry 3 
+            :fill "#7AF745" :stroke "#7AF745"  :stroke-width "3" :clip-path "url(#clip-1)"}])
+
+(defn arc [x y]
+  [:path {:fill "#ffcc00" :stroke "#ffcc00"
+          :d (str "M 266.667,225 A 66.6667,66.6667 0 1,0 " x "," y) :stroke-width "2"
+          :stroke-opacity 1 :fill-opacity "0"}])
+
+{:vertices ["A" "B" "C"],:lines [5 nil nil],:angles [(/ pi 3) (/ pi 2) nil]}
+
+
+(defn uc [triangle]
+  (fn [{[line1 line2 line3] :lines
+        [angle1 angle2 angle3] :angles
+        [label1 label2 label3] :vertices}]
+    (let [x (+ 200 (* 166.66666666666669 (sqrt (- line3 (sq line1)))))
+          y (- 225 (* 166.66666666666669 line1))]
+      [:svg {:width "100%" :view-box "0 0 425 425"}
+     ;[grid]
+     ;[arrows]
+       [axes]
+     ;[ticks]
+       [circle 200 225]
+       [hypotenuse x y]
+       [side x 225 x y]
+       [point x y]
+     ;[arcs]
+       #_[arc 152.86 272.14]])))
 
 (def uc-1
   (fn []

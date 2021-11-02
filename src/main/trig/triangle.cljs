@@ -11,10 +11,18 @@
             [cljs.spec.alpha :as s]
             [clojure.string :as str]))
 
+;; When representing a triangle, we will count the sides and angles
+;; from the top left and follow the triangle counterclockwise down and around.
+;; If a right triangle, the right angle will always be the second angle
+;; located on the bottom left, formed by sides 1 and 2,
+;; opposite the hypotenuse which is side 3.
+
 (defonce tri
   (r/atom {:vertices ["A" "B" "C"]
            :lines [nil nil 1]
            :angles [nil (/ pi 2) (/ pi 6)]}))
+
+
 
 (defn solve-sides
   "Given a triangle with at least one side and one angle defined,
@@ -64,9 +72,11 @@
      (assoc triangle :angles [angle1 angle2 (- 180 angle2 angle1)])))
 
 (defn solve-angles
+  "When 2 sides of a right triangle are given,
+   calculates an angle using the inverse trig functions.
+   If 2 angles are defined, will calculate the third."
   [{[line1 line2 line3] :lines
     [angle1 angle2 angle3] :angles
-    [label1 label2 label3] :vertices
     :as triangle}]
   (cond
     (= 2 (count (filter pos? [angle1 angle2 angle3])))
@@ -87,6 +97,8 @@
                         (atan (/ line2 line1))
                         angle3]))
     :else triangle))
+
+(solve-angles {:lines [nil 2 6], :angles [nil (/ pi 2) nil]})
 
 (defn infer-angle-rad
   [{[line1 line2 line3] :lines
@@ -477,6 +489,24 @@
    [button "Rad" #(reset! deg-rad "rad")]
    [button "Deg" #(reset! deg-rad "deg")]])
 
+(defn special-angles 
+  "Checks if a triangle's angles share a simple relationship that 
+   can simplify calculation, if so, returns a new triangle with 
+   calculation performed. Otherwise returns the triangle unchanged."
+  [{[line1 line2 line3] :lines
+    [angle1 angle2 angle3] :angles
+    [label1 label2 label3] :vertices
+    :as triangle}]
+  (when (and (nil? line1)
+             (contains? (set (:angles triangle)) (/ pi 6))
+             (contains? (set (:angles triangle)) (/ pi 2)))
+    [:div
+     [:div "A " (tex "\\dfrac{\\pi}{6}-\\dfrac{\\pi}{3}-\\dfrac{\\pi}{2}") "triangle is half of an equilateral triangle."]
+     [button
+      [:span "Compute short side"]
+      #(do (swap! tri assoc-in [:lines 0] 0.5)
+           (update-editor! (str @tri)))]]))
+
 (defn tri-data
   [{[line1 line2 line3] :lines
     [angle1 angle2 angle3] :angles
@@ -499,15 +529,7 @@
                         (nil? angle3) label3) "}"))]
        #(do (swap! tri infer-angle-rad)
             (update-editor! (str @tri)))] [:p]])
-   (when (and (nil? line1)
-          (contains? (set (:angles triangle)) (/ pi 6))
-          (contains? (set (:angles triangle)) (/ pi 2)))
-     [:div
-      [:div "A " (tex "\\dfrac{\\pi}{6}-\\dfrac{\\pi}{3}-\\dfrac{\\pi}{2}") "triangle is half of an equilateral triangle."]
-      [button
-       [:span "Compute short side"]
-       #(do (swap! tri assoc-in [:lines 0] 0.5)
-            (update-editor! (str @tri)))]])
+   (special-angles triangle)
    (when (and (isosceles? triangle)
               (not (iso-sides? triangle)))
      [iso triangle])
@@ -538,7 +560,8 @@
      [button "Solve" #(do (swap! tri solve-triangle)
                           (update-editor! (str @tri)))]
      [ratio-buttons]
-     [uc/uc-1]
+     [uc/uc @tri]
+     [uc/uc-1 @tri]
      [tri-data @tri] [:p]
       [:p]
      [ratio @tri] [:p]
