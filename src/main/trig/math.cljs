@@ -2,6 +2,8 @@
 
 (def pi js/Math.PI)
 
+(defn rad [deg] (* deg (/ pi 180)))
+
 (defn sq [n]
   (* n n))
 
