@@ -1,7 +1,7 @@
 (ns trig.triangle
   (:require [reagent.core :as r]
             [trig.latex :as latex :refer [tex]]
-            [trig.math :refer [pi sq sqrt rad sin cos tan asin acos atan csc sec cot]]
+            [trig.math :refer [pi sq sqrt rad deg sin cos tan asin acos atan csc sec cot]]
             [trig.editor :as editor :refer [update-editor! !tri eval-all]]
             [trig.law-of-sines :as los]
             [trig.uc :as uc]
@@ -82,7 +82,7 @@
      (nil? angle3)
      (assoc triangle :angles [angle1 angle2 (- 180 angle2 angle1)])))
 
-(defn solve-angles
+(defn right-triangle-angles
   "When 2 sides of a right triangle are given,
    calculates an angle using the inverse trig functions.
    If 2 angles are defined, will calculate the third."
@@ -99,8 +99,8 @@
                         angle3]))
     (and (pos? side2) (pos? side3))
     (-> triangle
-        (assoc :angles [(acos (/ side2 side3))
-                        (asin (/ side2 side3))
+        (assoc :angles [(asin (/ side2 side3))
+                        (acos (/ side2 side3))
                         angle3]))
     (and (pos? side2) (pos? side1))
     (-> triangle
@@ -109,7 +109,9 @@
                         angle3]))
     :else triangle))
 
-(solve-angles {:sides [nil 2 6], :angles [nil (/ pi 2) nil]})
+(right-triangle-angles {:sides [nil 2 6], :angles [nil (/ pi 2) nil]})
+
+(deg 0.3398369094541219)
 
 (defn infer-angle-rad
   [{[side1 side2 side3] :sides
@@ -197,8 +199,6 @@
           infer-angle-rad
           law-of-sines
           law-of-cosines))
-
-(defn deg [rad] (/ rad (/ pi 180)))
 
 (defn dist [x1 y1 x2 y2]
   (.sqrt js/Math (+ (sq (- x2 x1))

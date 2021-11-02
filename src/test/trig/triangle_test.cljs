@@ -25,6 +25,12 @@
   (is (= (tri/right-triangle-sides {:sides [5 nil nil], :angles [(rad 25) (/ pi 2) nil]})
          {:sides [5 2.331538290774993 5.516889594812459], :angles [0.4363323129985824 1.5707963267948966 nil]})))
 
+;; https://www.khanacademy.org/math/trigonometry/trigonometry-right-triangles/trig-solve-for-an-angle/e/solve-for-an-angle-in-a-right-triangle?modal=1
+
+(deftest right-triangle-angles-test
+  (is (= (tri/right-triangle-angles {:sides [nil 2 6], :angles [nil (/ pi 2) nil]})
+         {:sides [nil 2 6], :angles [0.3398369094541219 1.2309594173407747 nil]})))
+
 (comment
   (run-tests)
   )
@@ -81,20 +87,6 @@
                                                 :angle1 47
                                                 :angle2 24
                                                 :side1  46})) 1))))
-
-
-;; https://www.khanacademy.org/math/trigonometry/trigonometry-right-triangles/trig-solve-for-an-angle/e/solve-for-an-angle-in-a-right-triangle?modal=1
-{:vertices ["A" "C" "B"], :sides [nil 2 6], :angles [nil (/ pi 2) nil]}
-
-(* (/ 180 3.141592653589) (.asin js/Math (/ 2 6)))
-
-#_(deftest two-sides-one-angle-test
-  (is (= 184 (round (:side1 (tri/solve-triangle {:angle3 3
-                                                 :side2  915
-                                                 :side3  736})) 1)))
-  (is (= 262 (round (:side2 (tri/solve-triangle {:side3  250
-                                                 :angle1 56
-                                                 :side1  300})) 1))))
 
 (comment
  (run-tests)

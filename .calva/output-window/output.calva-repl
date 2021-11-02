@@ -465,3 +465,107 @@ cljs꞉trig.triangle꞉> 
 cljs꞉trig.triangle꞉> 
 {:sides [4.289013841019117 2 4.732403166304997], :angles [0.4363323129985824 1.5707963267948966 nil]}
 cljs꞉trig.triangle꞉> 
+nil
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:1:2
+ Use of undeclared Var trig.triangle-test/solve-angles
+--------------------------------------------------------------------------------
+
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:1:50
+ Use of undeclared Var trig.triangle-test/pi
+--------------------------------------------------------------------------------
+
+cljs꞉trig.triangle-test꞉> 
+nil
+cljs꞉trig.triangle꞉> 
+{:sides [nil 2 6], :angles [1.2309594173407747 0.3398369094541219 nil]}
+cljs꞉trig.triangle꞉> 
+70.52877936550931
+cljs꞉trig.triangle꞉> 
+70.52877936550931
+cljs꞉trig.triangle꞉> 
+#'trig.triangle/solve-angles
+cljs꞉trig.triangle꞉> 
+{:sides [nil 2 6], :angles [0.3398369094541219 1.2309594173407747 nil]}
+cljs꞉trig.triangle꞉> 
+19.47122063449069
+cljs꞉trig.triangle꞉> 
+#'trig.triangle/right-triangle-angles
+cljs꞉trig.triangle꞉> 
+{:sides [nil 2 6], :angles [0.3398369094541219 1.2309594173407747 nil]}
+cljs꞉trig.triangle꞉> 
+nil
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:1:2
+ Use of undeclared Var trig.triangle-test/deftest
+--------------------------------------------------------------------------------
+
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:1:10
+ Use of undeclared Var trig.triangle-test/right-triangle-angles-test
+--------------------------------------------------------------------------------
+
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:2:4
+ Use of undeclared Var trig.triangle-test/is
+--------------------------------------------------------------------------------
+
+; ------ WARNING - :undeclared-ns ------------------------------------------------
+;  Resource: <eval>:2:11
+ No such namespace: tri, could not locate tri.cljs, tri.cljc, or JavaScript source providing "tri"
+--------------------------------------------------------------------------------
+
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:2:11
+ Use of undeclared Var tri/right-triangle-angles
+--------------------------------------------------------------------------------
+
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:2:72
+ Use of undeclared Var trig.triangle-test/pi
+--------------------------------------------------------------------------------
+
+cljs꞉trig.triangle-test꞉> 
+nil
+; ------ REPL Error while processing ---------------------------------------------
+; (deftest right-triangle-angles-test
+  (is (= (tri/right-triangle-angles {:sides [nil 2 6], :angles [nil (/ pi 2) nil]})
+         {:sides [nil 2 6], :angles [0.3398369094541219 1.2309594173407747 nil]})))
+no source by provide: trig.triangle-test
+{:provide trig.triangle-test}
+ExceptionInfo: no source by provide: trig.triangle-test
+	shadow.build.data/get-source-id-by-provide (data.clj:186)
+	shadow.build.data/get-source-id-by-provide (data.clj:183)
+	shadow.build.data/get-source-by-provide (data.clj:189)
+	shadow.build.data/get-source-by-provide (data.clj:188)
+	shadow.cljs.repl/repl-compile/fn--15628/fn--15629 (repl.clj:437)
+	shadow.cljs.repl/repl-compile/fn--15628 (repl.clj:413)
+	shadow.cljs.repl/repl-compile (repl.clj:411)
+	shadow.cljs.repl/repl-compile (repl.clj:408)
+	shadow.cljs.repl/process-read-result (repl.clj:499)
+	shadow.cljs.repl/process-read-result (repl.clj:475)
+	shadow.cljs.repl/process-input (repl.clj:659)
+	shadow.cljs.repl/process-input (repl.clj:637)
+	shadow.cljs.devtools.server.worker.impl/eval16193/fn--16196 (impl.clj:685)
+	clojure.lang.MultiFn.invoke (MultiFn.java:234)
+	shadow.cljs.devtools.server.util/server-thread/fn--15837/fn--15838/fn--15846 (util.clj:284)
+	shadow.cljs.devtools.server.util/server-thread/fn--15837/fn--15838 (util.clj:283)
+	shadow.cljs.devtools.server.util/server-thread/fn--15837 (util.clj:256)
+	java.lang.Thread.run (Thread.java:833)
+
+cljs꞉trig.triangle-test꞉> 
+nil
+cljs꞉trig.triangle-test꞉> 
+#'trig.triangle-test/right-triangle-angles-test
+cljs꞉trig.triangle-test꞉> 
+
+Testing trig.triangle-test
+
+
+Ran 1 tests containing 1 assertions.
+
+0 failures, 0 errors.
+
+nil
+cljs꞉trig.triangle-test꞉> 
