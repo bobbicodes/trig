@@ -92,26 +92,28 @@
   (cond
     (= 2 (count (filter pos? [angle1 angle2 angle3])))
     (infer-angle triangle)
-    (and (pos? side1) (pos? side3))
+    (and (pos? side1) (pos? side2))
     (-> triangle
-        (assoc :angles [(asin (/ side1 side3))
-                        (acos (/ side1 side3))
-                        angle3]))
+        (assoc :angles [(atan (/ side2 side1))
+                        angle2
+                        (atan (/ side1 side2))]))
     (and (pos? side2) (pos? side3))
     (-> triangle
         (assoc :angles [(asin (/ side2 side3))
-                        (acos (/ side2 side3))
-                        angle3]))
-    (and (pos? side2) (pos? side1))
+                        angle2
+                        (acos (/ side2 side3))]))
+    (and (pos? side1) (pos? side3))
     (-> triangle
-        (assoc :angles [(atan (/ side1 side2))
-                        (atan (/ side2 side1))
-                        angle3]))
+        (assoc :angles [(acos (/ side1 side3))
+                        angle2
+                        (asin (/ side1 side3))]))
     :else triangle))
 
-(right-triangle-angles {:sides [nil 2 6], :angles [nil (/ pi 2) nil]})
+(map deg (:angles (right-triangle-angles {:sides [nil 2 9], :angles [nil (/ pi 2) nil]})))
+(map deg (:angles (right-triangle-angles {:sides [3 6 nil], :angles [nil (/ pi 2) nil]})))
+(map deg (:angles (right-triangle-angles {:sides [6 nil 8], :angles [nil (/ pi 2) nil]})))
 
-(deg 0.3398369094541219)
+(deg 1.3258176636680326)
 
 (defn infer-angle-rad
   [{[side1 side2 side3] :sides

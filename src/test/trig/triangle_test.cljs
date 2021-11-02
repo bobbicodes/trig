@@ -29,7 +29,9 @@
 
 (deftest right-triangle-angles-test
   (is (= (tri/right-triangle-angles {:sides [nil 2 6], :angles [nil (/ pi 2) nil]})
-         {:sides [nil 2 6], :angles [0.3398369094541219 1.2309594173407747 nil]})))
+         {:sides [nil 2 6], :angles [0.3398369094541219 1.5707963267948966 1.2309594173407747]}))
+  (is (= (tri/right-triangle-angles {:sides [8 2 nil], :angles [nil (/ pi 2) nil]})
+         {:sides [8 2 nil], :angles [0.24497866312686414 1.5707963267948966 1.3258176636680326]})))
 
 (comment
   (run-tests)

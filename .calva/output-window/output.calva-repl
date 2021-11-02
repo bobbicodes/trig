@@ -569,3 +569,164 @@ Ran 1 tests containing 1 assertions.
 
 nil
 cljs꞉trig.triangle-test꞉> 
+{:sides [5 2 nil], :angles [1.1902899496825317 0.3805063771123649 nil]}
+cljs꞉trig.triangle꞉> 
+#'trig.triangle/right-triangle-angles
+cljs꞉trig.triangle꞉> 
+{:sides [nil 2 6], :angles [0.3398369094541219 1.2309594173407747 nil]}
+cljs꞉trig.triangle꞉> 
+{:sides [5 2 nil], :angles [1.1902899496825317 0.3805063771123649 nil]}
+cljs꞉trig.triangle꞉> 
+#'trig.triangle/right-triangle-angles
+cljs꞉trig.triangle꞉> 
+{:sides [5 2 nil], :angles [0.3805063771123649 1.5707963267948966 1.1902899496825317]}
+cljs꞉trig.triangle꞉> 
+68.19859051364818
+cljs꞉trig.triangle꞉> 
+{:sides [nil 5 9], :angles [0.5890309702162739 0.9817653565786227 nil]}
+cljs꞉trig.triangle꞉> 
+#'trig.triangle/right-triangle-angles
+cljs꞉trig.triangle꞉> 
+#'trig.triangle/right-triangle-angles
+cljs꞉trig.triangle꞉> 
+{:sides [nil 5 9], :angles [0.5890309702162739 1.5707963267948966 0.9817653565786227]}
+cljs꞉trig.triangle꞉> 
+56.251011404111416
+cljs꞉trig.triangle꞉> 
+
+Testing trig.triangle-test
+
+
+FAIL in (right-triangle-angles-test) (repl-input.cljs:2:7)
+
+expected: (= (tri/right-triangle-angles {:sides [nil 2 6], :angles [nil (/ pi 2) nil]}) {:sides [nil 2 6], :angles [0.3398369094541219 1.2309594173407747 nil]})
+
+  actual: (not (= {:sides [nil 2 6], :angles [0.3398369094541219 1.5707963267948966 1.2309594173407747]} {:sides [nil 2 6], :angles [0.3398369094541219 1.2309594173407747 nil]}))
+
+
+Ran 1 tests containing 1 assertions.
+
+1 failures, 0 errors.
+
+nil
+cljs꞉trig.triangle-test꞉> 
+#'trig.triangle-test/right-triangle-angles-test
+cljs꞉trig.triangle-test꞉> 
+
+Testing trig.triangle-test
+
+
+Ran 1 tests containing 1 assertions.
+
+0 failures, 0 errors.
+
+nil
+cljs꞉trig.triangle-test꞉> 
+#'trig.triangle/right-triangle-angles
+cljs꞉trig.triangle꞉> 
+{:sides [nil 5 8], :angles [0.6751315329370317 1.5707963267948966 0.895664793857865]}
+cljs꞉trig.triangle꞉> 
+38.68218745348944
+cljs꞉trig.triangle꞉> 
+{:sides [9 6 nil], :angles [0.5880026035475675 1.5707963267948966 0.982793723247329]}
+cljs꞉trig.triangle꞉> 
+33.690067525979785
+cljs꞉trig.triangle꞉> 
+{:sides [nil 2 7], :angles [0.28975170143604745 1.5707963267948966 1.2810446253588492]}
+cljs꞉trig.triangle꞉> 
+73.39845040097977
+cljs꞉trig.triangle꞉> 
+{:sides [nil 2 3], :angles [0.7297276562269663 1.5707963267948966 0.8410686705679303]}
+cljs꞉trig.triangle꞉> 
+41.810314895778596
+cljs꞉trig.triangle꞉> 
+{:sides [8 2 nil], :angles [0.24497866312686414 1.5707963267948966 1.3258176636680326]}
+cljs꞉trig.triangle꞉> 
+75.96375653207353
+cljs꞉trig.triangle꞉> 
+{:sides [8 2 nil], :angles [0.24497866312686414 1.5707963267948966 1.3258176636680326]}
+cljs꞉trig.triangle꞉> 
+nil
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:1:2
+ Use of undeclared Var trig.triangle-test/deftest
+--------------------------------------------------------------------------------
+
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:1:10
+ Use of undeclared Var trig.triangle-test/right-triangle-angles-test
+--------------------------------------------------------------------------------
+
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:2:4
+ Use of undeclared Var trig.triangle-test/is
+--------------------------------------------------------------------------------
+
+; ------ WARNING - :undeclared-ns ------------------------------------------------
+;  Resource: <eval>:2:11
+ No such namespace: tri, could not locate tri.cljs, tri.cljc, or JavaScript source providing "tri"
+--------------------------------------------------------------------------------
+
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:2:11
+ Use of undeclared Var tri/right-triangle-angles
+--------------------------------------------------------------------------------
+
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:2:72
+ Use of undeclared Var trig.triangle-test/pi
+--------------------------------------------------------------------------------
+
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:4:4
+ Use of undeclared Var trig.triangle-test/is
+--------------------------------------------------------------------------------
+
+; ------ WARNING - :undeclared-ns ------------------------------------------------
+;  Resource: <eval>:4:11
+ No such namespace: tri, could not locate tri.cljs, tri.cljc, or JavaScript source providing "tri"
+--------------------------------------------------------------------------------
+
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:4:11
+ Use of undeclared Var tri/right-triangle-angles
+--------------------------------------------------------------------------------
+
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:4:72
+ Use of undeclared Var trig.triangle-test/pi
+--------------------------------------------------------------------------------
+
+cljs꞉trig.triangle-test꞉> 
+nil
+cljs꞉trig.triangle-test꞉> 
+nil
+cljs꞉trig.triangle-test꞉> 
+#'trig.triangle-test/right-triangle-angles-test
+cljs꞉trig.triangle-test꞉> 
+
+Testing trig.triangle-test
+
+
+Ran 1 tests containing 2 assertions.
+
+0 failures, 0 errors.
+
+nil
+cljs꞉trig.triangle-test꞉> 
+{:sides [nil 4 5], :angles [0.9272952180016123 1.5707963267948966 0.6435011087932843]}
+cljs꞉trig.triangle꞉> 
+[0.9272952180016123 1.5707963267948966 0.6435011087932843]
+cljs꞉trig.triangle꞉> 
+(53.13010235415598 90 36.86989764584401)
+cljs꞉trig.triangle꞉> 
+(12.839588406904149 90 77.16041159309584)
+cljs꞉trig.triangle꞉> 
+(63.434948822922 90 26.56505117707799)
+cljs꞉trig.triangle꞉> 
+(48.590377890729144 90 41.40962210927086)
+cljs꞉trig.triangle꞉> 
+#'trig.triangle/right-triangle-angles
+cljs꞉trig.triangle꞉> 
+(41.40962210927086 90 48.590377890729144)
+cljs꞉trig.triangle꞉> 
