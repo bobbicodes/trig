@@ -38,7 +38,7 @@
   )
 
 (deftest infer-angle-test
-  (is (= (tri/infer-angle-rad
+  (is (= (tri/infer-angle
           {:vertices ["R" "T" "S"]
            :sides [3 nil nil]
            :angles [nil (/ pi 2) (/ pi 4)]})
@@ -89,6 +89,10 @@
                                                 :angle1 47
                                                 :angle2 24
                                                 :side1  46})) 1))))
+
+;; https://www.khanacademy.org/math/trigonometry/trigonometry-right-triangles/reciprocal-trig-ratios/e/reciprocal_trig_funcs
+
+
 
 (comment
  (run-tests)
