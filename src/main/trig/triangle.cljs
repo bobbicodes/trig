@@ -69,18 +69,21 @@
     (assoc triangle :sides [side1 (* side1 (tan angle2)) (/ side1 (cos angle2))])
     :else triangle))
 
-(defn infer-angle [{[side1 side2 side3] :sides
-                    [angle1 angle2 angle3] :angles
-                    [label1 label2 label3] :vertices
-                    :as triangle}]
-   (cond
-     (nil? angle1)
-     (assoc triangle :angles [(- 180 angle2 angle3)
-                              angle2 angle3])
-     (nil? angle2)
-     (assoc triangle :angles [angle1 (- 180 angle1 angle3) angle3])
-     (nil? angle3)
-     (assoc triangle :angles [angle1 angle2 (- 180 angle2 angle1)])))
+(defn infer-angle
+  [{[side1 side2 side3] :sides
+    [angle1 angle2 angle3] :angles
+    :as triangle}]
+  (if (= 2 (count (remove nil? (:angles triangle))))
+    (cond
+      (nil? angle1)
+      (assoc triangle :angles [(- pi angle2 angle3)
+                               angle2 angle3])
+      (nil? angle2)
+      (assoc triangle :angles [angle1 (- pi angle1 angle3) angle3])
+      (nil? angle3)
+      (assoc triangle :angles [angle1 angle2 (- pi angle2 angle1)])
+      :else triangle)
+    triangle))
 
 (defn right-triangle-angles
   "When 2 sides of a right triangle are given,
@@ -109,27 +112,13 @@
                         (asin (/ side1 side3))]))
     :else triangle))
 
-(map deg (:angles (right-triangle-angles {:sides [nil 2 9], :angles [nil (/ pi 2) nil]})))
-(map deg (:angles (right-triangle-angles {:sides [3 6 nil], :angles [nil (/ pi 2) nil]})))
-(map deg (:angles (right-triangle-angles {:sides [6 nil 8], :angles [nil (/ pi 2) nil]})))
+(map deg (:angles (right-triangle-angles {:sides [nil 4 9], :angles [nil (/ pi 2) nil]})))
+(map deg (:angles (right-triangle-angles {:sides [8 7 nil], :angles [nil (/ pi 2) nil]})))
+(map deg (:angles (right-triangle-angles {:sides [4 nil 7], :angles [nil (/ pi 2) nil]})))
 
 (deg 1.3258176636680326)
 
-(defn infer-angle-rad
-  [{[side1 side2 side3] :sides
-    [angle1 angle2 angle3] :angles
-    :as triangle}]
-  (if (= 2 (count (remove nil? (:angles triangle))))
-    (cond
-      (nil? angle1)
-      (assoc triangle :angles [(- pi angle2 angle3)
-                               angle2 angle3])
-      (nil? angle2)
-      (assoc triangle :angles [angle1 (- pi angle1 angle3) angle3])
-      (nil? angle3)
-      (assoc triangle :angles [angle1 angle2 (- pi angle2 angle1)])
-      :else triangle)
-    triangle))
+
 
 (defn law-of-sines [{[side1 side2 side3] :sides
                      [angle1 angle2 angle3] :angles
@@ -198,13 +187,46 @@
    solving any sides/angles possible."
   [triangle]
       (-> triangle
-          infer-angle-rad
+          infer-angle
           law-of-sines
           law-of-cosines))
 
 (defn dist [x1 y1 x2 y2]
   (.sqrt js/Math (+ (sq (- x2 x1))
                     (sq (- y2 y1)))))
+
+(defn divisible? [n d]
+  (= 0 (mod n d)))
+
+(defn simplify-frac [n d]
+  [n d])
+
+;; check divisibility into the following numbers:
+
+(for [n (range 2 (inc (min 26 10)))
+      :when (even? n)]
+  n)
+
+;; we put the divisibility results in descending order to find
+;; the largest common divisor.
+
+(reverse (map #(divisible? 26 %) [2 4 6 8 10]))
+(reverse (map #(divisible? 10 %) [2 4 6 8 10]))
+
+;; Just kidding, we can use Euclid's algorithm:
+
+(defn gcd [a b]
+  (if (zero? b)
+    a
+    (recur b (mod a b))))
+
+(gcd 26 10)
+
+;; I forgot that's what we needed. Been up aall night.
+;; I'm going to commit this so there's a record of
+;; what I was about to do.
+
+(simplify-frac 26 10)
 
 (defonce trig-fn (r/atom "\\sin"))
 
@@ -228,16 +250,20 @@
 
 (defn ratio
   "Renders the trig ratios for angle1 and angle3 for the
-   currently selected trig function."
+   currently selected trig function. Simplifies ratios."
   [{[side1 side2 side3] :sides
     [angle1 angle2 angle3] :angles
     [label1 label2 label3] :vertices :as triangle}]
   (let [{[numer1 denom1] :angle1
          [numer3 denom3] :angle3}
-        ((keyword (str/replace @trig-fn "\\" "")) (trig-ratios triangle))]
+        ((keyword (str/replace @trig-fn "\\" "")) (trig-ratios triangle))
+        gcd1 (gcd numer1 denom1)
+        gcd3 (gcd numer3 denom3)]
     [:div.flex-container
-     [:div.flex-item (tex (str @trig-fn "(\\angle{" label1 "})=\\dfrac{" numer1 "}{" denom1 "}"))]
-     [:div.flex-item (tex (str @trig-fn "(\\angle{" label3 "})=\\dfrac{" numer3 "}{" denom3 "}"))]]))
+     [:div.flex-item (tex (str @trig-fn "(\\angle{" label1 "})=\\dfrac{" (/ numer1 gcd1) "}{" (/ denom1 gcd1) "}"))]
+     [:div.flex-item (tex (str @trig-fn "(\\angle{" label3 "})=\\dfrac{" (/ numer3 gcd3) "}{" (/ denom3 gcd3) "}"))]]))
+
+
 
 (defonce obtuse? (r/atom {:angle1 false :angle2 false :angle3 false}))
 
@@ -452,10 +478,7 @@
 (defn pythagoras?
   "Returns true if the triangle has 2 sides defined
    but not the hypotenuse, and thus could be solved
-   using the Pythagorean Theorem.
-
-   TODO: Only implemented for a single config,
-   where the right angle is the 2nd one."
+   using the Pythagorean Theorem."
   [{[side1 side2 side3] :sides
     [angle1 angle2 angle3] :angles
     [label1 label2 label3] :vertices
@@ -535,7 +558,7 @@
                   (cond (nil? angle1) label1
                         (nil? angle2) label2
                         (nil? angle3) label3) "}"))]
-       #(do (swap! tri infer-angle-rad)
+       #(do (swap! tri infer-angle)
             (update-editor! (str @tri)))] [:p]])
    (special-angles triangle)
    (when (and (isosceles? triangle)
@@ -573,8 +596,7 @@
      [tri-data @tri] [:p]
       [:p]
      [ratio @tri] [:p]
-     
-     #_[render-triangle @tri]
+     [render-triangle @tri]
      #_[:div
       [angle-data]
       [side-data]]
