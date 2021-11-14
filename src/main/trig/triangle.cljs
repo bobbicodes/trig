@@ -11,7 +11,7 @@
 
 ;; When representing a triangle, we will count the sides and angles
 ;; from the top left and follow the triangle counterclockwise down and around.
-;; If a right triangle, the right angle will always be the second angle
+;; If a right triangle, we standardize the right angle to be the second angle
 ;; located on the bottom left, formed by sides 1 and 2,
 ;; opposite the hypotenuse which is side 3.
 
@@ -221,7 +221,7 @@
     (recur b (mod a b))))
 
 (gcd 26 10)
-
+(mod 26 10)
 ;; I forgot that's what we needed. Been up aall night.
 ;; I'm going to commit this so there's a record of
 ;; what I was about to do.
@@ -262,8 +262,6 @@
     [:div.flex-container
      [:div.flex-item (tex (str @trig-fn "(\\angle{" label1 "})=\\dfrac{" (/ numer1 gcd1) "}{" (/ denom1 gcd1) "}"))]
      [:div.flex-item (tex (str @trig-fn "(\\angle{" label3 "})=\\dfrac{" (/ numer3 gcd3) "}{" (/ denom3 gcd3) "}"))]]))
-
-
 
 (defonce obtuse? (r/atom {:angle1 false :angle2 false :angle3 false}))
 
@@ -463,7 +461,7 @@
              (/ pi 2)))
 
 (defn hypotenuse
-  "Calculates the 3rd angle of a right triangle
+  "Calculates the 3rd side of a right triangle
    using the Pythagorean Theorem."
   [{[side1 side2 side3] :sides
     [angle1 angle2 angle3] :angles
@@ -488,6 +486,18 @@
                        (range 2)))]
       (cond (= right-angle 1)
             (and (not (pos? side3)) (pos? side1) (pos? side2)))))
+
+(defn pythagoras1
+  "Calculates the first side of a right triangle given
+   the second and third sides using the Pythagorean Theorem."
+  [{[side1 side2 side3] :sides
+    :as triangle}]
+  (assoc-in triangle [:sides 0] (sqrt (- (sq side3) (sq side2)))))
+
+(pythagoras1 {:sides [nil 0.5 1]})
+
+(- 244.13
+   (* (- 244.13 35.435) (sqrt (- (sq 1) (sq 0.5)))))
 
 (defonce deg-rad (r/atom "rad"))
 
@@ -534,8 +544,17 @@
     [:div
      [:div "A " (tex "\\dfrac{\\pi}{6}-\\dfrac{\\pi}{3}-\\dfrac{\\pi}{2}") "triangle is half of an equilateral triangle."]
      [button
-      [:span "Compute short side"]
+      [:span "Compute side"]
       #(do (swap! tri assoc-in [:sides 0] 0.5)
+           (update-editor! (str @tri)))]])
+  (when (and (nil? side2)
+             (contains? (set (:angles triangle)) (/ pi 3))
+             (contains? (set (:angles triangle)) (/ pi 2)))
+    [:div
+     [:div "A " (tex "\\dfrac{\\pi}{6}-\\dfrac{\\pi}{3}-\\dfrac{\\pi}{2}") "triangle is half of an equilateral triangle."]
+     [button
+      [:span "Compute side"]
+      #(do (swap! tri assoc-in [:sides 1] 0.5)
            (update-editor! (str @tri)))]]))
 
 (defn tri-data
@@ -577,6 +596,10 @@
    (for [function ["\\sin" "\\csc" "\\cos" "\\sec" "\\tan" "\\cot"]]
      [button (tex function) #(reset! trig-fn function)])))
 
+(defonce counter (r/atom 0))
+
+(js/setInterval #(swap! counter inc) 1)
+
 (defn app []
     [:div#app
      [editor/editor (str @tri) !tri {:eval? true}]
@@ -591,14 +614,14 @@
      [button "Solve" #(do (swap! tri solve-triangle)
                           (update-editor! (str @tri)))]
      [ratio-buttons]
-     [uc/uc @tri]
-     [uc/uc-1 @tri]
+       [uc/uc-theta (mod (* 0.001 @counter) (* pi 2))]
+     ;[uc/uc-2 @tri]
      [tri-data @tri] [:p]
-      [:p]
+     [:p]
      [ratio @tri] [:p]
-     [render-triangle @tri]
+     ;[render-triangle @tri]
      #_[:div
-      [angle-data]
-      [side-data]]
+        [angle-data]
+        [side-data]]
       ;[los/law-of-sines "A" @tri]
      ])

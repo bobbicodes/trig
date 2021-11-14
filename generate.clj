@@ -1,7 +1,7 @@
 (ns uc.generate
   (:require [clojure.java.shell :refer [sh]]))
 
-(def tex2svg "/usr/local/lib/node_modules/mathjax-node-cli/bin/tex2svg")
+(def tex2svg "/usr/local/lib/nodejs/lib/node_modules/mathjax-node-cli/bin/tex2svg")
 
 (def uppercase-letters
   (for [letter (map char (range 65 91))]
@@ -74,7 +74,8 @@ uppercase-letters
                 :f "\\mapsto\\ \\left[\\cos{\\theta}\\quad\\sin{\\theta}\\right]"}])
 
 (defn renderer [{:keys [n f]}]
-  (spit (str "public/img/" n ".svg") (:out (sh tex2svg (str "\\begin{equation} " f "\\end{equation}")))))
+  (spit (str "public/img/" n ".svg") 
+        (:out (sh tex2svg (str "\\begin{equation} " f "\\end{equation}")))))
 
 uppercase-letters
 
@@ -84,6 +85,8 @@ uppercase-letters
      :f (str "\\dfrac{\\pi}{" n "}")}))
 
 (comment
+  (renderer {:n "theta"
+             :f "\\theta"})
   (doall (map renderer pi-fracs))
   )
 

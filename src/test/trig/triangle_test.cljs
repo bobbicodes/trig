@@ -90,9 +90,9 @@
                                                 :angle2 24
                                                 :side1  46})) 1))))
 
-;; https://www.khanacademy.org/math/trigonometry/trigonometry-right-triangles/reciprocal-trig-ratios/e/reciprocal_trig_funcs
+;; https://www.khanacademy.org/math/trigonometry/unit-circle-trig-func/xfefa5515:special-trigonometric-values-in-the-first-quadrant/e/trig-values-of-6-4-and-3
 
-
+{:vertices ["K" "J" "L"], :sides [nil nil 1], :angles [nil (/ pi 2) (/ pi 3)]}
 
 (comment
  (run-tests)

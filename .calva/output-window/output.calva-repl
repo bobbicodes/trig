@@ -25,708 +25,104 @@ clj꞉shadow.user꞉>  ; Use `alt+enter` to evaluate
 ;    (There is a button in the status bar for this)
 ; Jack-in done.
 cljs꞉cljs.user꞉>  ; Use `alt+enter` to evaluate
-0.9104477611940298
-cljs꞉trig.triangle꞉> 
+(count (conj (pop (conj (new-list) "Clojure" "Lisp")) "Java" "JavaScript"))
+clj꞉trig.triangle꞉> 
+{:vertices ["K" "J" "L"], :sides [nil nil 18], :angles [nil 1.5707963267948966 1.0471975511965976]}
+clj꞉trig.triangle꞉> 
+[nil 1.5707963267948966 1.0471975511965976]
+clj꞉trig.triangle꞉> 
 nil
 ; ------ WARNING - :undeclared-var -----------------------------------------------
 ;  Resource: <eval>:1:2
- Use of undeclared Var trig.triangle-test/solve-sides
+ Use of undeclared Var trig.triangle-test/tri
 --------------------------------------------------------------------------------
 
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:1:93
- Use of undeclared Var trig.triangle-test/rad
---------------------------------------------------------------------------------
-
-cljs꞉trig.triangle-test꞉> 
-#'trig.triangle/rad
-cljs꞉trig.triangle꞉> 
-{:vertices ["A" "C" "B"], :lines [4 65324957412781480 65324957412781480], :angles [nil 1.5707963267948966 0.6108652381980153]}
-cljs꞉trig.triangle꞉> 
-{:lines [4 65324957412781480 65324957412781480], :angles [nil 1.5707963267948966 0.6108652381980153]}
-cljs꞉trig.triangle꞉> 
-#'trig.triangle/solve-sides
-cljs꞉trig.triangle꞉> 
-{:lines [4 65324957412781480 65324957412781480], :angles [nil 1.5707963267948966 0.6108652381980153]}
-cljs꞉trig.triangle꞉> 
-0.6108652381980153
-cljs꞉trig.triangle꞉> 
-1.5707963267948966
-cljs꞉trig.triangle꞉> 
-#'trig.triangle/right-triangle-side
-cljs꞉trig.triangle꞉> 
-{:lines [4 nil 6.973787182484393], :angles [nil 1.5707963267948966 0.6108652381980153]}
-cljs꞉trig.triangle꞉> 
+clj꞉trig.triangle-test꞉> 
+{:vertices ["K" "J" "L"], :sides [nil nil 1], :angles [nil 1.5707963267948966 1.0471975511965976]}
+clj꞉trig.triangle꞉> 
+122.065
+clj꞉trig.uc꞉> 
+104.348
+clj꞉trig.uc꞉> 
+125.218
+clj꞉trig.uc꞉> 
+#'trig.triangle/pythagoras1
+clj꞉trig.triangle꞉> 
+{:sides [1.118033988749895 0.5 1]}
+clj꞉trig.triangle꞉> 
+#'trig.triangle/pythagoras1
+clj꞉trig.triangle꞉> 
+{:sides [0 0.5 1]}
+clj꞉trig.triangle꞉> 
+#'trig.triangle/pythagoras1
+clj꞉trig.triangle꞉> 
+{:sides [0.8660254037844386 0.5 1]}
+clj꞉trig.triangle꞉> 
+0.8660254037844386
+clj꞉trig.triangle꞉> 
+32.70721817410501
+clj꞉trig.triangle꞉> 
+68.14221817410501
+clj꞉trig.triangle꞉> 
+37.45460799100343
+clj꞉trig.triangle꞉> 
+50.06826799712377
+clj꞉trig.triangle꞉> 
+37.45460799100343
+clj꞉trig.triangle꞉> 
+2.0196079910034257
+clj꞉trig.triangle꞉> 
+63.39482835720659
+clj꞉trig.triangle꞉> 
+63.39482835720659
+clj꞉trig.triangle꞉> 
+0.8660254037844386
+clj꞉trig.uc꞉> 
+{:vertices ["E" "D" "F"], :sides [12 nil nil], :angles [nil 1.5707963267948966 0.7853981633974483]}
+clj꞉trig.uc꞉> 
+0.8660254037844385
+clj꞉trig.triangle꞉> 
+1.4142135623730951
+clj꞉trig.uc꞉> 
+0.7071067811865476
+clj꞉trig.uc꞉> 
+1.7320508075688774
+clj꞉trig.triangle꞉> 
+0.7071067811865474
+clj꞉trig.triangle꞉> 
+0.8660254037844385
+clj꞉trig.triangle꞉> 
+1.7320508075688774
+clj꞉trig.triangle꞉> 
+0.8660254037844386
+clj꞉trig.triangle꞉> 
 nil
-cljs꞉trig.triangle-test꞉> 
+clj꞉uc.generate꞉> 
+#'uc.generate/tex2svg
+clj꞉uc.generate꞉> 
+#'uc.generate/renderer
+clj꞉uc.generate꞉> 
+; Execution error (IOException) at java.lang.ProcessImpl/forkAndExec (ProcessImpl.java:-2).
+; error=2, No such file or directory
+clj꞉uc.generate꞉> 
+#'uc.generate/tex2svg
+clj꞉uc.generate꞉> 
+; Execution error (IOException) at java.lang.ProcessImpl/forkAndExec (ProcessImpl.java:-2).
+; error=2, No such file or directory
+clj꞉uc.generate꞉> 
+#'uc.generate/renderer
+clj꞉uc.generate꞉> 
+; Execution error (IOException) at java.lang.ProcessImpl/forkAndExec (ProcessImpl.java:-2).
+; error=2, No such file or directory
+clj꞉uc.generate꞉> 
 nil
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:1:10
- Use of undeclared Var trig.triangle-test/right-triangle-side-test
---------------------------------------------------------------------------------
-
-cljs꞉trig.triangle-test꞉> 
-:repl/exception!
-; 
-; Execution error (TypeError) at (<cljs repl>:1).
-Cannot read properties of undefined (reading 'call')
-cljs꞉trig.triangle-test꞉> 
-:repl/exception!
-; 
-; Execution error (TypeError) at (<cljs repl>:1).
-Cannot read properties of undefined (reading 'call')
-cljs꞉trig.triangle-test꞉> 
+clj꞉uc.generate꞉> 
+#'uc.generate/tex2svg
+clj꞉uc.generate꞉> 
+; Execution error (IOException) at java.lang.ProcessImpl/forkAndExec (ProcessImpl.java:-2).
+; error=2, No such file or directory
+clj꞉uc.generate꞉> 
+#'uc.generate/tex2svg
+clj꞉uc.generate꞉> 
 nil
-cljs꞉trig.triangle-test꞉> 
-#'trig.triangle-test/right-triangle-side-test
-cljs꞉trig.triangle-test꞉> 
-
-Testing trig.triangle-test
-
-
-Ran 1 tests containing 1 assertions.
-
-0 failures, 0 errors.
-
-nil
-cljs꞉trig.triangle-test꞉> 
-{:lines [nil nil 5], :angles [nil 1.5707963267948966 0.6108652381980153]}
-cljs꞉trig.triangle꞉> 
-#'trig.triangle/right-triangle-side
-cljs꞉trig.triangle꞉> 
-{:lines [nil nil 2.8678821817552302], :angles [nil 1.5707963267948966 0.6108652381980153]}
-cljs꞉trig.triangle꞉> 
-nil
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:1:2
- Use of undeclared Var trig.triangle-test/deftest
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:1:10
- Use of undeclared Var trig.triangle-test/right-triangle-side-test
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:2:4
- Use of undeclared Var trig.triangle-test/is
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-ns ------------------------------------------------
-;  Resource: <eval>:2:11
- No such namespace: tri, could not locate tri.cljs, tri.cljc, or JavaScript source providing "tri"
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:2:11
- Use of undeclared Var tri/right-triangle-side
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:2:72
- Use of undeclared Var trig.triangle-test/pi
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:2:79
- Use of undeclared Var trig.triangle-test/rad
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:4:4
- Use of undeclared Var trig.triangle-test/is
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-ns ------------------------------------------------
-;  Resource: <eval>:4:11
- No such namespace: tri, could not locate tri.cljs, tri.cljc, or JavaScript source providing "tri"
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:4:11
- Use of undeclared Var tri/right-triangle-side
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:4:72
- Use of undeclared Var trig.triangle-test/pi
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:4:79
- Use of undeclared Var trig.triangle-test/rad
---------------------------------------------------------------------------------
-
-cljs꞉trig.triangle-test꞉> 
-nil
-cljs꞉trig.triangle-test꞉> 
-#'trig.triangle-test/right-triangle-side-test
-cljs꞉trig.triangle-test꞉> 
-
-Testing trig.triangle-test
-
-
-Ran 1 tests containing 2 assertions.
-
-0 failures, 0 errors.
-
-nil
-cljs꞉trig.triangle-test꞉> 
-{:lines [nil nil 5], :angles [1.2217304763960306 1.5707963267948966 nil]}
-cljs꞉trig.triangle꞉> 
-#'trig.triangle/right-triangle-side
-cljs꞉trig.triangle꞉> 
-{:lines [1.7101007166283442 nil 5], :angles [1.2217304763960306 1.5707963267948966 nil]}
-cljs꞉trig.triangle꞉> 
-#'trig.triangle-test/right-triangle-side-test
-cljs꞉trig.triangle-test꞉> 
-{:lines [nil 7 nil], :angles [nil 1.5707963267948966 1.1344640137963142]}
-cljs꞉trig.triangle꞉> 
-#'trig.triangle/right-triangle-side
-cljs꞉trig.triangle꞉> 
-{:lines [15.01154844356691 7 nil], :angles [nil 1.5707963267948966 1.1344640137963142]}
-cljs꞉trig.triangle꞉> 
-{:lines [2 nil 2.2067558379249834], :angles [nil 1.5707963267948966 1.1344640137963142]}
-cljs꞉trig.triangle꞉> 
-#'trig.triangle/right-triangle-side
-cljs꞉trig.triangle꞉> 
-{:lines [2 0.9326153163099972 2.2067558379249834], :angles [nil 1.5707963267948966 1.1344640137963142]}
-cljs꞉trig.triangle꞉> 
-nil
-cljs꞉trig.triangle-test꞉> 
-#'trig.triangle-test/right-triangle-sides-test
-cljs꞉trig.triangle-test꞉> 
-
-Testing trig.triangle-test
-
-
-FAIL in (right-triangle-sides-test) (repl-input.cljs:2:7)
-
-expected: (= (tri/right-triangle-sides {:sides [4 nil nil], :angles [nil (/ pi 2) (rad 35)]}) {:sides [4 nil 6.973787182484393], :angles [nil 1.5707963267948966 0.6108652381980153]})
-
-  actual: (not (= {:sides [4 5.7125920269684585 6.973787182484393], :angles [nil 1.5707963267948966 0.6108652381980153]} {:sides [4 nil 6.973787182484393], :angles [nil 1.5707963267948966 0.6108652381980153]}))
-
-
-Ran 1 tests containing 4 assertions.
-
-1 failures, 0 errors.
-
-nil
-cljs꞉trig.triangle-test꞉> 
-#'trig.triangle-test/right-triangle-sides-test
-cljs꞉trig.triangle-test꞉> 
-
-Testing trig.triangle-test
-
-
-Ran 1 tests containing 4 assertions.
-
-0 failures, 0 errors.
-
-nil
-cljs꞉trig.triangle-test꞉> 
-{:sides [2 0.9326153163099972 2.2067558379249834], :angles [nil 1.5707963267948966 1.1344640137963142]}
-cljs꞉trig.triangle꞉> 
-#'trig.triangle-test/right-triangle-sides-test
-cljs꞉trig.triangle-test꞉> 
-
-Testing trig.triangle-test
-
-
-Ran 1 tests containing 5 assertions.
-
-0 failures, 0 errors.
-
-nil
-cljs꞉trig.triangle-test꞉> 
-{:sides [6.433520761528676 3 nil], :angles [nil 1.5707963267948966 1.1344640137963142]}
-cljs꞉trig.triangle꞉> 
-#'trig.triangle/right-triangle-sides
-cljs꞉trig.triangle꞉> 
-{:sides [6.433520761528676 3 7.098604749457495], :angles [nil 1.5707963267948966 1.1344640137963142]}
-cljs꞉trig.triangle꞉> 
-#'trig.triangle-test/right-triangle-sides-test
-cljs꞉trig.triangle-test꞉> 
-
-Testing trig.triangle-test
-
-
-FAIL in (right-triangle-sides-test) (repl-input.cljs:8:7)
-
-expected: (= (tri/right-triangle-sides {:sides [nil 7 nil], :angles [nil (/ pi 2) (rad 65)]}) {:sides [15.01154844356691 7 nil], :angles [nil 1.5707963267948966 1.1344640137963142]})
-
-  actual: (not (= {:sides [15.01154844356691 7 16.56341108206749], :angles [nil 1.5707963267948966 1.1344640137963142]} {:sides [15.01154844356691 7 nil], :angles [nil 1.5707963267948966 1.1344640137963142]}))
-
-
-Ran 1 tests containing 6 assertions.
-
-1 failures, 0 errors.
-
-nil
-cljs꞉trig.triangle-test꞉> 
-#'trig.triangle-test/right-triangle-sides-test
-cljs꞉trig.triangle-test꞉> 
-
-Testing trig.triangle-test
-
-
-Ran 1 tests containing 6 assertions.
-
-0 failures, 0 errors.
-
-nil
-cljs꞉trig.triangle-test꞉> 
-nil
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:1:71
- Use of undeclared Var trig.triangle/nill
---------------------------------------------------------------------------------
-
-cljs꞉trig.triangle꞉> 
-{:sides [nil 3 nil], :angles [0.3490658503988659 1.5707963267948966 nil]}
-cljs꞉trig.triangle꞉> 
-#'trig.triangle/right-triangle-sides
-cljs꞉trig.triangle꞉> 
-{:sides [nil 3 8.771413200489262], :angles [0.3490658503988659 1.5707963267948966 nil]}
-cljs꞉trig.triangle꞉> 
-#'trig.triangle-test/right-triangle-sides-test
-cljs꞉trig.triangle-test꞉> 
-
-Testing trig.triangle-test
-
-
-Ran 1 tests containing 7 assertions.
-
-0 failures, 0 errors.
-
-nil
-cljs꞉trig.triangle-test꞉> 
-{:sides [nil nil 2.298133329356934], :angles [nil 1.5707963267948966 0.8726646259971648]}
-cljs꞉trig.triangle꞉> 
-{:sides [nil nil 2.298133329356934], :angles [nil 1.5707963267948966 0.8726646259971648]}
-cljs꞉trig.triangle꞉> 
-#'trig.triangle/right-triangle-sides
-cljs꞉trig.triangle꞉> 
-{:sides [2.298133329356934 nil 3], :angles [nil 1.5707963267948966 0.8726646259971648]}
-cljs꞉trig.triangle꞉> 
-#'trig.triangle-test/right-triangle-sides-test
-cljs꞉trig.triangle-test꞉> 
-
-Testing trig.triangle-test
-
-
-FAIL in (right-triangle-sides-test) (repl-input.cljs:4:7)
-
-expected: (= (tri/right-triangle-sides {:sides [nil nil 5], :angles [nil (/ pi 2) (rad 35)]}) {:sides [nil nil 2.8678821817552302], :angles [nil 1.5707963267948966 0.6108652381980153]})
-
-  actual: (not (= {:sides [2.8678821817552302 nil 5], :angles [nil 1.5707963267948966 0.6108652381980153]} {:sides [nil nil 2.8678821817552302], :angles [nil 1.5707963267948966 0.6108652381980153]}))
-
-
-Ran 1 tests containing 8 assertions.
-
-1 failures, 0 errors.
-
-nil
-cljs꞉trig.triangle-test꞉> 
-#'trig.triangle-test/right-triangle-sides-test
-cljs꞉trig.triangle-test꞉> 
-
-Testing trig.triangle-test
-
-
-Ran 1 tests containing 8 assertions.
-
-0 failures, 0 errors.
-
-nil
-cljs꞉trig.triangle-test꞉> 
-{:sides [2.298133329356934 nil 3], :angles [nil 1.5707963267948966 0.8726646259971648]}
-cljs꞉trig.triangle꞉> 
-{:sides [1.8793852415718169 nil 2], :angles [0.3490658503988659 1.5707963267948966 nil]}
-cljs꞉trig.triangle꞉> 
-{:sides [5 nil nil], :angles [0.4363323129985824 1.5707963267948966 nil]}
-cljs꞉trig.triangle꞉> 
-#'trig.triangle/right-triangle-sides
-cljs꞉trig.triangle꞉> 
-{:sides [5 2.331538290774993 nil], :angles [0.4363323129985824 1.5707963267948966 nil]}
-cljs꞉trig.triangle꞉> 
-#'trig.triangle-test/right-triangle-sides-test
-cljs꞉trig.triangle-test꞉> 
-nil
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:1:1
- Can't take value of macro cljs.core/comment
---------------------------------------------------------------------------------
-
-cljs꞉trig.triangle-test꞉> 
-
-Testing trig.triangle-test
-
-
-Ran 1 tests containing 9 assertions.
-
-0 failures, 0 errors.
-
-nil
-cljs꞉trig.triangle-test꞉> 
-{:sides [nil 4 11.69521760065235], :angles [0.3490658503988659 1.5707963267948966 nil]}
-cljs꞉trig.triangle꞉> 
-{:sides [nil 4 11.69521760065235], :angles [0.3490658503988659 1.5707963267948966 nil]}
-cljs꞉trig.triangle꞉> 
-#'trig.triangle/right-triangle-sides
-cljs꞉trig.triangle꞉> 
-{:sides [10.98990967781849 4 11.69521760065235], :angles [0.3490658503988659 1.5707963267948966 nil]}
-cljs꞉trig.triangle꞉> 
-
-Testing trig.triangle-test
-
-
-FAIL in (right-triangle-sides-test) (repl-input.cljs:14:7)
-
-expected: (= (tri/right-triangle-sides {:sides [nil 3 nil], :angles [(rad 20) (/ pi 2) nil]}) {:sides [nil 3 8.771413200489262], :angles [0.3490658503988659 1.5707963267948966 nil]})
-
-  actual: (not (= {:sides [8.242432258363868 3 8.771413200489262], :angles [0.3490658503988659 1.5707963267948966 nil]} {:sides [nil 3 8.771413200489262], :angles [0.3490658503988659 1.5707963267948966 nil]}))
-
-
-Ran 1 tests containing 9 assertions.
-
-1 failures, 0 errors.
-
-nil
-cljs꞉trig.triangle-test꞉> 
-#'trig.triangle-test/right-triangle-sides-test
-cljs꞉trig.triangle-test꞉> 
-
-Testing trig.triangle-test
-
-
-Ran 1 tests containing 9 assertions.
-
-0 failures, 0 errors.
-
-nil
-cljs꞉trig.triangle-test꞉> 
-{:sides [5 4.1954981558863995 nil], :angles [0.6981317007977318 1.5707963267948966 nil]}
-cljs꞉trig.triangle꞉> 
-#'trig.triangle/right-triangle-sides
-cljs꞉trig.triangle꞉> 
-{:sides [5 4.1954981558863995 6.527036446661393], :angles [0.6981317007977318 1.5707963267948966 nil]}
-cljs꞉trig.triangle꞉> 
-
-Testing trig.triangle-test
-
-
-FAIL in (right-triangle-sides-test) (repl-input.cljs:18:7)
-
-expected: (= (tri/right-triangle-sides {:sides [5 nil nil], :angles [(rad 25) (/ pi 2) nil]}) {:sides [5 2.331538290774993 nil], :angles [0.4363323129985824 1.5707963267948966 nil]})
-
-  actual: (not (= {:sides [5 2.331538290774993 5.516889594812459], :angles [0.4363323129985824 1.5707963267948966 nil]} {:sides [5 2.331538290774993 nil], :angles [0.4363323129985824 1.5707963267948966 nil]}))
-
-
-Ran 1 tests containing 9 assertions.
-
-1 failures, 0 errors.
-
-nil
-cljs꞉trig.triangle-test꞉> 
-#'trig.triangle-test/right-triangle-sides-test
-cljs꞉trig.triangle-test꞉> 
-
-Testing trig.triangle-test
-
-
-Ran 1 tests containing 9 assertions.
-
-0 failures, 0 errors.
-
-nil
-cljs꞉trig.triangle-test꞉> 
-{:sides [6 5.03459778706368 7.832443735993672], :angles [nil 1.5707963267948966 0.8726646259971648]}
-cljs꞉trig.triangle꞉> 
-{:sides [5.437846722219899 nil 6], :angles [nil 1.5707963267948966 1.1344640137963142]}
-cljs꞉trig.triangle꞉> 
-{:sides [3.064177772475912 nil 4], :angles [0.6981317007977318 1.5707963267948966 nil]}
-cljs꞉trig.triangle꞉> 
-{:sides [6 5.03459778706368 7.832443735993672], :angles [0.6981317007977318 1.5707963267948966 nil]}
-cljs꞉trig.triangle꞉> 
-{:sides [2.38350718518842 2 3.1114476537208247], :angles [nil 1.5707963267948966 0.8726646259971648]}
-cljs꞉trig.triangle꞉> 
-{:sides [5.7125920269684585 4 6.973787182484393], :angles [0.6108652381980153 1.5707963267948966 nil]}
-cljs꞉trig.triangle꞉> 
-{:sides [3.7587704831436333 nil 4], :angles [nil 1.5707963267948966 1.2217304763960306]}
-cljs꞉trig.triangle꞉> 
-{:sides [10.98990967781849 4 11.69521760065235], :angles [0.3490658503988659 1.5707963267948966 nil]}
-cljs꞉trig.triangle꞉> 
-{:sides [15.01154844356691 7 16.56341108206749], :angles [nil 1.5707963267948966 1.1344640137963142]}
-cljs꞉trig.triangle꞉> 
-{:sides [3.064177772475912 nil 4], :angles [0.6981317007977318 1.5707963267948966 nil]}
-cljs꞉trig.triangle꞉> 
-{:sides [6.433520761528676 3 7.098604749457495], :angles [nil 1.5707963267948966 1.1344640137963142]}
-cljs꞉trig.triangle꞉> 
-{:sides [4.289013841019117 2 4.732403166304997], :angles [0.4363323129985824 1.5707963267948966 nil]}
-cljs꞉trig.triangle꞉> 
-nil
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:1:2
- Use of undeclared Var trig.triangle-test/solve-angles
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:1:50
- Use of undeclared Var trig.triangle-test/pi
---------------------------------------------------------------------------------
-
-cljs꞉trig.triangle-test꞉> 
-nil
-cljs꞉trig.triangle꞉> 
-{:sides [nil 2 6], :angles [1.2309594173407747 0.3398369094541219 nil]}
-cljs꞉trig.triangle꞉> 
-70.52877936550931
-cljs꞉trig.triangle꞉> 
-70.52877936550931
-cljs꞉trig.triangle꞉> 
-#'trig.triangle/solve-angles
-cljs꞉trig.triangle꞉> 
-{:sides [nil 2 6], :angles [0.3398369094541219 1.2309594173407747 nil]}
-cljs꞉trig.triangle꞉> 
-19.47122063449069
-cljs꞉trig.triangle꞉> 
-#'trig.triangle/right-triangle-angles
-cljs꞉trig.triangle꞉> 
-{:sides [nil 2 6], :angles [0.3398369094541219 1.2309594173407747 nil]}
-cljs꞉trig.triangle꞉> 
-nil
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:1:2
- Use of undeclared Var trig.triangle-test/deftest
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:1:10
- Use of undeclared Var trig.triangle-test/right-triangle-angles-test
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:2:4
- Use of undeclared Var trig.triangle-test/is
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-ns ------------------------------------------------
-;  Resource: <eval>:2:11
- No such namespace: tri, could not locate tri.cljs, tri.cljc, or JavaScript source providing "tri"
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:2:11
- Use of undeclared Var tri/right-triangle-angles
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:2:72
- Use of undeclared Var trig.triangle-test/pi
---------------------------------------------------------------------------------
-
-cljs꞉trig.triangle-test꞉> 
-nil
-; ------ REPL Error while processing ---------------------------------------------
-; (deftest right-triangle-angles-test
-  (is (= (tri/right-triangle-angles {:sides [nil 2 6], :angles [nil (/ pi 2) nil]})
-         {:sides [nil 2 6], :angles [0.3398369094541219 1.2309594173407747 nil]})))
-no source by provide: trig.triangle-test
-{:provide trig.triangle-test}
-ExceptionInfo: no source by provide: trig.triangle-test
-	shadow.build.data/get-source-id-by-provide (data.clj:186)
-	shadow.build.data/get-source-id-by-provide (data.clj:183)
-	shadow.build.data/get-source-by-provide (data.clj:189)
-	shadow.build.data/get-source-by-provide (data.clj:188)
-	shadow.cljs.repl/repl-compile/fn--15628/fn--15629 (repl.clj:437)
-	shadow.cljs.repl/repl-compile/fn--15628 (repl.clj:413)
-	shadow.cljs.repl/repl-compile (repl.clj:411)
-	shadow.cljs.repl/repl-compile (repl.clj:408)
-	shadow.cljs.repl/process-read-result (repl.clj:499)
-	shadow.cljs.repl/process-read-result (repl.clj:475)
-	shadow.cljs.repl/process-input (repl.clj:659)
-	shadow.cljs.repl/process-input (repl.clj:637)
-	shadow.cljs.devtools.server.worker.impl/eval16193/fn--16196 (impl.clj:685)
-	clojure.lang.MultiFn.invoke (MultiFn.java:234)
-	shadow.cljs.devtools.server.util/server-thread/fn--15837/fn--15838/fn--15846 (util.clj:284)
-	shadow.cljs.devtools.server.util/server-thread/fn--15837/fn--15838 (util.clj:283)
-	shadow.cljs.devtools.server.util/server-thread/fn--15837 (util.clj:256)
-	java.lang.Thread.run (Thread.java:833)
-
-cljs꞉trig.triangle-test꞉> 
-nil
-cljs꞉trig.triangle-test꞉> 
-#'trig.triangle-test/right-triangle-angles-test
-cljs꞉trig.triangle-test꞉> 
-
-Testing trig.triangle-test
-
-
-Ran 1 tests containing 1 assertions.
-
-0 failures, 0 errors.
-
-nil
-cljs꞉trig.triangle-test꞉> 
-{:sides [5 2 nil], :angles [1.1902899496825317 0.3805063771123649 nil]}
-cljs꞉trig.triangle꞉> 
-#'trig.triangle/right-triangle-angles
-cljs꞉trig.triangle꞉> 
-{:sides [nil 2 6], :angles [0.3398369094541219 1.2309594173407747 nil]}
-cljs꞉trig.triangle꞉> 
-{:sides [5 2 nil], :angles [1.1902899496825317 0.3805063771123649 nil]}
-cljs꞉trig.triangle꞉> 
-#'trig.triangle/right-triangle-angles
-cljs꞉trig.triangle꞉> 
-{:sides [5 2 nil], :angles [0.3805063771123649 1.5707963267948966 1.1902899496825317]}
-cljs꞉trig.triangle꞉> 
-68.19859051364818
-cljs꞉trig.triangle꞉> 
-{:sides [nil 5 9], :angles [0.5890309702162739 0.9817653565786227 nil]}
-cljs꞉trig.triangle꞉> 
-#'trig.triangle/right-triangle-angles
-cljs꞉trig.triangle꞉> 
-#'trig.triangle/right-triangle-angles
-cljs꞉trig.triangle꞉> 
-{:sides [nil 5 9], :angles [0.5890309702162739 1.5707963267948966 0.9817653565786227]}
-cljs꞉trig.triangle꞉> 
-56.251011404111416
-cljs꞉trig.triangle꞉> 
-
-Testing trig.triangle-test
-
-
-FAIL in (right-triangle-angles-test) (repl-input.cljs:2:7)
-
-expected: (= (tri/right-triangle-angles {:sides [nil 2 6], :angles [nil (/ pi 2) nil]}) {:sides [nil 2 6], :angles [0.3398369094541219 1.2309594173407747 nil]})
-
-  actual: (not (= {:sides [nil 2 6], :angles [0.3398369094541219 1.5707963267948966 1.2309594173407747]} {:sides [nil 2 6], :angles [0.3398369094541219 1.2309594173407747 nil]}))
-
-
-Ran 1 tests containing 1 assertions.
-
-1 failures, 0 errors.
-
-nil
-cljs꞉trig.triangle-test꞉> 
-#'trig.triangle-test/right-triangle-angles-test
-cljs꞉trig.triangle-test꞉> 
-
-Testing trig.triangle-test
-
-
-Ran 1 tests containing 1 assertions.
-
-0 failures, 0 errors.
-
-nil
-cljs꞉trig.triangle-test꞉> 
-#'trig.triangle/right-triangle-angles
-cljs꞉trig.triangle꞉> 
-{:sides [nil 5 8], :angles [0.6751315329370317 1.5707963267948966 0.895664793857865]}
-cljs꞉trig.triangle꞉> 
-38.68218745348944
-cljs꞉trig.triangle꞉> 
-{:sides [9 6 nil], :angles [0.5880026035475675 1.5707963267948966 0.982793723247329]}
-cljs꞉trig.triangle꞉> 
-33.690067525979785
-cljs꞉trig.triangle꞉> 
-{:sides [nil 2 7], :angles [0.28975170143604745 1.5707963267948966 1.2810446253588492]}
-cljs꞉trig.triangle꞉> 
-73.39845040097977
-cljs꞉trig.triangle꞉> 
-{:sides [nil 2 3], :angles [0.7297276562269663 1.5707963267948966 0.8410686705679303]}
-cljs꞉trig.triangle꞉> 
-41.810314895778596
-cljs꞉trig.triangle꞉> 
-{:sides [8 2 nil], :angles [0.24497866312686414 1.5707963267948966 1.3258176636680326]}
-cljs꞉trig.triangle꞉> 
-75.96375653207353
-cljs꞉trig.triangle꞉> 
-{:sides [8 2 nil], :angles [0.24497866312686414 1.5707963267948966 1.3258176636680326]}
-cljs꞉trig.triangle꞉> 
-nil
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:1:2
- Use of undeclared Var trig.triangle-test/deftest
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:1:10
- Use of undeclared Var trig.triangle-test/right-triangle-angles-test
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:2:4
- Use of undeclared Var trig.triangle-test/is
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-ns ------------------------------------------------
-;  Resource: <eval>:2:11
- No such namespace: tri, could not locate tri.cljs, tri.cljc, or JavaScript source providing "tri"
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:2:11
- Use of undeclared Var tri/right-triangle-angles
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:2:72
- Use of undeclared Var trig.triangle-test/pi
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:4:4
- Use of undeclared Var trig.triangle-test/is
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-ns ------------------------------------------------
-;  Resource: <eval>:4:11
- No such namespace: tri, could not locate tri.cljs, tri.cljc, or JavaScript source providing "tri"
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:4:11
- Use of undeclared Var tri/right-triangle-angles
---------------------------------------------------------------------------------
-
-; ------ WARNING - :undeclared-var -----------------------------------------------
-;  Resource: <eval>:4:72
- Use of undeclared Var trig.triangle-test/pi
---------------------------------------------------------------------------------
-
-cljs꞉trig.triangle-test꞉> 
-nil
-cljs꞉trig.triangle-test꞉> 
-nil
-cljs꞉trig.triangle-test꞉> 
-#'trig.triangle-test/right-triangle-angles-test
-cljs꞉trig.triangle-test꞉> 
-
-Testing trig.triangle-test
-
-
-Ran 1 tests containing 2 assertions.
-
-0 failures, 0 errors.
-
-nil
-cljs꞉trig.triangle-test꞉> 
-{:sides [nil 4 5], :angles [0.9272952180016123 1.5707963267948966 0.6435011087932843]}
-cljs꞉trig.triangle꞉> 
-[0.9272952180016123 1.5707963267948966 0.6435011087932843]
-cljs꞉trig.triangle꞉> 
-(53.13010235415598 90 36.86989764584401)
-cljs꞉trig.triangle꞉> 
-(12.839588406904149 90 77.16041159309584)
-cljs꞉trig.triangle꞉> 
-(63.434948822922 90 26.56505117707799)
-cljs꞉trig.triangle꞉> 
-(48.590377890729144 90 41.40962210927086)
-cljs꞉trig.triangle꞉> 
-#'trig.triangle/right-triangle-angles
-cljs꞉trig.triangle꞉> 
-(41.40962210927086 90 48.590377890729144)
-cljs꞉trig.triangle꞉> 
+clj꞉uc.generate꞉> 
