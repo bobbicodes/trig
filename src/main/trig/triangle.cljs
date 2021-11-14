@@ -600,6 +600,41 @@
 
 (js/setInterval #(swap! counter inc) 1)
 
+(cos (/ (* 5 pi) 4))
+(sin (/ (* 5 pi) 4))
+
+(get
+ (into {}
+       (let [ints (range 2 11)]
+         (mapcat
+          (fn [s]
+            (map
+             (fn [d]
+               [(/ (sqrt s) d) (str "\\dfrac{\\sqrt" s "}{" d "}")])
+             ints))
+          ints))) 0.3333333333333333)
+
+(defn abs [n] (.abs js/Math n))
+
+(defn nearly-equal? [n1 n2]
+  (> 0.0000001 (abs (- n1 n2))))
+
+(defn frac 
+  "Renders a fraction that may have a square root in the numerator.
+   Forgives minor arithmetic discrepancies."
+  [n]
+  (or (last (first (filter #(nearly-equal? ((fn [[n _]] n) %) n)
+                                (mapcat
+                                 (fn [s]
+                                   (map
+                                    (fn [d]
+                                      [(/ (sqrt s) d) (str "\\dfrac{\\sqrt" s "}{" d "}")])
+                                    (range -12 11)))
+                                 (range 2 11)))))
+           n))
+
+(frac (cos (rad 315)))
+
 (defn app []
   (let [theta (mod (* 0.0002 @counter) (* pi 2))]
     [:div#app
@@ -621,6 +656,7 @@
       [:div.flex-item (tex (str "\\theta=" (round theta 100)))]
       [:div.flex-item (tex (str "\\cos{\\theta=" (round (cos theta) 100) "}"))]
       [:div.flex-item (tex (str "\\sin{\\theta=" (round (sin theta) 100) "}"))]]
+     ;(tex (frac (cos (rad 315))))
      ;[uc/uc-2 @tri]
      ;[tri-data @tri] [:p]
      ;[:p]

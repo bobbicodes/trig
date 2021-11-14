@@ -1,6 +1,6 @@
 (ns trig.triangle-test
   (:require [cljs.test :refer (deftest is run-tests)]
-            [trig.math :refer [pi rad]]
+            [trig.math :refer [pi rad sin cos tan]]
             [trig.triangle :as tri]))
 
 ;; https://www.khanacademy.org/math/trigonometry/trigonometry-right-triangles/trig-solve-for-a-side/e/trigonometry_2
@@ -90,9 +90,17 @@
                                                 :angle2 24
                                                 :side1  46})) 1))))
 
-;; https://www.khanacademy.org/math/trigonometry/unit-circle-trig-func/xfefa5515:special-trigonometric-values-in-the-first-quadrant/e/trig-values-of-6-4-and-3
+;; https://www.khanacademy.org/math/trigonometry/unit-circle-trig-func/trig-values-special-angles/e/trigonometric-functions-of-special-angles
 
-{:vertices ["K" "J" "L"], :sides [nil nil 1], :angles [nil (/ pi 2) (/ pi 3)]}
+(deftest frac-test
+  (is (= (tri/frac (sin (/ (* 5 pi) 3)))
+         "\\dfrac{\\sqrt3}{-2}"))
+  (is (= (tri/frac (cos (/ (* 5 pi) 3)))
+         "\\dfrac{\\sqrt4}{4}"))
+  (is (= (tri/frac (sin (rad 315)))
+         "\\dfrac{\\sqrt2}{-2}"))
+  (is (= (tri/frac (cos (rad 315)))
+         "\\dfrac{\\sqrt2}{2}")))
 
 (comment
  (run-tests)
