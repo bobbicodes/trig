@@ -532,8 +532,8 @@
 
 (defn special-angles 
   "Checks if a triangle's angles share a simple relationship that 
-   can simplify calculation, if so, returns a new triangle with 
-   calculation performed. Otherwise returns the triangle unchanged."
+   can simplify calculation, if so, displays a button that will
+   swap the value of the triangle with the calculation performed."
   [{[side1 side2 side3] :sides
     [angle1 angle2 angle3] :angles
     [label1 label2 label3] :vertices
