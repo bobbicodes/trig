@@ -601,27 +601,33 @@
 (js/setInterval #(swap! counter inc) 1)
 
 (defn app []
+  (let [theta (mod (* 0.0002 @counter) (* pi 2))]
     [:div#app
-     [editor/editor (str @tri) !tri {:eval? true}]
-     [:button
-      {:on-click
-       #(reset! tri (eval-all
-                     (str "(def pi js/Math.PI)
+     #_[editor/editor (str @tri) !tri {:eval? true}]
+     #_[:button
+        {:on-click
+         #(reset! tri (eval-all
+                       (str "(def pi js/Math.PI)
                            (defn rad [deg] (* deg (/ pi 180)))"
-                          (some-> @!tri .-state .-doc str))))}
-      "Eval"]
-     [rad-deg-buttons]
-     [button "Solve" #(do (swap! tri solve-triangle)
-                          (update-editor! (str @tri)))]
-     [ratio-buttons]
-       [uc/uc-theta (mod (* 0.001 @counter) (* pi 2))]
+                            (some-> @!tri .-state .-doc str))))}
+        "Eval"]
+     #_[rad-deg-buttons]
+     #_[button "Solve" #(do (swap! tri solve-triangle)
+                            (update-editor! (str @tri)))]
+     #_[ratio-buttons]
+     
+     [uc/uc-theta theta]
+     [:div.flex-container
+      [:div.flex-item (tex (str "\\theta=" (round theta 100)))]
+      [:div.flex-item (tex (str "\\cos{\\theta=" (round (cos theta) 100) "}"))]
+      [:div.flex-item (tex (str "\\sin{\\theta=" (round (sin theta) 100) "}"))]]
      ;[uc/uc-2 @tri]
-     [tri-data @tri] [:p]
-     [:p]
-     [ratio @tri] [:p]
+     ;[tri-data @tri] [:p]
+     ;[:p]
+     ;[ratio @tri] [:p]
      ;[render-triangle @tri]
      #_[:div
         [angle-data]
         [side-data]]
       ;[los/law-of-sines "A" @tri]
-     ])
+     ]))

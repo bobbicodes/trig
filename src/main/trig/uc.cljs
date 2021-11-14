@@ -129,7 +129,7 @@
   (fn [angle]
     (let [x (+ 200 (* 166.66666666666669 (cos angle)))
           y (- 225 (* 166.66666666666669 (sin angle)))]
-      [:svg {:width "100%" :view-box "0 0 425 425"}
+      [:svg {:width "100%" :view-box "0 0 425 400"}
      ;[grid]
      ;[arrows]
        [axes]
@@ -140,7 +140,7 @@
        [point x y]
        ;; label (angle at origin)
        [:path {:fill "#ffcc00"
-               :transform (str "translate(170,215) scale(" 0.03 "," -0.03 ")")
+               :transform (str "translate(175,215) scale(" 0.02 "," -0.02 ")")
                :d (:theta letters)}]
      ;[arcs]
        #_[arc 152.86 272.14]])))
