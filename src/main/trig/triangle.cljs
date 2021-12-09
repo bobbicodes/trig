@@ -15,6 +15,8 @@
 ;; located on the bottom left, formed by sides 1 and 2,
 ;; opposite the hypotenuse which is side 3.
 
+(- -8.2 5.4)
+
 (defonce tri
   (r/atom {:vertices ["E" "F" "D"]
            :sides [6.1 nil 6.7]
@@ -600,20 +602,6 @@
 
 (js/setInterval #(swap! counter inc) 1)
 
-(cos (/ (* 5 pi) 4))
-(sin (/ (* 5 pi) 4))
-
-(get
- (into {}
-       (let [ints (range 2 11)]
-         (mapcat
-          (fn [s]
-            (map
-             (fn [d]
-               [(/ (sqrt s) d) (str "\\dfrac{\\sqrt" s "}{" d "}")])
-             ints))
-          ints))) 0.3333333333333333)
-
 (defn abs [n] (.abs js/Math n))
 
 (defn nearly-equal? [n1 n2]
@@ -633,10 +621,9 @@
                                  (range 2 11)))))
            n))
 
-(frac (cos (rad 315)))
-
 (defn app []
-  (let [theta (mod (* 0.0002 @counter) (* pi 2))]
+  (let [rotation-speed 0.001
+        theta (mod (* rotation-speed @counter) (* pi 2))]
     [:div#app
      #_[editor/editor (str @tri) !tri {:eval? true}]
      #_[:button
@@ -656,7 +643,7 @@
       [:div.flex-item (tex (str "\\theta=" (round theta 100)))]
       [:div.flex-item (tex (str "\\cos{\\theta=" (round (cos theta) 100) "}"))]
       [:div.flex-item (tex (str "\\sin{\\theta=" (round (sin theta) 100) "}"))]]
-     ;(tex (frac (cos (rad 315))))
+     ;(tex (frac (cos (rad 330))))
      ;[uc/uc-2 @tri]
      ;[tri-data @tri] [:p]
      ;[:p]

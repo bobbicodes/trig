@@ -6,13 +6,14 @@
 
 (defn app []
   [:div
-   [tri/app]
-   #_[:div [sin/points-input]
+   [:div [sin/points-input]
     [sin/render-fn @points]
     [:p]
     [sin/calc-graph]
     [sin/x-slider -10 10 0.01]
-    [sin/y-slider -1 1 0.01]]
+    [sin/y-slider -1 1 0.01]
+    [tri/app]
+    ]
      #_[pythagoras/pythagorean-identity-sin 
       "\\theta_1" "\\text{IV}" 3 5]
    ]

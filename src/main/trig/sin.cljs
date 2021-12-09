@@ -40,8 +40,8 @@
   (str "M" (apply str (interpose " " (for [[x y] points]
                                        (str (x-point x) " " (y-point y)))))))
 
-(def view-box-width 300)
-(def view-box-height 326)
+(def view-box-width 302)
+(def view-box-height 302)
 
 (def grid
   (fn []
