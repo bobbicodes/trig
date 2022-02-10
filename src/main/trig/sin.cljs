@@ -61,10 +61,10 @@
           :stroke-width 2}])
 
 (defn arrows []
-  [:path {:d "M7.05 169.4c-.35 2.1-4.2 5.25-5.25 5.6 1.05.35 4.9 3.5 5.25 5.6
+  [:path {:d "M7.0 169.4c-.35 2.1-4.2 5.25-5.25 5.6 1.05.35 4.9 3.5 5.25 5.6
               M294.45 180.6c.35-2.1 4.2-5.25 5.25-5.6-1.05-.35-4.9-3.5-5.25-5.6
-              M156.35 31.3c-2.1-.35-5.25-4.2-5.6-5.25-.35 1.05-3.5 4.9-5.6 5.25
-              M145.15 318.7c2.1.35 5.25 4.2 5.6 5.25.35-1.05 3.5-4.9 5.6-5.25"
+              M155.6 31.3c-2.1-.35-5.25-4.2-5.6-5.25-.35 1.05-3.5 4.9-5.6 5.25
+              M144.5 318.7c2.1.35 5.25 4.2 5.6 5.25.35-1.05 3.5-4.9 5.6-5.25"
           :fill "none"
           :stroke "#ffcc00"
           :stroke-linejoin "round"
@@ -111,13 +111,25 @@
                               :stroke "blue"
                               :fill "none"
                               :stroke-width 2}])]
-      [:svg {:width    "100%"
+      [:svg {:width    700
              :view-box (str "0 24 " view-box-width " " view-box-height)}
        [:g
         [grid]
         [arrows]
         [axes]
-        [ticks] [vals]]])))
+        [ticks] 
+        [vals]
+        (let [{[max-x max-y] :max
+               [mid-x mid-y] :mid
+               [min-x min-y] :min} @points]
+          [:g [:circle {:r 3 :cx (x-point (* @x-scale min-x)) :cy (y-point (* @y-scale min-y)) :fill "green"}]
+           [:circle {:r 3 :cx (x-point (* @x-scale mid-x)) :cy (y-point (* @y-scale mid-y)) :fill "green"}]
+           [:circle {:r 3 :cx (x-point (* @x-scale max-x)) :cy (y-point (* @y-scale max-y)) :fill "green"}]])]])))
+
+(let [{[max-x max-y] :max
+               [mid-x mid-y] :mid
+               [min-x min-y] :min} @points]
+   (* @x-scale min-x))
 
 (defn reflection? [{[max-x max-y] :max
                     [mid-x mid-y] :mid
