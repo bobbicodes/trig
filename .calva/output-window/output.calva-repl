@@ -37,3 +37,7 @@ cljs꞉trig.sin꞉> 
 cljs꞉trig.sin꞉> 
 {:max [4 3], :min [0 0], :mid [nil nil]}
 cljs꞉trig.sin꞉> 
+{:max [2 2], :min [-2 -2], :mid [0 0]}
+cljs꞉trig.sin꞉> 
+nil
+cljs꞉trig.sin꞉> 

@@ -598,7 +598,7 @@
 
 (defonce counter (r/atom 0))
 
-(js/setInterval #(swap! counter inc) 1)
+(js/setInterval #(swap! counter inc) 10)
 
 (defn abs [n] (.abs js/Math n))
 
@@ -634,7 +634,7 @@
      #_[rad-deg-buttons]
      #_[button "Solve" #(do (swap! tri solve-triangle)
                             (update-editor! (str @tri)))]
-     #_[ratio-buttons]
+    ; [ratio-buttons]
      
      [uc/uc-theta theta]
      [:div.flex-container

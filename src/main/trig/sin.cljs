@@ -112,8 +112,6 @@
     (and (< x 8) (< 7 y)) [(+ -8 x) (- 8 y)]
     (and (< x 8) (< y 8)) [(+ -8 x) (- 8 y)]))
 
-
-
 (defn calc-graph []
   (fn []
     (let [{[max-x max-y] :max
@@ -142,8 +140,7 @@
                    [:circle {:r    3
                              :cx   (x-point (* @x-scale mid-x))
                              :cy   (y-point (* @y-scale mid-y))
-                             :fill "green"}]
-                   )
+                             :fill "green"}])
                  [:circle {:r    (if (= (coords @mouse-pos) [max-x max-y]) 4 3)
                            :cx   (x-point (* @x-scale max-x))
                            :cy   (y-point (* @y-scale max-y))
@@ -172,10 +169,7 @@
                                            (reset! mouse-down? false)
                                            (reset! drag nil))
                          :visibility     "hidden"
-                         :pointer-events "all"}]))]
-             [:p (str "mouse pos: " (coords @mouse-pos))]
-              [:p (str "mousedown: " @mouse-down?)]
-             [:p (str "dragging: " @drag)]])))
+                         :pointer-events "all"}]))]])))
 
 (defn reflection? [{[max-x max-y] :max
                     [mid-x mid-y] :mid
@@ -337,18 +331,24 @@
                        (js/console.warn "Unexpected KaTeX error" e)
                        (aset el "innerHTML" text)))))}])
 
+(defonce trig-fn (r/atom nil))
+
 (defn render-fn [w]
-  (tex (str "\\large{f(x)="
-            (if (= 1 (amplitude w)) "" (amplitude w))
-            (if (= 0 (:mid-x w))
-              "\\sin" "\\cos")
-            "\\left({"
-            (period-tex w)
-            (if (contains? #{"" "+0" "-0"} (x-shift-tex w))
-              "{x}"
-              (str "(x\\red{" (x-shift-tex w) "})"))
-            "}\\right)\\purple{"
-            (if (= 0 (y-shift-tex w)) "" (y-shift-tex w)) "}}")))
+  (let [{[max-x max-y] :max
+         [mid-x mid-y] :mid
+         [min-x min-y] :min} w]
+    (tex (str "\\large{f(x)="
+              (if (= 1 (amplitude w)) "" (amplitude w))
+              @trig-fn
+              "\\left({"
+              (period-tex w)
+              (if (contains? #{"" "+0" "-0"} (x-shift-tex w))
+                "{x}"
+                (str "(x\\red{" (x-shift-tex w) "})"))
+              "}\\right)\\purple{"
+              (if (= 0 (y-shift-tex w)) "" (y-shift-tex w)) "}}"))))
+
+(:mid-x @points)
 
 (defonce !points (r/atom @points))
 
@@ -357,6 +357,8 @@
        (catch :default e
          (str e))))
 
+
+
 (defn points-input []
   [:div
    [editor/editor (str @points) !points {:eval? true}]
@@ -364,11 +366,20 @@
                                         (str "(def pi js/Math.PI)"
                                              (some-> @!points .-state .-doc str))))
              :style {:margin-top "1rem"}}
-    "Eval"]])
+    "Eval"]
+   [:button {:on-click #(reset! trig-fn "\\sin")
+             :style {:margin-top "1rem"}}
+    (tex "\\sin")]
+   [:button {:on-click #(reset! trig-fn "\\cos")
+             :style {:margin-top "1rem"}}
+    (tex "\\cos")]])
 
 (reset! function-atom
         (fn [x]
           (+
            (* (amplitude @points)
-              (cos (* (period @points) (+ x (x-shift @points)))))
+              (if (= @trig-fn "\\sin")
+                    (sin (* (period @points) (+ x (x-shift @points))))
+                    (cos (* (period @points) (+ x (x-shift @points)))))
+              )
            (y-shift @points))))
