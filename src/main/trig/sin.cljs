@@ -104,6 +104,13 @@
 (defonce mouse-down? (r/atom false))
 (defonce mouse-pos (r/atom [nil nil]))
 
+(defn coords [[x y]]
+  (cond
+    (and (< 7 x) (< 7 y)) [(- x 8) (- 8 y)]
+    (and (< 7 x) (< y 8)) [(- x 8) (- 8 y)]
+    (and (< x 8) (< 7 y)) [(+ -8 x) (- 8 y)]
+    (and (< x 8) (< y 8)) [(+ -8 x) (- 8 y)]))
+
 (defn calc-graph []
   (fn []
     (let [vals (fn [] [:path {:d (make-path (for [x (range @range-start 8 0.1)]
@@ -147,7 +154,10 @@
                          :pointer-events "all"}]))
 
              ]
-             [:p (str "mouse pos: " @mouse-pos)]])))
+             [:p (str "mouse pos: " @mouse-pos)]
+            [:p (str "coords: " (coords @mouse-pos))] ])))
+
+
 
 (defn reflection? [{[max-x max-y] :max
                     [mid-x mid-y] :mid
