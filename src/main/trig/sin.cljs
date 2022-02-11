@@ -1,7 +1,7 @@
 (ns trig.sin
   (:require [reagent.core :as r]
             ["katex" :as katex]
-            [trig.editor :as editor]
+            [trig.editor :as editor :refer [!points]]
             [sci.core :as sci]))
 
 (defn abs [n]
@@ -26,9 +26,9 @@
              4))))
 
 (defonce points
-  (r/atom {:max [0.5 12]
-           :min [nil nil]
-           :mid [0 7]}))
+  (r/atom {:max [2 2]
+           :min [-2 -2]
+           :mid [nil nil]}))
 
 (defn x-point [x]
   (+ 150 (* x 18.75)))
@@ -45,7 +45,8 @@
 
 (def grid
   (fn []
-    [:path {:d "M0 325V25M18.75 325V25M37.5 325V25M56.25 325V25M75 325V25M93.75 325V25M112.5 325V25M131.25 325V25M150 325V25M168.75 325V25M187.5 325V25M206.25 325V25M225 325V25M243.75 325V25M262.5 325V25M281.25 325V25M300 325V25M0 325h300M0 306.25h300M0 287.5h300M0 268.75h300M0 250h300M0 231.25h300M0 212.5h300M0 193.75h300M0 175h300M0 156.25h300M0 137.5h300M0 118.75h300M0 100h300M0 81.25h300M0 62.5h300M0 43.75h300M0 25h300"
+    [:path {:d "M0 325V25M18.75 325V25M37.5 325V25M56.25 325V25M75 325V25M93.75 325V25M112.5 325V25M131.25 325V25M150 325V25M168.75 325V25M187.5 325V25M206.25 325V25M225 325V25M243.75 325V25M262.5 325V25M281.25 325V25M300 325V25
+                M0 325h300M0 306.25h300M0 287.5h300M0 268.75h300M0 250h300M0 231.25h300M0 212.5h300M0 193.75h300M0 175h300M0 156.25h300M0 137.5h300M0 118.75h300M0 100h300M0 81.25h300M0 62.5h300M0 43.75h300M0 25h300"
             :stroke "#ffcc00"
             :stroke-width 2
             :opacity ".1"}]))
@@ -162,8 +163,11 @@
                          :on-mouse-over  (fn []
                                            (reset! mouse-pos [x y])
                                            (when (= :max @drag)
-                                             (swap! points assoc :max (coords [x y])))
+                                              
+                                             (swap! points assoc :max (coords [x y]))
+                                             (editor/update-editor! (str @points)))
                                            (when (= :min @drag)
+                                          ;   (editor/update-editor! (str @points))
                                              (swap! points assoc :min (coords [x y]))))
                          :on-mouse-up    (fn []
                                            (reset! mouse-down? false)
@@ -348,31 +352,24 @@
               "}\\right)\\purple{"
               (if (= 0 (y-shift-tex w)) "" (y-shift-tex w)) "}}"))))
 
-(:mid-x @points)
 
-(defonce !points (r/atom @points))
 
 (defn eval-all [s]
   (try (sci/eval-string s {:classes {'js goog/global :allow :all}})
        (catch :default e
          (str e))))
 
-
-
 (defn points-input []
   [:div
    [editor/editor (str @points) !points {:eval? true}]
-   [:button {:on-click #(reset! points (eval-all
-                                        (str "(def pi js/Math.PI)"
-                                             (some-> @!points .-state .-doc str))))
-             :style {:margin-top "1rem"}}
-    "Eval"]
-   [:button {:on-click #(reset! trig-fn "\\sin")
-             :style {:margin-top "1rem"}}
-    (tex "\\sin")]
-   [:button {:on-click #(reset! trig-fn "\\cos")
-             :style {:margin-top "1rem"}}
-    (tex "\\cos")]])
+   [:div.flex-container
+    [:div.flex-item
+     [:button {:on-click #(reset! points (eval-all (str "(def pi js/Math.PI)"
+                                                        (some-> @!points .-state .-doc str))))}
+      "Eval"]]
+    [:div.flex-item
+     [:button {:on-click #(reset! trig-fn "\\sin")} (tex "\\sin")]
+     [:button {:on-click #(reset! trig-fn "\\cos")} (tex "\\cos")]]]])
 
 (reset! function-atom
         (fn [x]

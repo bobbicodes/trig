@@ -41,3 +41,15 @@ cljs꞉trig.sin꞉> 
 cljs꞉trig.sin꞉> 
 nil
 cljs꞉trig.sin꞉> 
+:repl/exception!
+; 
+; Execution error (TypeError) at (<cljs repl>:1).
+cljs.core.deref(...).dispatch is not a function
+cljs꞉trig.sin꞉> 
+nil
+; ------ WARNING - :undeclared-var -----------------------------------------------
+;  Resource: <eval>:1:2
+ Use of undeclared Var user/!tri
+--------------------------------------------------------------------------------
+
+cljs꞉user꞉> 

@@ -98,6 +98,7 @@
               }}]
     (finally (j/call @!view :destroy))))
 
+(defonce !points (r/atom ""))
 (defonce !tri (r/atom ""))
 
 (defn eval-all [s]
@@ -106,5 +107,5 @@
          (str e))))
 
 (defn update-editor! [text]
-  (let [end (count (some-> @!tri .-state .-doc str))]
-    (.dispatch @!tri #js{:changes #js{:from 0 :to end :insert text}})))
+  (let [end (count (some-> @!points .-state .-doc str))]
+    (.dispatch @!points #js{:changes #js{:from 0 :to end :insert text}})))
