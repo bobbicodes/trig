@@ -129,6 +129,7 @@
       [:div [:svg {:width    700
                    :view-box (str "0 24 " view-box-width " " view-box-height)
                    :style    {:cursor (when (or (= (coords @mouse-pos) [max-x max-y])
+                                                (= (coords @mouse-pos) [mid-x mid-y])
                                                 (= (coords @mouse-pos) [min-x min-y])) "move")}}
              [:g [grid] [arrows]  [axes] [ticks] [vals]
                 [:g
@@ -138,7 +139,7 @@
                              :cy   (y-point (* @y-scale min-y))
                              :fill "green"}])
                  (when (and mid-x mid-y)
-                   [:circle {:r    3
+                   [:circle {:r    (if (= (coords @mouse-pos) [mid-x mid-y]) 4 3)
                              :cx   (x-point (* @x-scale mid-x))
                              :cy   (y-point (* @y-scale mid-y))
                              :fill "green"}])
@@ -158,16 +159,20 @@
                                            (reset! mouse-down? true)
                                            (when (= (coords @mouse-pos) [max-x max-y])
                                              (reset! drag :max))
+                                           (when (= (coords @mouse-pos) [mid-x mid-y])
+                                             (reset! drag :mid))
                                            (when (= (coords @mouse-pos) [min-x min-y])
                                              (reset! drag :min)))
                          :on-mouse-over  (fn []
                                            (reset! mouse-pos [x y])
                                            (when (= :max @drag)
-                                              
                                              (swap! points assoc :max (coords [x y]))
                                              (editor/update-editor! (str @points)))
+                                           (when (= :mid @drag)
+                                             (swap! points assoc :mid (coords [x y]))
+                                             (editor/update-editor! (str @points)))
                                            (when (= :min @drag)
-                                          ;   (editor/update-editor! (str @points))
+                                            (editor/update-editor! (str @points))
                                              (swap! points assoc :min (coords [x y]))))
                          :on-mouse-up    (fn []
                                            (reset! mouse-down? false)
