@@ -128,7 +128,8 @@
                               :fill "none"
                               :stroke-width 2}])]
       [:div [:svg {:width    700
-                   :view-box (str "0 24 " view-box-width " " view-box-height)}
+                   :view-box (str "0 24 " view-box-width " " view-box-height)
+                                              :style {:cursor (when (= (coords @mouse-pos) [max-x max-y]) "move")}}
              [:g
               [grid]
               [arrows]
@@ -142,23 +143,27 @@
 
                  [:circle {:r 3 :cx (x-point (* @x-scale mid-x)) :cy (y-point (* @y-scale mid-y)) :fill "green"}]
                 
-                 [:circle {:r (if (= (coords @mouse-pos) [max-x max-y]) 4 3) :cx (x-point (* @x-scale max-x)) :cy (y-point (* @y-scale max-y)) :fill "green"}]]]
+                 [:circle {:r (if (= (coords @mouse-pos) [max-x max-y]) 4 3) 
+                           :cx (x-point (* @x-scale max-x)) :cy (y-point (* @y-scale max-y)) :fill "green"}]]]
       ;; mouse tracking grid
              (let [size 18.75]
                (for [x (range 17)
                      y (range 17)]
-                 [:rect {:width size :height size :x (- (* x size) 10) :y (+ 16 (* y size))
-                        :on-mouse-down #(do (reset! mouse-down? true)
-                                            (when (= (coords @mouse-pos) [max-x max-y])
-                                              (reset! drag :max)))
-                         :on-mouse-over (fn [] 
-                                          (reset! mouse-pos [x y])
-                                          (when (= :max @drag)
-                                            (swap! points assoc :max (coords [x y]))))
-                          :on-mouse-up (fn []
-                                         (reset! mouse-down? false)
-                                         (reset! drag nil))
-                         :visibility "hidden"
+                 [:rect {:width          size
+                         :height         size
+                         :x              (- (* x size) 10)
+                         :y              (+ 16 (* y size))
+                         :on-mouse-down  #(do (reset! mouse-down? true)
+                                              (when (= (coords @mouse-pos) [max-x max-y])
+                                                (reset! drag :max)))
+                         :on-mouse-over  (fn [] 
+                                           (reset! mouse-pos [x y])
+                                           (when (= :max @drag)
+                                             (swap! points assoc :max (coords [x y]))))
+                         :on-mouse-up    (fn []
+                                           (reset! mouse-down? false)
+                                           (reset! drag nil))
+                         :visibility     "hidden"
                          :pointer-events "all"}]))
 
              ]
