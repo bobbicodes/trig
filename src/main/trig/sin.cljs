@@ -129,22 +129,25 @@
                               :stroke-width 2}])]
       [:div [:svg {:width    700
                    :view-box (str "0 24 " view-box-width " " view-box-height)
-                                              :style {:cursor (when (= (coords @mouse-pos) [max-x max-y]) "move")}}
-             [:g
-              [grid]
-              [arrows]
-              [axes]
-              [ticks]
-              [vals]
-              
+                   :style    {:cursor (when (or (= (coords @mouse-pos) [max-x max-y])
+                                                (= (coords @mouse-pos) [min-x min-y])) "move")}}
+             [:g [grid] [arrows]  [axes] [ticks] [vals]
                 [:g
                  (when (and min-x min-y)
-                   [:circle {:r 3 :cx (x-point (* @x-scale min-x)) :cy (y-point (* @y-scale min-y)) :fill "green"}])
-
-                 [:circle {:r 3 :cx (x-point (* @x-scale mid-x)) :cy (y-point (* @y-scale mid-y)) :fill "green"}]
-                
-                 [:circle {:r (if (= (coords @mouse-pos) [max-x max-y]) 4 3) 
-                           :cx (x-point (* @x-scale max-x)) :cy (y-point (* @y-scale max-y)) :fill "green"}]]]
+                   [:circle {:r    (if (= (coords @mouse-pos) [min-x min-y]) 4 3) 
+                             :cx   (x-point (* @x-scale min-x))
+                             :cy   (y-point (* @y-scale min-y))
+                             :fill "green"}])
+                 (when (and mid-x mid-y)
+                   [:circle {:r    3
+                             :cx   (x-point (* @x-scale mid-x))
+                             :cy   (y-point (* @y-scale mid-y))
+                             :fill "green"}]
+                   )
+                 [:circle {:r    (if (= (coords @mouse-pos) [max-x max-y]) 4 3)
+                           :cx   (x-point (* @x-scale max-x))
+                           :cy   (y-point (* @y-scale max-y))
+                           :fill "green"}]]]
       ;; mouse tracking grid
              (let [size 18.75]
                (for [x (range 17)
@@ -153,25 +156,26 @@
                          :height         size
                          :x              (- (* x size) 10)
                          :y              (+ 16 (* y size))
-                         :on-mouse-down  #(do (reset! mouse-down? true)
-                                              (when (= (coords @mouse-pos) [max-x max-y])
-                                                (reset! drag :max)))
-                         :on-mouse-over  (fn [] 
+                         :on-mouse-down  (fn [] 
+                                           (reset! mouse-down? true)
+                                           (when (= (coords @mouse-pos) [max-x max-y])
+                                             (reset! drag :max))
+                                           (when (= (coords @mouse-pos) [min-x min-y])
+                                             (reset! drag :min)))
+                         :on-mouse-over  (fn []
                                            (reset! mouse-pos [x y])
                                            (when (= :max @drag)
-                                             (swap! points assoc :max (coords [x y]))))
+                                             (swap! points assoc :max (coords [x y])))
+                                           (when (= :min @drag)
+                                             (swap! points assoc :min (coords [x y]))))
                          :on-mouse-up    (fn []
                                            (reset! mouse-down? false)
                                            (reset! drag nil))
                          :visibility     "hidden"
-                         :pointer-events "all"}]))
-
-             ]
+                         :pointer-events "all"}]))]
              [:p (str "mouse pos: " (coords @mouse-pos))]
               [:p (str "mousedown: " @mouse-down?)]
              [:p (str "dragging: " @drag)]])))
-
-@points
 
 (defn reflection? [{[max-x max-y] :max
                     [mid-x mid-y] :mid
