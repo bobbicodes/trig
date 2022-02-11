@@ -19,7 +19,7 @@
 
 (defonce function-atom
   (r/atom (fn [x]
-            (+
+            #_(+
              (* 3
                 (cos (+ (* 2 x)
                         (* pi 6))))
@@ -38,7 +38,7 @@
 
 (defn make-path [points]
   (str "M" (apply str (interpose " " (for [[x y] points]
-                                       (str (x-point x) " " (y-point y)))))))
+                                       (str x " " y))))))
 
 (def view-box-width 302)
 (def view-box-height 302)
@@ -101,35 +101,53 @@
             :on-change #(reset! y-scale (-> % .-target .-value))}]
    [:span @y-scale]])
 
+(defonce mouse-down? (r/atom false))
+(defonce mouse-pos (r/atom [nil nil]))
+
 (defn calc-graph []
   (fn []
     (let [vals (fn [] [:path {:d (make-path (for [x (range @range-start 8 0.1)]
-                                              [x (* @y-scale (#(@function-atom %)
+                                              [(x-point x) (y-point (* @y-scale (#(@function-atom %)
                                                  ;x
                                                           ;(/ (* x js/Math.PI) 2)
-                                                              (* x @x-scale)))]))
+                                                                                 (* x @x-scale))))]))
                               :stroke "blue"
                               :fill "none"
                               :stroke-width 2}])]
-      [:svg {:width    700
-             :view-box (str "0 24 " view-box-width " " view-box-height)}
-       [:g
-        [grid]
-        [arrows]
-        [axes]
-        [ticks] 
-        [vals]
-        (let [{[max-x max-y] :max
-               [mid-x mid-y] :mid
-               [min-x min-y] :min} @points]
-          [:g [:circle {:r 3 :cx (x-point (* @x-scale min-x)) :cy (y-point (* @y-scale min-y)) :fill "green"}]
-           [:circle {:r 3 :cx (x-point (* @x-scale mid-x)) :cy (y-point (* @y-scale mid-y)) :fill "green"}]
-           [:circle {:r 3 :cx (x-point (* @x-scale max-x)) :cy (y-point (* @y-scale max-y)) :fill "green"}]])]])))
+      [:div [:svg {:width    700
+                   :view-box (str "0 24 " view-box-width " " view-box-height)}
+             [:g
+              [grid]
+              [arrows]
+              [axes]
+              [ticks]
+              [vals]
+              (let [{[max-x max-y] :max
+                     [mid-x mid-y] :mid
+                     [min-x min-y] :min} @points]
+                [:g
+                 (when (and min-x min-y)
+                   [:circle {:r 3 :cx (x-point (* @x-scale min-x)) :cy (y-point (* @y-scale min-y)) :fill "green"}])
 
-(let [{[max-x max-y] :max
-               [mid-x mid-y] :mid
-               [min-x min-y] :min} @points]
-   (* @x-scale min-x))
+                 [:circle {:r 3 :cx (x-point (* @x-scale mid-x)) :cy (y-point (* @y-scale mid-y)) :fill "green"}]
+                 [:circle {:r 3 :cx (x-point (* @x-scale max-x)) :cy (y-point (* @y-scale max-y)) :fill "green"}]])]
+       ;; click target
+             [:rect {:width view-box-width :height (+ 24 view-box-height)
+                     :on-mouse-down (fn [] (reset! mouse-down? true))
+                     :on-mouse-up (fn [] (reset! mouse-down? false))
+                     :visibility "hidden"
+                     :pointer-events "all"}]
+      ;; mouse tracking grid
+             (let [size 18.75]
+               (for [x (range 17)
+                     y (range 17)]
+                 [:rect {:width size :height size :x (- (* x size) 10) :y (+ 16 (* y size))
+                         :on-mouse-over (fn [] (reset! mouse-pos [x y]))
+                         :visibility "hidden"
+                         :pointer-events "all"}]))
+
+             ]
+             [:p (str "mouse pos: " @mouse-pos)]])))
 
 (defn reflection? [{[max-x max-y] :max
                     [mid-x mid-y] :mid
@@ -326,6 +344,3 @@
            (* (amplitude @points)
               (cos (* (period @points) (+ x (x-shift @points)))))
            (y-shift @points))))
-
-(comment
-  )
