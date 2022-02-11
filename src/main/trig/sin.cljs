@@ -103,6 +103,7 @@
 
 (defonce mouse-down? (r/atom false))
 (defonce mouse-pos (r/atom [nil nil]))
+(defonce drag (r/atom nil))
 
 (defn coords [[x y]]
   (cond
@@ -111,9 +112,14 @@
     (and (< x 8) (< 7 y)) [(+ -8 x) (- 8 y)]
     (and (< x 8) (< y 8)) [(+ -8 x) (- 8 y)]))
 
+
+
 (defn calc-graph []
   (fn []
-    (let [vals (fn [] [:path {:d (make-path (for [x (range @range-start 8 0.1)]
+    (let [{[max-x max-y] :max
+           [mid-x mid-y] :mid
+           [min-x min-y] :min} @points
+          vals (fn [] [:path {:d (make-path (for [x (range @range-start 8 0.1)]
                                               [(x-point x) (y-point (* @y-scale (#(@function-atom %)
                                                  ;x
                                                           ;(/ (* x js/Math.PI) 2)
@@ -129,35 +135,38 @@
               [axes]
               [ticks]
               [vals]
-              (let [{[max-x max-y] :max
-                     [mid-x mid-y] :mid
-                     [min-x min-y] :min} @points]
+              
                 [:g
                  (when (and min-x min-y)
                    [:circle {:r 3 :cx (x-point (* @x-scale min-x)) :cy (y-point (* @y-scale min-y)) :fill "green"}])
 
                  [:circle {:r 3 :cx (x-point (* @x-scale mid-x)) :cy (y-point (* @y-scale mid-y)) :fill "green"}]
-                 [:circle {:r 3 :cx (x-point (* @x-scale max-x)) :cy (y-point (* @y-scale max-y)) :fill "green"}]])]
-       ;; click target
-             [:rect {:width view-box-width :height (+ 24 view-box-height)
-                     :on-mouse-down (fn [] (reset! mouse-down? true))
-                     :on-mouse-up (fn [] (reset! mouse-down? false))
-                     :visibility "hidden"
-                     :pointer-events "all"}]
+                
+                 [:circle {:r (if (= (coords @mouse-pos) [max-x max-y]) 4 3) :cx (x-point (* @x-scale max-x)) :cy (y-point (* @y-scale max-y)) :fill "green"}]]]
       ;; mouse tracking grid
              (let [size 18.75]
                (for [x (range 17)
                      y (range 17)]
                  [:rect {:width size :height size :x (- (* x size) 10) :y (+ 16 (* y size))
-                         :on-mouse-over (fn [] (reset! mouse-pos [x y]))
+                        :on-mouse-down #(do (reset! mouse-down? true)
+                                            (when (= (coords @mouse-pos) [max-x max-y])
+                                              (reset! drag :max)))
+                         :on-mouse-over (fn [] 
+                                          (reset! mouse-pos [x y])
+                                          (when (= :max @drag)
+                                            (swap! points assoc :max (coords [x y]))))
+                          :on-mouse-up (fn []
+                                         (reset! mouse-down? false)
+                                         (reset! drag nil))
                          :visibility "hidden"
                          :pointer-events "all"}]))
 
              ]
-             [:p (str "mouse pos: " @mouse-pos)]
-            [:p (str "coords: " (coords @mouse-pos))] ])))
+             [:p (str "mouse pos: " (coords @mouse-pos))]
+              [:p (str "mousedown: " @mouse-down?)]
+             [:p (str "dragging: " @drag)]])))
 
-
+@points
 
 (defn reflection? [{[max-x max-y] :max
                     [mid-x mid-y] :mid

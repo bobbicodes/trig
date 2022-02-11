@@ -35,3 +35,5 @@ cljs꞉trig.sin꞉> 
 cljs꞉trig.sin꞉> 
 #object[Function]
 cljs꞉trig.sin꞉> 
+{:max [4 3], :min [0 0], :mid [nil nil]}
+cljs꞉trig.sin꞉> 
