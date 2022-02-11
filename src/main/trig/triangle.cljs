@@ -15,8 +15,6 @@
 ;; located on the bottom left, formed by sides 1 and 2,
 ;; opposite the hypotenuse which is side 3.
 
-(- -8.2 5.4)
-
 (defonce tri
   (r/atom {:vertices ["E" "F" "D"]
            :sides [6.1 nil 6.7]
