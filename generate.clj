@@ -1,7 +1,7 @@
-(ns uc.generate
+(ns generate
   (:require [clojure.java.shell :refer [sh]]))
 
-(def tex2svg "/usr/local/lib/nodejs/lib/node_modules/mathjax-node-cli/bin/tex2svg")
+(def tex2svg "C:/Users/porko/AppData/Roaming/npm/node_modules/mathjax-node-cli/bin/tex2svg")
 
 (def uppercase-letters
   (for [letter (map char (range 65 91))]
@@ -85,8 +85,8 @@ uppercase-letters
      :f (str "\\dfrac{\\pi}{" n "}")}))
 
 (comment
-  (renderer {:n "theta"
-             :f "\\theta"})
+  (renderer {:n "pi"
+             :f "\\pi"})
   (doall (map renderer pi-fracs))
   )
 

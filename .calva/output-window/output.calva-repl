@@ -63,3 +63,40 @@ cljs꞉trig.sin꞉> 
 cljs꞉trig.sin꞉> 
 (0 18.75 37.5 56.25 75 93.75 112.5 131.25 150 168.75 187.5 206.25 225 243.75 262.5 281.25 300)
 cljs꞉trig.sin꞉> 
+nil
+clj꞉generate꞉> 
+#'generate/tex2svg
+clj꞉generate꞉> 
+#'generate/renderer
+clj꞉generate꞉> 
+; Execution error (IOException) at java.lang.ProcessImpl/create (ProcessImpl.java:-2).
+; CreateProcess error=193, %1 is not a valid Win32 application
+clj꞉generate꞉> 
+12
+cljs꞉trig.sin꞉> 
+-12
+cljs꞉trig.sin꞉> 
+-13
+cljs꞉trig.sin꞉> 
+[##NaN nil]
+cljs꞉trig.sin꞉> 
+[-5.092958178940651 8]
+cljs꞉trig.sin꞉> 
+[-5.092958178940651 8]
+cljs꞉trig.sin꞉> 
+[-3.819718634205488 6]
+cljs꞉trig.sin꞉> 
+#'trig.sin/coords
+cljs꞉trig.sin꞉> 
+[-3.819718634205488 6]
+cljs꞉trig.sin꞉> 
+#'trig.sin/coords
+cljs꞉trig.sin꞉> 
+[-18.84955592153876 6]
+cljs꞉trig.sin꞉> 
+[6.283185307179586 6]
+cljs꞉trig.sin꞉> 
+#'trig.sin/coords
+cljs꞉trig.sin꞉> 
+[3.141592653589793 6]
+cljs꞉trig.sin꞉> 

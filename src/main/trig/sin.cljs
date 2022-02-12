@@ -2,7 +2,8 @@
   (:require [reagent.core :as r]
             ["katex" :as katex]
             [trig.editor :as editor :refer [!points]]
-            [sci.core :as sci]))
+            [sci.core :as sci]
+            [trig.latex :as latex]))
 
 (defn abs [n]
   (.abs js/Math n))
@@ -15,26 +16,33 @@
 
 (def pi js/Math.PI)
 
-(defonce range-start (r/atom -8))
+(defonce range-start (r/atom -13))
+
+(reset! range-start -13)
 
 (defonce function-atom
-  (r/atom (fn [x]
-            #_(+
-             (* 3
-                (cos (+ (* 2 x)
-                        (* pi 6))))
-             4))))
+  (r/atom (fn [_] )))
 
 (defonce points
   (r/atom {:max [2 2]
            :min [-2 -2]
            :mid [nil nil]}))
 
+
+
+(defonce scale (r/atom :x))
+(defonce x-scale (r/atom "1"))
+(defonce y-scale (r/atom "1"))
+
 (def view-box-width 300)
 (def view-box-height 300)
 
 (defn x-point [x]
-  (+ (/ view-box-width 2) (* x (/ view-box-width 16))))
+  (+ (/ view-box-width 2) (* 
+                           (if (= @scale :pi)
+                             (/ x (* 0.5 pi))
+                             x) 
+                           (/ view-box-width 16))))
 
 (defn y-point [y]
   (- (/ view-box-height 2) (* y (/ view-box-height 16))))
@@ -52,7 +60,7 @@
              :y2     0
              :stroke "#ffcc00"
              :stroke-width (if (= x (/ size 2)) 1.5 1)
-             :opacity (if (= x (/ size 2)) 1 0.1)}])
+             :opacity (if (= x (/ size 2)) 1 0.2)}])
    (for [y (range 0 (inc size) (/ size rows))]
      [:line {:x1     0
              :y1     y
@@ -60,7 +68,7 @@
              :y2     y
              :stroke "#ffcc00"
              :stroke-width (if (= y (/ size 2)) 1.5 1)
-             :opacity (if (= y (/ size 2)) 1 0.1)}])])
+             :opacity (if (= y (/ size 2)) 1 0.22)}])])
 
 (defn arrows [size]
   [:path {:d 
@@ -95,12 +103,10 @@
              :stroke "#ffcc00"
              :stroke-width 1.5}])])
 
-(defonce x-scale (r/atom "1"))
-(defonce y-scale (r/atom "1"))
 
 (defn x-slider
   [min max step]
-  [:div (str "x-scale")
+  [:div (str "x")
    [:input {:type      "range"
             :min       min
             :max       max
@@ -111,7 +117,7 @@
 
 (defn y-slider
   [min max step]
-  [:div (str "y-scale")
+  [:div (str "y")
    [:input {:type      "range"
             :min       min
             :max       max
@@ -125,18 +131,34 @@
 (defonce drag (r/atom nil))
 
 (defn coords [[x y]]
-  (cond
-    (and (< 7 x) (< 7 y)) [(- x 8) (- 8 y)]
-    (and (< 7 x) (< y 8)) [(- x 8) (- 8 y)]
-    (and (< x 8) (< 7 y)) [(+ -8 x) (- 8 y)]
-    (and (< x 8) (< y 8)) [(+ -8 x) (- 8 y)]))
+    (let [ints (cond
+                 (and (< 7 x) (< 7 y)) [(- x 8) (- 8 y)]
+                 (and (< 7 x) (< y 8)) [(- x 8) (- 8 y)]
+                 (and (< x 8) (< 7 y)) [(+ -8 x) (- 8 y)]
+                 (and (< x 8) (< y 8)) [(+ -8 x) (- 8 y)])]
+      ((fn [[x y]] (if (= @scale :pi) [(* x (/ pi 2)) y] [x y])) 
+       ints
+  )
+  ))
+
+ (coords [10 2])
+
+(defn tex [text]
+  [:span {:ref (fn [el]
+                 (when el
+                   (try
+                     (katex/render text el (clj->js
+                                            {:throwOnError false}))
+                     (catch :default e
+                       (js/console.warn "Unexpected KaTeX error" e)
+                       (aset el "innerHTML" text)))))}])
 
 (defn calc-graph []
   (fn []
     (let [{[max-x max-y] :max
            [mid-x mid-y] :mid
            [min-x min-y] :min} @points
-          vals (fn [] [:path {:d (make-path (for [x (range @range-start 8 0.1)]
+          vals (fn [] [:path {:d (make-path (for [x (range @range-start 13 0.1)]
                                               [(x-point x) (y-point (* @y-scale (#(@function-atom %)
                                                  ;x
                                                           ;(/ (* x js/Math.PI) 2)
@@ -148,25 +170,49 @@
                    :view-box (str "0 0 " view-box-width " " view-box-height)
                    :style    {:cursor (when (or (= (coords @mouse-pos) [max-x max-y])
                                                 (= (coords @mouse-pos) [mid-x mid-y])
-                                                (= (coords @mouse-pos) [min-x min-y])) "move")}}
+                                                (= (coords @mouse-pos) [min-x min-y])
+                                                (= (coords @mouse-pos) [(/ max-x (* 0.5 pi)) max-y])
+                                                (= (coords @mouse-pos) [(/ mid-x (* 0.5 pi)) mid-y])
+                                                (= (coords @mouse-pos) [(/ min-x (* 0.5 pi)) min-y])) "move")}}
              [:g [grid view-box-width 16] [arrows view-box-width] [ticks view-box-width 16] [vals]
-                [:g
-                 (when (and min-x min-y)
-                   [:circle {:r    (if (= (coords @mouse-pos) [min-x min-y]) 4 3) 
-                             :cx   (x-point (* @x-scale min-x))
-                             :cy   (y-point (* @y-scale min-y))
-                             :fill "green"}])
-                 (when (and mid-x mid-y)
-                   [:circle {:r    (if (= (coords @mouse-pos) [mid-x mid-y]) 4 3)
-                             :cx   (x-point (* @x-scale mid-x))
-                             :cy   (y-point (* @y-scale mid-y))
-                             :fill "green"}])
-                 (when (and max-x max-y)
-                   [:circle {:r    (if (= (coords @mouse-pos) [max-x max-y]) 4 3)
-                             :cx   (x-point (* @x-scale max-x))
-                             :cy   (y-point (* @y-scale max-y))
-                             :fill "green"}])]]
-      ;; mouse tracking grid
+              [:g
+               (when (and min-x min-y)
+                 [:circle {:r    (if 
+                                  (or
+                                   (= (coords @mouse-pos) [min-x min-y])
+                                   (= (coords @mouse-pos) [(/ min-x (* 0.5 pi)) min-y])) 4 3) 
+                           :cx   (x-point (* @x-scale min-x))
+                           :cy   (y-point (* @y-scale min-y))
+                           :fill "green"}])
+               (when (and mid-x mid-y)
+                 [:circle {:r    (if (or 
+                                      (= (coords @mouse-pos) [mid-x mid-y])
+                                      (= (coords @mouse-pos) [(/ mid-x (* 0.5 pi)) mid-y])) 4 3)
+                           :cx   (x-point (* @x-scale mid-x))
+                           :cy   (y-point (* @y-scale mid-y))
+                           :fill "green"}])
+               (when (and max-x max-y)
+                 [:circle {:r    (if 
+                                  (or
+                                   (= (coords @mouse-pos) [max-x max-y])
+                                   ;; if x-scale is in units of pi
+                                   (= (coords @mouse-pos) [(/ max-x (* 0.5 pi)) max-y])) 4 3)
+                           :cx   (x-point (* @x-scale max-x))
+                           :cy   (y-point (* @y-scale max-y))
+                           :fill "green"}])]]
+             (if (= @scale :pi)
+               [:g
+                [latex/pi]
+                [latex/two-pi]
+                [latex/three-pi]]
+               [:g
+                [:text {:transform "scale(0.65) translate(284,256)"
+                        :fill "#ffcc00"} "2"]
+                [:text {:transform "scale(0.65) translate(340,256)"
+                        :fill "#ffcc00"} "4"]
+                [:text {:transform "scale(0.65) translate(398,256)"
+                        :fill "#ffcc00"} "6"]])
+             ;; mouse tracking grid
              (let [size (/ view-box-width 16)]
                (for [x (range 17)
                      y (range 17)]
@@ -176,11 +222,14 @@
                          :y              (- (* y size) (/ size 2))
                          :on-mouse-down  (fn [] 
                                            (reset! mouse-down? true)
-                                           (when (= (coords @mouse-pos) [max-x max-y])
+                                           (when (or (= (coords @mouse-pos) [max-x max-y])
+                                                     (= (coords @mouse-pos) [(/ max-x (* 0.5 pi)) max-y]))
                                              (reset! drag :max))
-                                           (when (= (coords @mouse-pos) [mid-x mid-y])
+                                           (when (or (= (coords @mouse-pos) [mid-x mid-y])
+                                                     (= (coords @mouse-pos) [(/ mid-x (* 0.5 pi)) mid-y]))
                                              (reset! drag :mid))
-                                           (when (= (coords @mouse-pos) [min-x min-y])
+                                           (when (or (= (coords @mouse-pos) [min-x min-y])
+                                                     (= (coords @mouse-pos) [(/ min-x (* 0.5 pi)) min-y]))
                                              (reset! drag :min)))
                          :on-mouse-over  (fn []
                                            (reset! mouse-pos [x y])
@@ -348,16 +397,6 @@
         mid-y
         (and max-x min-x)
         (- max-y (/ (abs (- max-y min-y)) 2))))
-
-(defn tex [text]
-  [:span {:ref (fn [el]
-                 (when el
-                   (try
-                     (katex/render text el (clj->js
-                                            {:throwOnError false}))
-                     (catch :default e
-                       (js/console.warn "Unexpected KaTeX error" e)
-                       (aset el "innerHTML" text)))))}])
 
 (defonce trig-fn (r/atom nil))
 
