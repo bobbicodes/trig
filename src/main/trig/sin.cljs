@@ -30,54 +30,72 @@
            :min [-2 -2]
            :mid [nil nil]}))
 
+(def view-box-width 300)
+(def view-box-height 300)
+
 (defn x-point [x]
-  (+ 150 (* x 18.75)))
+  (+ (/ view-box-width 2) (* x (/ view-box-width 16))))
 
 (defn y-point [y]
-  (- 175 (* y 18.75)))
+  (- (/ view-box-height 2) (* y (/ view-box-height 16))))
 
 (defn make-path [points]
   (str "M" (apply str (interpose " " (for [[x y] points]
                                        (str x " " y))))))
 
-(def view-box-width 302)
-(def view-box-height 302)
+(defn grid [size rows]
+  [:g
+   (for [x (range 0 (inc size) (/ size rows))]
+     [:line {:x1     x
+             :y1     size
+             :x2     x
+             :y2     0
+             :stroke "#ffcc00"
+             :stroke-width (if (= x (/ size 2)) 1.5 1)
+             :opacity (if (= x (/ size 2)) 1 0.1)}])
+   (for [y (range 0 (inc size) (/ size rows))]
+     [:line {:x1     0
+             :y1     y
+             :x2     size
+             :y2     y
+             :stroke "#ffcc00"
+             :stroke-width (if (= y (/ size 2)) 1.5 1)
+             :opacity (if (= y (/ size 2)) 1 0.1)}])])
 
-(def grid
-  (fn []
-    [:path {:d "M0 325V25M18.75 325V25M37.5 325V25M56.25 325V25M75 325V25M93.75 325V25M112.5 325V25M131.25 325V25M150 325V25M168.75 325V25M187.5 325V25M206.25 325V25M225 325V25M243.75 325V25M262.5 325V25M281.25 325V25M300 325V25
-                M0 325h300M0 306.25h300M0 287.5h300M0 268.75h300M0 250h300M0 231.25h300M0 212.5h300M0 193.75h300M0 175h300M0 156.25h300M0 137.5h300M0 118.75h300M0 100h300M0 81.25h300M0 62.5h300M0 43.75h300M0 25h300"
-            :stroke "#ffcc00"
-            :stroke-width 2
-            :opacity ".1"}]))
-
-(defn axes []
-  [:path {:d "M150 175H1.05
-              M150 175h148.95
-              M150 175v148.95
-              M150 175V26.05"
-          :stroke "#ffcc00"
-          :stroke-linejoin "round"
-          :stroke-linecap "round"
-          :stroke-width 2}])
-
-(defn arrows []
-  [:path {:d "M7.0 169.4c-.35 2.1-4.2 5.25-5.25 5.6 1.05.35 4.9 3.5 5.25 5.6
-              M294.45 180.6c.35-2.1 4.2-5.25 5.25-5.6-1.05-.35-4.9-3.5-5.25-5.6
-              M155.6 31.3c-2.1-.35-5.25-4.2-5.6-5.25-.35 1.05-3.5 4.9-5.6 5.25
-              M144.5 318.7c2.1.35 5.25 4.2 5.6 5.25.35-1.05 3.5-4.9 5.6-5.25"
+(defn arrows [size]
+  [:path {:d 
+          (str "M6.2 " (- (/ size 2) 5.6)
+               "c-.35 2.1-4.2 5.25-5.25 5.6 1.05.35 4.9 3.5 5.25 5.6"
+               "M" (- size 6) " " (+ 5.6 (/ size 2))
+               "c.35-2.1 4.2-5.25 5.25-5.6-1.05-.35-4.9-3.5-5.25-5.6"
+               "M" (+ 5.6 (/ size 2)) " 6.2"
+               "c-2.1-.35-5.25-4.2-5.6-5.25-.35 1.05-3.5 4.9-5.6 5.25"
+               "M" (- (/ size 2) 5.6) " " (- size 6)
+               "c2.1.35 5.25 4.2 5.6 5.25.35-1.05 3.5-4.9 5.6-5.25")
           :fill "none"
           :stroke "#ffcc00"
           :stroke-linejoin "round"
           :stroke-linecap "round"
           :stroke-width 2}])
 
-(defn ticks []
-  [:path {:d "M168.75 180v-10M187.5 180v-10M206.25 180v-10M225 180v-10M243.75 180v-10M262.5 180v-10M281.25 180v-10M131.25 180v-10M112.5 180v-10M93.75 180v-10M75 180v-10M56.25 180v-10M37.5 180v-10M18.75 180v-10M145 156.25h10M145 137.5h10M145 118.75h10M145 100h10M145 81.25h10M145 62.5h10M145 43.75h10M145 193.75h10M145 212.5h10M145 231.25h10M145 250h10M145 268.75h10M145 287.5h10M145 306.25h10"
-          :stroke "#ffcc00"}])
+(defn ticks [size rows]
+  [:g
+   (for [x (range 0 (- size (/ size rows)) (/ size rows))]
+     [:line {:x1     (+ x (/ size rows))
+             :y1     (+ (/ (/ size rows) 3) (/ size 2))
+             :x2     (+ x (/ size rows))
+             :y2     (- (/ size 2) (/ (/ size rows) 3) )
+             :stroke "#ffcc00"
+             :stroke-width 1.5}])
+   (for [y (range 0 (- size (/ size rows)) (/ size rows))]
+     [:line {:x1     (+ (/ (/ size rows) 3) (/ size 2))
+             :y1     (+ y (/ size rows))
+             :x2     (- (/ size 2) (/ (/ size rows) 3))
+             :y2     (+ y (/ size rows))
+             :stroke "#ffcc00"
+             :stroke-width 1.5}])])
 
 (defonce x-scale (r/atom "1"))
-
 (defonce y-scale (r/atom "1"))
 
 (defn x-slider
@@ -127,11 +145,11 @@
                               :fill "none"
                               :stroke-width 2}])]
       [:div [:svg {:width    700
-                   :view-box (str "0 24 " view-box-width " " view-box-height)
+                   :view-box (str "0 0 " view-box-width " " view-box-height)
                    :style    {:cursor (when (or (= (coords @mouse-pos) [max-x max-y])
                                                 (= (coords @mouse-pos) [mid-x mid-y])
                                                 (= (coords @mouse-pos) [min-x min-y])) "move")}}
-             [:g [grid] [arrows]  [axes] [ticks] [vals]
+             [:g [grid view-box-width 16] [arrows view-box-width] [ticks view-box-width 16] [vals]
                 [:g
                  (when (and min-x min-y)
                    [:circle {:r    (if (= (coords @mouse-pos) [min-x min-y]) 4 3) 
@@ -143,18 +161,19 @@
                              :cx   (x-point (* @x-scale mid-x))
                              :cy   (y-point (* @y-scale mid-y))
                              :fill "green"}])
-                 [:circle {:r    (if (= (coords @mouse-pos) [max-x max-y]) 4 3)
-                           :cx   (x-point (* @x-scale max-x))
-                           :cy   (y-point (* @y-scale max-y))
-                           :fill "green"}]]]
+                 (when (and max-x max-y)
+                   [:circle {:r    (if (= (coords @mouse-pos) [max-x max-y]) 4 3)
+                             :cx   (x-point (* @x-scale max-x))
+                             :cy   (y-point (* @y-scale max-y))
+                             :fill "green"}])]]
       ;; mouse tracking grid
-             (let [size 18.75]
+             (let [size (/ view-box-width 16)]
                (for [x (range 17)
                      y (range 17)]
                  [:rect {:width          size
                          :height         size
-                         :x              (- (* x size) 10)
-                         :y              (+ 16 (* y size))
+                         :x              (- (* x size) (/ size 2))
+                         :y              (- (* y size) (/ size 2))
                          :on-mouse-down  (fn [] 
                                            (reset! mouse-down? true)
                                            (when (= (coords @mouse-pos) [max-x max-y])
@@ -172,8 +191,8 @@
                                              (swap! points assoc :mid (coords [x y]))
                                              (editor/update-editor! (str @points)))
                                            (when (= :min @drag)
-                                            (editor/update-editor! (str @points))
-                                             (swap! points assoc :min (coords [x y]))))
+                                             (swap! points assoc :min (coords [x y]))
+                                             (editor/update-editor! (str @points))))
                          :on-mouse-up    (fn []
                                            (reset! mouse-down? false)
                                            (reset! drag nil))
@@ -356,8 +375,6 @@
                 (str "(x\\red{" (x-shift-tex w) "})"))
               "}\\right)\\purple{"
               (if (= 0 (y-shift-tex w)) "" (y-shift-tex w)) "}}"))))
-
-
 
 (defn eval-all [s]
   (try (sci/eval-string s {:classes {'js goog/global :allow :all}})
