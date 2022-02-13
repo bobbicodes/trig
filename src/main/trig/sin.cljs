@@ -103,7 +103,6 @@
              :stroke "#ffcc00"
              :stroke-width 1.5}])])
 
-
 (defn x-slider
   [min max step]
   [:div (str "x")
@@ -137,11 +136,7 @@
                  (and (< x 8) (< 7 y)) [(+ -8 x) (- 8 y)]
                  (and (< x 8) (< y 8)) [(+ -8 x) (- 8 y)])]
       ((fn [[x y]] (if (= @scale :pi) [(* x (/ pi 2)) y] [x y])) 
-       ints
-  )
-  ))
-
- (coords [10 2])
+       ints)))
 
 (defn tex [text]
   [:span {:ref (fn [el]
@@ -153,52 +148,60 @@
                        (js/console.warn "Unexpected KaTeX error" e)
                        (aset el "innerHTML" text)))))}])
 
+(defn target [[x y] [x2 y2]]
+    (contains? (set (for [dx [-0.5 0 0.5]
+                          dy [-0.5 0 0.5]]
+                      [(+ dx x) (+ dy y)]))
+               [x2 y2]))
+
 (defn calc-graph []
   (fn []
     (let [{[max-x max-y] :max
            [mid-x mid-y] :mid
            [min-x min-y] :min} @points
-          vals (fn [] [:path {:d (make-path (for [x (range @range-start 13 0.1)]
-                                              [(x-point x) (y-point (* @y-scale (#(@function-atom %)
-                                                 ;x
-                                                          ;(/ (* x js/Math.PI) 2)
-                                                                                 (* x @x-scale))))]))
-                              :stroke "blue"
-                              :fill "none"
+          vals (fn [] 
+                 [:path {:d (make-path (for [x (range @range-start 13 0.1)]
+                                         [(x-point x) (y-point (* @y-scale (#(@function-atom %)
+                                                                            (* x @x-scale))))]))
+                              :stroke       "blue"
+                              :fill         "none"
                               :stroke-width 2}])]
       [:div [:svg {:width    700
                    :view-box (str "0 0 " view-box-width " " view-box-height)
-                   :style    {:cursor (when (or (= (coords @mouse-pos) [max-x max-y])
-                                                (= (coords @mouse-pos) [mid-x mid-y])
-                                                (= (coords @mouse-pos) [min-x min-y])
-                                                (= (coords @mouse-pos) [(/ max-x (* 0.5 pi)) max-y])
-                                                (= (coords @mouse-pos) [(/ mid-x (* 0.5 pi)) mid-y])
-                                                (= (coords @mouse-pos) [(/ min-x (* 0.5 pi)) min-y])) "move")}}
+                   :style    {:cursor (when (or (target (coords @mouse-pos) [max-x max-y])
+                                                (target (coords @mouse-pos) [mid-x mid-y])
+                                                (target (coords @mouse-pos) [min-x min-y])
+                                                (target (coords @mouse-pos) [(/ max-x (* 0.5 pi)) max-y])
+                                                (target (coords @mouse-pos) [(/ mid-x (* 0.5 pi)) mid-y])
+                                                (target (coords @mouse-pos) [(/ min-x (* 0.5 pi)) min-y])) "move")}}
              [:g [grid view-box-width 16] [arrows view-box-width] [ticks view-box-width 16] [vals]
               [:g
                (when (and min-x min-y)
                  [:circle {:r    (if 
                                   (or
-                                   (= (coords @mouse-pos) [min-x min-y])
-                                   (= (coords @mouse-pos) [(/ min-x (* 0.5 pi)) min-y])) 4 3) 
+                                   (target (coords @mouse-pos) [min-x min-y])
+                                   (target (coords @mouse-pos) [(/ min-x (* 0.5 pi)) min-y])) 4 3) 
                            :cx   (x-point (* @x-scale min-x))
                            :cy   (y-point (* @y-scale min-y))
+                           :pointer-events "none"
                            :fill "green"}])
                (when (and mid-x mid-y)
                  [:circle {:r    (if (or 
-                                      (= (coords @mouse-pos) [mid-x mid-y])
-                                      (= (coords @mouse-pos) [(/ mid-x (* 0.5 pi)) mid-y])) 4 3)
+                                      (target (coords @mouse-pos) [mid-x mid-y])
+                                      (target (coords @mouse-pos) [(/ mid-x (* 0.5 pi)) mid-y])) 4 3)
                            :cx   (x-point (* @x-scale mid-x))
                            :cy   (y-point (* @y-scale mid-y))
+                            :pointer-events "none"
                            :fill "green"}])
                (when (and max-x max-y)
                  [:circle {:r    (if 
                                   (or
-                                   (= (coords @mouse-pos) [max-x max-y])
+                                   (target (coords @mouse-pos) [max-x max-y])
                                    ;; if x-scale is in units of pi
-                                   (= (coords @mouse-pos) [(/ max-x (* 0.5 pi)) max-y])) 4 3)
+                                   (target (coords @mouse-pos) [(/ max-x (* 0.5 pi)) max-y])) 4 3)
                            :cx   (x-point (* @x-scale max-x))
                            :cy   (y-point (* @y-scale max-y))
+                            :pointer-events "none"
                            :fill "green"}])]]
              (if (= @scale :pi)
                [:g
@@ -214,22 +217,22 @@
                         :fill "#ffcc00"} "6"]])
              ;; mouse tracking grid
              (let [size (/ view-box-width 16)]
-               (for [x (range 17)
-                     y (range 17)]
+               (for [x (range 0 17 0.5)
+                     y (range 0 17 0.5)]
                  [:rect {:width          size
                          :height         size
                          :x              (- (* x size) (/ size 2))
                          :y              (- (* y size) (/ size 2))
                          :on-mouse-down  (fn [] 
                                            (reset! mouse-down? true)
-                                           (when (or (= (coords @mouse-pos) [max-x max-y])
-                                                     (= (coords @mouse-pos) [(/ max-x (* 0.5 pi)) max-y]))
+                                           (when (or (target (coords @mouse-pos) [max-x max-y])
+                                                     (target (coords @mouse-pos) [(/ max-x (* 0.5 pi)) max-y]))
                                              (reset! drag :max))
-                                           (when (or (= (coords @mouse-pos) [mid-x mid-y])
-                                                     (= (coords @mouse-pos) [(/ mid-x (* 0.5 pi)) mid-y]))
+                                           (when (or (target (coords @mouse-pos) [mid-x mid-y])
+                                                     (target (coords @mouse-pos) [(/ mid-x (* 0.5 pi)) mid-y]))
                                              (reset! drag :mid))
-                                           (when (or (= (coords @mouse-pos) [min-x min-y])
-                                                     (= (coords @mouse-pos) [(/ min-x (* 0.5 pi)) min-y]))
+                                           (when (or (target (coords @mouse-pos) [min-x min-y])
+                                                     (target (coords @mouse-pos) [(/ min-x (* 0.5 pi)) min-y]))
                                              (reset! drag :min)))
                          :on-mouse-over  (fn []
                                            (reset! mouse-pos [x y])
@@ -246,7 +249,9 @@
                                            (reset! mouse-down? false)
                                            (reset! drag nil))
                          :visibility     "hidden"
-                         :pointer-events "all"}]))]])))
+                         :pointer-events "all"}]))]
+                         [:p (str @mouse-pos)]
+                         [:p (str (coords @mouse-pos))]])))
 
 (defn reflection? [{[max-x max-y] :max
                     [mid-x mid-y] :mid
@@ -298,6 +303,7 @@
 
 (defn period-mid [mid x]
   (cond
+    (= (abs (- mid x)) (/ pi 2)) ""
     (= (abs (- mid x)) 0.5) "\\pi"
     (= (abs (- mid x)) 0.75) "\\dfrac{2\\pi}{3}"
     (= (abs (- mid x)) 1.25) "\\dfrac{2\\pi}{5}"
@@ -327,6 +333,7 @@
         (and max-x min-x)
         (cond
           (= (abs (- max-x min-x)) 0.5) "2\\pi"
+          (= (abs (- max-x min-x)) pi) ""
           (= (abs (- max-x min-x)) (/ pi 4)) "4"
           (int? (/ (* 2 pi) (* 2 (abs (- max-x min-x)))))
           (/ (* 2 pi) (* 2 (abs (- max-x min-x))))
@@ -358,6 +365,7 @@
           (= max-x (/ (* 3 pi) 4)) "-\\dfrac{3\\pi}{4}"
           (= max-x (- (* 2 pi))) "+2\\pi"
           (= max-x pi) "-\\pi"
+          (= max-x (* 2 pi)) "-2\\pi"
           :else (str (if (neg? max-x) (str "+" (abs max-x)) (str "-" max-x))))))
 
 (defn x-shift [{[max-x max-y] :max
@@ -425,12 +433,12 @@
    [editor/editor (str @points) !points {:eval? true}]
    [:div.flex-container
     [:div.flex-item
+     [:button {:on-click #(reset! trig-fn "\\sin")} (tex "\\sin")]
+     [:button {:on-click #(reset! trig-fn "\\cos")} (tex "\\cos")]]
+    [:div.flex-item
      [:button {:on-click #(reset! points (eval-all (str "(def pi js/Math.PI)"
                                                         (some-> @!points .-state .-doc str))))}
-      "Eval"]]
-    [:div.flex-item
-     [:button {:on-click #(reset! trig-fn "\\sin")} (tex "\\sin")]
-     [:button {:on-click #(reset! trig-fn "\\cos")} (tex "\\cos")]]]])
+      "Eval"]]]])
 
 (reset! function-atom
         (fn [x]

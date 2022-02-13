@@ -100,3 +100,23 @@ cljs꞉trig.sin꞉> 
 cljs꞉trig.sin꞉> 
 [3.141592653589793 6]
 cljs꞉trig.sin꞉> 
+#'trig.sin/target
+cljs꞉trig.sin꞉> 
+([11.5 15] [11.5 15.5] [11.5 16] [12 15] [12 15.5] [12 16] [12.5 15] [12.5 15.5] [12.5 16])
+cljs꞉trig.sin꞉> 
+#'trig.sin/target
+cljs꞉trig.sin꞉> 
+([11.5 15] [11.5 15.5] [11.5 16] [12 15] [12 15.5] [12 16] [12.5 15] [12.5 15.5] [12.5 16])
+cljs꞉trig.sin꞉> 
+#'trig.sin/target
+cljs꞉trig.sin꞉> 
+#{[12.5 16] [12 15.5] [12.5 15.5] [11.5 15] [11.5 16] [12 15] [12.5 15] [12 16] [11.5 15.5]}
+cljs꞉trig.sin꞉> 
+#'trig.sin/target
+cljs꞉trig.sin꞉> 
+true
+cljs꞉trig.sin꞉> 
+false
+cljs꞉trig.sin꞉> 
+true
+cljs꞉trig.sin꞉> 
