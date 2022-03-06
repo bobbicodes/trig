@@ -7,7 +7,9 @@
 (defn app []
   [:div
    [:div [sin/points-input]
-    [sin/render-fn @points]
+[:div.flex-container
+ [:div.flex-item
+  [sin/render-fn @points]]]
     [:p]
     [sin/calc-graph]
     [:div.flex-container

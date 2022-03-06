@@ -54,6 +54,7 @@
 (defn grid [size rows]
   [:g
    (for [x (range 0 (inc size) (/ size rows))]
+     ^{:key x}
      [:line {:x1     x
              :y1     size
              :x2     x
@@ -62,6 +63,7 @@
              :stroke-width (if (= x (/ size 2)) 1.5 1)
              :opacity (if (= x (/ size 2)) 1 0.2)}])
    (for [y (range 0 (inc size) (/ size rows))]
+     ^{:key y}
      [:line {:x1     0
              :y1     y
              :x2     size
@@ -89,6 +91,7 @@
 (defn ticks [size rows]
   [:g
    (for [x (range 0 (- size (/ size rows)) (/ size rows))]
+    ^{:key x}
      [:line {:x1     (+ x (/ size rows))
              :y1     (+ (/ (/ size rows) 3) (/ size 2))
              :x2     (+ x (/ size rows))
@@ -96,6 +99,7 @@
              :stroke "#ffcc00"
              :stroke-width 1.5}])
    (for [y (range 0 (- size (/ size rows)) (/ size rows))]
+     ^{:key y}
      [:line {:x1     (+ (/ (/ size rows) 3) (/ size 2))
              :y1     (+ y (/ size rows))
              :x2     (- (/ size 2) (/ (/ size rows) 3))
@@ -148,11 +152,10 @@
                        (js/console.warn "Unexpected KaTeX error" e)
                        (aset el "innerHTML" text)))))}])
 
-(defn target [[x y] [x2 y2]]
-    (contains? (set (for [dx [-0.5 0 0.5]
-                          dy [-0.5 0 0.5]]
-                      [(+ dx x) (+ dy y)]))
-               [x2 y2]))
+(defn target [[x1 y1] [x2 y2]]
+   (let [dx (abs (- x2 x1))
+         dy (abs (- y2 y1))]
+     (<= (+ dx dy) 1)))
 
 (defn calc-graph []
   (fn []
@@ -160,12 +163,13 @@
            [mid-x mid-y] :mid
            [min-x min-y] :min} @points
           vals (fn [] 
-                 [:path {:d (make-path (for [x (range @range-start 13 0.1)]
-                                         [(x-point x) (y-point (* @y-scale (#(@function-atom %)
-                                                                            (* x @x-scale))))]))
-                              :stroke       "blue"
-                              :fill         "none"
-                              :stroke-width 2}])]
+                 [:path {:d              (make-path (for [x (range @range-start 13 0.1)]
+                                                      [(x-point x) (y-point (* @y-scale (#(@function-atom %)
+                                                                                         (* x @x-scale))))]))
+                         :stroke         "blue"
+                         :fill           "none"
+                         :pointer-events "none"
+                         :stroke-width   2}])]
       [:div [:svg {:width    700
                    :view-box (str "0 0 " view-box-width " " view-box-height)
                    :style    {:cursor (when (or (target (coords @mouse-pos) [max-x max-y])
@@ -219,6 +223,7 @@
              (let [size (/ view-box-width 16)]
                (for [x (range 0 17 0.5)
                      y (range 0 17 0.5)]
+                 ^{:key [x y]}
                  [:rect {:width          size
                          :height         size
                          :x              (- (* x size) (/ size 2))
@@ -250,7 +255,7 @@
                                            (reset! drag nil))
                          :visibility     "hidden"
                          :pointer-events "all"}]))]
-                         [:p (str @mouse-pos)]
+                         #_[:p (str @mouse-pos)]
                          [:p (str (coords @mouse-pos))]])))
 
 (defn reflection? [{[max-x max-y] :max

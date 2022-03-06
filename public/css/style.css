@@ -72,7 +72,7 @@ textarea, input {
   justify-content: flex-start;
 }
 
-  .flex-item {
+.flex-item {
   width: 230px;
   height: 70px;
   line-height: 40px;
