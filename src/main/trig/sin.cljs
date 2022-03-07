@@ -288,12 +288,12 @@
 
 (def simple-ratios
   (into {}
-        (map (fn [[n d]] [(/ n d) (str "\\dfrac{" n "}{" d "}")])
-             (for [n (range 1 100)
-                   d (range 1 100)
-                   :when (or (= 1 n)
-                             (not (divisible? n d)))]
-               [n d]))))
+        (reverse (map (fn [[n d]] [(/ n d) (str "\\dfrac{" n "}{" d "}")])
+                      (for [n (range 1 100)
+                            d (range 1 100)
+                            :when (or (= 1 n)
+                                      (not (divisible? n d)))]
+                        [n d])))))
 
 (defn period-mid [mid x]
   (cond
@@ -334,6 +334,14 @@
           :else (or (get simple-ratios (/ (* 2 pi) (* 2 (abs (- max-x min-x)))))
                     (get fractions-of-pi (/ (* 2 pi) (* 2 (abs (- max-x min-x)))))
                     (str "\\dfrac{2\\pi}{" (* 2 (abs (- max-x min-x))) "}")))))
+
+simple-ratios
+(let [{[max-x max-y] :max
+        [mid-x mid-y] :mid
+        [min-x min-y] :min} @points]
+  (/ (* 2 pi) (* 2 (abs (- max-x min-x)))))
+@points
+(period-tex @points)
 
 (defn x-shift-tex [{[max-x max-y] :max
                     [mid-x mid-y] :mid
@@ -403,19 +411,17 @@
 (defonce trig-fn (r/atom nil))
 
 (defn render-fn [w]
-  (let [{[max-x max-y] :max
-         [mid-x mid-y] :mid
-         [min-x min-y] :min} w]
-    (str "\\large{f(x)="
-              (if (= 1 (amplitude w)) "" (amplitude w))
-              @trig-fn
-              "\\left({"
-              (period-tex w)
-              (if (contains? #{"" "+0" "-0"} (x-shift-tex w))
-                "{x}"
-                (str "(x\\red{" (x-shift-tex w) "})"))
-              "}\\right)\\purple{"
-              (if (= 0 (y-shift-tex w)) "" (y-shift-tex w)) "}}")))
+  (str (if (= 1 (amplitude w)) "" (amplitude w))
+       @trig-fn
+       "\\left({"
+       (period-tex w)
+       (if (contains? #{"" "+0" "-0"} (x-shift-tex w))
+         "{x}"
+         (str "(x\\red{" (x-shift-tex w) "})"))
+       "}\\right)\\purple{"
+       (if (= 0 (y-shift-tex w)) "" (y-shift-tex w)) "}"))
+
+(render-fn @points)
 
 (defn eval-all [s]
   (try (sci/eval-string s {:classes {'js goog/global :allow :all}})
