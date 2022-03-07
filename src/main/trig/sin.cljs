@@ -28,8 +28,6 @@
            :min [-2 -2]
            :mid [nil nil]}))
 
-
-
 (defonce scale (r/atom :x))
 (defonce x-scale (r/atom "1"))
 (defonce y-scale (r/atom "1"))
@@ -40,8 +38,7 @@
 (defn x-point [x]
   (+ (/ view-box-width 2) (* 
                            (if (= @scale :pi)
-                             (/ x (* 0.5 pi))
-                             x) 
+                             (/ x (* 0.5 pi)) x) 
                            (/ view-box-width 16))))
 
 (defn y-point [y]
@@ -55,19 +52,13 @@
   [:g
    (for [x (range 0 (inc size) (/ size rows))]
      ^{:key x}
-     [:line {:x1     x
-             :y1     size
-             :x2     x
-             :y2     0
+     [:line {:x1     x :y1     size :x2     x  :y2     0
              :stroke "#ffcc00"
              :stroke-width (if (= x (/ size 2)) 1.5 1)
              :opacity (if (= x (/ size 2)) 1 0.2)}])
    (for [y (range 0 (inc size) (/ size rows))]
      ^{:key y}
-     [:line {:x1     0
-             :y1     y
-             :x2     size
-             :y2     y
+     [:line {:x1     0  :y1     y :x2     size  :y2     y
              :stroke "#ffcc00"
              :stroke-width (if (= y (/ size 2)) 1.5 1)
              :opacity (if (= y (/ size 2)) 1 0.22)}])])
@@ -107,8 +98,7 @@
              :stroke "#ffcc00"
              :stroke-width 1.5}])])
 
-(defn x-slider
-  [min max step]
+(defn x-slider [min max step]
   [:div (str "x")
    [:input {:type      "range"
             :min       min
@@ -118,8 +108,7 @@
             :on-change #(reset! x-scale (-> % .-target .-value))}]
    [:span @x-scale]])
 
-(defn y-slider
-  [min max step]
+(defn y-slider [min max step]
   [:div (str "y")
    [:input {:type      "range"
             :min       min
@@ -417,7 +406,7 @@
   (let [{[max-x max-y] :max
          [mid-x mid-y] :mid
          [min-x min-y] :min} w]
-    (tex (str "\\large{f(x)="
+    (str "\\large{f(x)="
               (if (= 1 (amplitude w)) "" (amplitude w))
               @trig-fn
               "\\left({"
@@ -426,7 +415,7 @@
                 "{x}"
                 (str "(x\\red{" (x-shift-tex w) "})"))
               "}\\right)\\purple{"
-              (if (= 0 (y-shift-tex w)) "" (y-shift-tex w)) "}}"))))
+              (if (= 0 (y-shift-tex w)) "" (y-shift-tex w)) "}}")))
 
 (defn eval-all [s]
   (try (sci/eval-string s {:classes {'js goog/global :allow :all}})
