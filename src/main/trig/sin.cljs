@@ -5,6 +5,11 @@
             [sci.core :as sci]
             [trig.latex :as latex]))
 
+(defn gcd [a b]
+  (if (zero? b)
+    a
+    (recur b (mod a b))))
+
 (defn abs [n]
   (.abs js/Math n))
 
@@ -141,7 +146,9 @@
                        (js/console.warn "Unexpected KaTeX error" e)
                        (aset el "innerHTML" text)))))}])
 
-(defn target [[x1 y1] [x2 y2]]
+(defn target 
+  "Returns true if points x and y are within 1 unit from each other."
+  [[x1 y1] [x2 y2]]
    (let [dx (abs (- x2 x1))
          dy (abs (- y2 y1))]
      (<= (+ dx dy) 1)))
@@ -284,16 +291,21 @@
                      (str "\\dfrac{" x "}{" n "}")))
              (range 2 50))))
 
-(defn divisible? [n d] (= 0 (mod d n)))
-
 (def simple-ratios
   (into {}
         (reverse (map (fn [[n d]] [(/ n d) (str "\\dfrac{" n "}{" d "}")])
                       (for [n (range 1 100)
                             d (range 1 100)
-                            :when (or (= 1 n)
-                                      (not (divisible? n d)))]
+                            :when (= 1 (gcd n d))]
                         [n d])))))
+
+(defn ratios [end]
+  (let [nums (for [n (range 1 end)
+                   d (range 1 end)
+                   :when (= 1 (gcd n d))]
+               [n d])]
+    (into {} (reverse (map (fn [[n d]] [(/ n d) [n d]])
+                        nums)))))
 
 (defn period-mid [mid x]
   (cond
@@ -307,9 +319,9 @@
               (get fractions-of-pi (/ (* 2 pi) (* 4 (abs (- mid x)))))
               (str "\\dfrac{2\\pi}{" (* 4 (abs (- mid x))) "}"))))
 
-(defn period [{[max-x max-y] :max
-               [mid-x mid-y] :mid
-               [min-x min-y] :min}]
+(defn period [{[max-x _] :max
+               [mid-x _] :mid
+               [min-x _] :min}]
   (cond (and mid-x min-x)
         (/ (* 2 pi) (* 4 (abs (- mid-x min-x))))
         (and mid-x max-x)
@@ -317,9 +329,9 @@
         (and max-x min-x)
         (/ (* 2 pi) (* 2 (abs (- max-x min-x))))))
 
-(defn period-tex [{[max-x max-y] :max
-                   [mid-x mid-y] :mid
-                   [min-x min-y] :min}]
+(defn period-tex [{[max-x _] :max
+                   [mid-x _] :mid
+                   [min-x _] :min}]
   (cond (and mid-x min-x)
         (period-mid mid-x min-x)
         (and mid-x max-x)
@@ -331,17 +343,11 @@
           (= (abs (- max-x min-x)) (/ pi 4)) "4"
           (int? (/ (* 2 pi) (* 2 (abs (- max-x min-x)))))
           (/ (* 2 pi) (* 2 (abs (- max-x min-x))))
-          :else (or (get simple-ratios (/ (* 2 pi) (* 2 (abs (- max-x min-x)))))
-                    (get fractions-of-pi (/ (* 2 pi) (* 2 (abs (- max-x min-x)))))
+          :else (or (get simple-ratios 
+                         (/ (* 2 pi) (* 2 (abs (- max-x min-x)))))
+                    (get fractions-of-pi 
+                         (/ (* 2 pi) (* 2 (abs (- max-x min-x)))))
                     (str "\\dfrac{2\\pi}{" (* 2 (abs (- max-x min-x))) "}")))))
-
-simple-ratios
-(let [{[max-x max-y] :max
-        [mid-x mid-y] :mid
-        [min-x min-y] :min} @points]
-  (/ (* 2 pi) (* 2 (abs (- max-x min-x)))))
-@points
-(period-tex @points)
 
 (defn x-shift-tex [{[max-x max-y] :max
                     [mid-x mid-y] :mid
@@ -401,27 +407,26 @@ simple-ratios
 (defn y-shift [{[max-x max-y] :max
                 [mid-x mid-y] :mid
                 [min-x min-y] :min}]
-  (cond (and mid-x min-x)
-        mid-y
-        (and mid-x max-x)
-        mid-y
-        (and max-x min-x)
-        (- max-y (/ (abs (- max-y min-y)) 2))))
+  (cond (and mid-x min-x) mid-y
+        (and mid-x max-x) mid-y
+        (and max-x min-x) (- max-y (/ (abs (- max-y min-y)) 2))))
 
 (defonce trig-fn (r/atom nil))
 
 (defn render-fn [w]
   (str (if (= 1 (amplitude w)) "" (amplitude w))
        @trig-fn
-       "\\left({"
-       (period-tex w)
+       "\\left({" (period-tex w)
        (if (contains? #{"" "+0" "-0"} (x-shift-tex w))
-         "{x}"
-         (str "(x\\red{" (x-shift-tex w) "})"))
+         "{x}" (str "(x\\red{" (x-shift-tex w) "})"))
        "}\\right)\\purple{"
        (if (= 0 (y-shift-tex w)) "" (y-shift-tex w)) "}"))
 
-(render-fn @points)
+{:max [pi 6] :min [(/ (* -3 pi) 4) 1.5] :mid [nil nil]}
+
+(period-tex {:max [pi 6] :min [(/ (* -3 pi) 4) 1.5] :mid [nil nil]})
+(x-shift-tex {:max [pi 6] :min [(/ (* -3 pi) 4) 1.5] :mid [nil nil]})
+(render-fn {:max [pi 6] :min [(/ (* -3 pi) 4) 1.5] :mid [nil nil]})
 
 (defn eval-all [s]
   (try (sci/eval-string s {:classes {'js goog/global :allow :all}})
