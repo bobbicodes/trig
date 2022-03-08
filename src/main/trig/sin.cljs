@@ -412,8 +412,9 @@
         (and max-x min-x) (- max-y (/ (abs (- max-y min-y)) 2))))
 
 (defonce trig-fn (r/atom nil))
+(defonce render-mode (r/atom :a))
 
-(defn render-fn [w]
+(defn render-a [w]
   (str (if (= 1 (amplitude w)) "" (amplitude w))
        @trig-fn
        "\\left({" (period-tex w)
@@ -422,11 +423,25 @@
        "}\\right)\\purple{"
        (if (= 0 (y-shift-tex w)) "" (y-shift-tex w)) "}"))
 
-{:max [pi 6] :min [(/ (* -3 pi) 4) 1.5] :mid [nil nil]}
+(defn render-b [w]
+  (let [[n d] (get (ratios 100) (period w))]
+    (str (if (= 1 (amplitude w)) "" (amplitude w))
+         @trig-fn
+         "\\left(" (period-tex w)
+         (if (contains? #{"" "+0" "-0"} (x-shift-tex w))
+           "{x}" (str "x-\\dfrac{" n "\\pi}{" d))
+         "}\\right)\\purple{"
+         (if (= 0 (y-shift-tex w)) "" (y-shift-tex w)) "}")))
 
-(period-tex {:max [pi 6] :min [(/ (* -3 pi) 4) 1.5] :mid [nil nil]})
-(x-shift-tex {:max [pi 6] :min [(/ (* -3 pi) 4) 1.5] :mid [nil nil]})
-(render-fn {:max [pi 6] :min [(/ (* -3 pi) 4) 1.5] :mid [nil nil]})
+(defn render-fn [w]
+  (if (= :a @render-mode)
+    (render-a w)
+    (render-b w)))
+
+(get (ratios 100) (period {:max [pi 6] :min [(/ (* -3 pi) 4) 2] :mid [nil nil]}))
+(period-tex {:max [pi 6] :min [(/ (* -3 pi) 4) 2] :mid [nil nil]})
+(x-shift-tex {:max [pi 6] :min [(/ (* -3 pi) 4) 2] :mid [nil nil]})
+(render-fn {:max [pi 6] :min [(/ (* -3 pi) 4) 2] :mid [nil nil]})
 
 (defn eval-all [s]
   (try (sci/eval-string s {:classes {'js goog/global :allow :all}})
@@ -439,7 +454,8 @@
    [:div.flex-container
     [:div.flex-item
      [:button {:on-click #(reset! trig-fn "\\sin")} (tex "\\sin")]
-     [:button {:on-click #(reset! trig-fn "\\cos")} (tex "\\cos")]]
+     [:button {:on-click #(reset! trig-fn "\\cos")} (tex "\\cos")]
+     [:button {:on-click (fn [] (swap! render-mode #(if (= :a %) :b :a)))} (str @render-mode)]]
     [:div.flex-item
      [:button {:on-click #(reset! points (eval-all (str "(def pi js/Math.PI)"
                                                         (some-> @!points .-state .-doc str))))}
