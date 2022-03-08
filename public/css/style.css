@@ -73,9 +73,8 @@ textarea, input {
 }
 
 .flex-item {
-  width: 230px;
-  height: 70px;
-  line-height: 40px;
-  font-weight: bold;
+  width: 175px;
+  height: 40px;
+  line-height: 30px;
   text-align: left;
 }

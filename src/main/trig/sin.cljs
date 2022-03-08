@@ -166,7 +166,7 @@
                          :fill           "none"
                          :pointer-events "none"
                          :stroke-width   2}])]
-      [:div [:svg {:width    700
+      [:div [:svg {:width    500
                    :view-box (str "0 0 " view-box-width " " view-box-height)
                    :style    {:cursor (when (or (target (coords @mouse-pos) [max-x max-y])
                                                 (target (coords @mouse-pos) [mid-x mid-y])
@@ -252,7 +252,7 @@
                          :visibility     "hidden"
                          :pointer-events "all"}]))]
                          #_[:p (str @mouse-pos)]
-                         [:p (str (coords @mouse-pos))]])))
+                         #_[:p (str (coords @mouse-pos))]])))
 
 (defn reflection? [{[max-x max-y] :max
                     [mid-x mid-y] :mid
@@ -279,9 +279,41 @@
 
 (def fractions-of-pi
   (into {}
+        (reverse (map (juxt (fn [n] (/ pi n))
+                            (fn [n]
+                              (str "\\dfrac{\\pi}{" n "}")))
+                      (range 2 1000)))))
+
+(def fractions-of-2pi
+  (into {}
+        (reverse (map (juxt (fn [n] (/ (* 2 pi) n))
+                            (fn [n]
+                              (str "\\dfrac{2\\pi}{" n "}")))
+                      (range 2 1000)))))
+
+(def fractions-of-7pi
+  (into {}
+        (reverse (map (juxt (fn [n] (/ (* 7 pi) n))
+                            (fn [n]
+                              (str "\\dfrac{7\\pi}{" n "}")))
+                      (range 2 1000)))))
+
+(def fracs-of-pi
+  (into {}
         (map (juxt (fn [n] (/ pi n))
-                   (fn [n]
-                     (str "\\dfrac{\\pi}{" n "}")))
+                   identity)
+             (range 2 1000))))
+
+(def fracs-of-2pi
+  (into {}
+        (map (juxt (fn [n] (/ (* 2 pi) n))
+                   identity)
+             (range 2 1000))))
+
+(def fracs-of-7pi
+  (into {}
+        (map (juxt (fn [n] (/ (* 7 pi) n))
+                   identity)
              (range 2 1000))))
 
 (defn fractions-of [x]
@@ -424,13 +456,21 @@
        (if (= 0 (y-shift-tex w)) "" (y-shift-tex w)) "}"))
 
 (defn render-b [w]
-  (let [[n d] (get (ratios 100) (period w))]
+  (let [p (or (get (ratios 100) (period w))
+              (/ (get fracs-of-7pi (period w)) 7)
+              (/ (get fracs-of-2pi (period w)) 2)
+              (get fracs-of-pi (period w))
+              )]
     (str (if (= 1 (amplitude w)) "" (amplitude w))
          @trig-fn
-         "\\left(" (period-tex w)
+         "\\left(" (period-tex w) (if (neg? (x-shift w)) "x-" "x+")
          (if (contains? #{"" "+0" "-0"} (x-shift-tex w))
-           "{x}" (str "x-\\dfrac{" n "\\pi}{" d))
-         "}\\right)\\purple{"
+           "{x}" 
+           (or (get fractions-of-pi (/ pi (/ p (x-shift w))))
+               (get fractions-of-2pi (/ pi (/ p (x-shift w))))
+               (get fractions-of-7pi (abs (/ pi (/ p (x-shift w)))))
+               (str "\\dfrac{\\pi}{" (/ p (x-shift w)) "}")))
+         "\\right)\\purple{"
          (if (= 0 (y-shift-tex w)) "" (y-shift-tex w)) "}")))
 
 (defn render-fn [w]
@@ -438,10 +478,31 @@
     (render-a w)
     (render-b w)))
 
-(get (ratios 100) (period {:max [pi 6] :min [(/ (* -3 pi) 4) 2] :mid [nil nil]}))
-(period-tex {:max [pi 6] :min [(/ (* -3 pi) 4) 2] :mid [nil nil]})
-(x-shift-tex {:max [pi 6] :min [(/ (* -3 pi) 4) 2] :mid [nil nil]})
-(render-fn {:max [pi 6] :min [(/ (* -3 pi) 4) 2] :mid [nil nil]})
+(comment
+  (get fracs-of-2pi (period @points))
+  (/ pi (* (period @points) (x-shift @points)))
+  (get (ratios 100) (period @points))
+(/ (* 3 pi) 2)
+(get fractions-of-7pi (abs (/ (* -7 pi) 9)))
+(period @points)
+  (x-shift @points)
+
+  (get (ratios 100) (period {:max [pi 6]
+                             :min [(/ (* -3 pi) 4) 2]
+                             :mid [nil nil]}))
+
+  (period-tex {:max [pi 6]
+               :min [(/ (* -3 pi) 4) 2]
+               :mid [nil nil]})
+
+  (x-shift-tex {:max [pi 6]
+                :min [(/ (* -3 pi) 4) 2]
+                :mid [nil nil]})
+
+  (render-fn {:max [pi 6]
+              :min [(/ (* -3 pi) 4) 2]
+              :mid [nil nil]})
+  )
 
 (defn eval-all [s]
   (try (sci/eval-string s {:classes {'js goog/global :allow :all}})
