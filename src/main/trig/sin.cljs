@@ -3,12 +3,8 @@
             ["katex" :as katex]
             [trig.editor :as editor :refer [!points]]
             [sci.core :as sci]
-            [trig.latex :as latex]))
-
-(defn gcd [a b]
-  (if (zero? b)
-    a
-    (recur b (mod a b))))
+            [trig.latex :as latex]
+            [trig.ratio :as ratio]))
 
 (defn abs [n]
   (.abs js/Math n))
@@ -147,11 +143,11 @@
                        (aset el "innerHTML" text)))))}])
 
 (defn target 
-  "Returns true if points x and y are within 1 unit from each other."
+  "Returns true if points x and y are within 0.5 unit from each other."
   [[x1 y1] [x2 y2]]
    (let [dx (abs (- x2 x1))
          dy (abs (- y2 y1))]
-     (<= (+ dx dy) 1)))
+     (<= (+ dx dy) 0.5)))
 
 (defn calc-graph []
   (fn []
@@ -159,9 +155,9 @@
            [mid-x mid-y] :mid
            [min-x min-y] :min} @points
           vals (fn [] 
-                 [:path {:d              (make-path (for [x (range @range-start 13 0.1)]
-                                                      [(x-point x) (y-point (* @y-scale (#(@function-atom %)
-                                                                                         (* x @x-scale))))]))
+                 [:path {:d (make-path (for [x (range @range-start 13 0.1)]
+                                          [(x-point x) (y-point (* @y-scale (#(@function-atom %)
+                                             (* x @x-scale))))]))
                          :stroke         "blue"
                          :fill           "none"
                          :pointer-events "none"
@@ -274,71 +270,6 @@
               (and max-x min-x) (/ (abs (- max-y min-y)) 2))]
     (if (reflection? w) (- abs-result) abs-result)))
 
-;; builds a map of the first 1000 divisions of pi, beginning with pi/2.
-;; each decimal value is mapped to the TeX string representing its fraction.
-
-(def fractions-of-pi
-  (into {}
-        (reverse (map (juxt (fn [n] (/ pi n))
-                            (fn [n]
-                              (str "\\dfrac{\\pi}{" n "}")))
-                      (range 2 1000)))))
-
-(def fractions-of-2pi
-  (into {}
-        (reverse (map (juxt (fn [n] (/ (* 2 pi) n))
-                            (fn [n]
-                              (str "\\dfrac{2\\pi}{" n "}")))
-                      (range 2 1000)))))
-
-(def fractions-of-7pi
-  (into {}
-        (reverse (map (juxt (fn [n] (/ (* 7 pi) n))
-                            (fn [n]
-                              (str "\\dfrac{7\\pi}{" n "}")))
-                      (range 2 1000)))))
-
-(def fracs-of-pi
-  (into {}
-        (map (juxt (fn [n] (/ pi n))
-                   identity)
-             (range 2 1000))))
-
-(def fracs-of-2pi
-  (into {}
-        (map (juxt (fn [n] (/ (* 2 pi) n))
-                   identity)
-             (range 2 1000))))
-
-(def fracs-of-7pi
-  (into {}
-        (map (juxt (fn [n] (/ (* 7 pi) n))
-                   identity)
-             (range 2 1000))))
-
-(defn fractions-of [x]
-  (into {}
-        (map (juxt (fn [n] (/ x n))
-                   (fn [n]
-                     (str "\\dfrac{" x "}{" n "}")))
-             (range 2 50))))
-
-(def simple-ratios
-  (into {}
-        (reverse (map (fn [[n d]] [(/ n d) (str "\\dfrac{" n "}{" d "}")])
-                      (for [n (range 1 100)
-                            d (range 1 100)
-                            :when (= 1 (gcd n d))]
-                        [n d])))))
-
-(defn ratios [end]
-  (let [nums (for [n (range 1 end)
-                   d (range 1 end)
-                   :when (= 1 (gcd n d))]
-               [n d])]
-    (into {} (reverse (map (fn [[n d]] [(/ n d) [n d]])
-                        nums)))))
-
 (defn period-mid [mid x]
   (cond
     (= (abs (- mid x)) (/ pi 2)) ""
@@ -347,8 +278,8 @@
     (= (abs (- mid x)) 1.25) "\\dfrac{2\\pi}{5}"
     (int? (/ (* 2 pi) (* 4 (abs (- mid x)))))
     (/ (* 2 pi) (* 4 (abs (- mid x))))
-    :else (or (get simple-ratios (/ (* 2 pi) (* 4 (abs (- mid x)))))
-              (get fractions-of-pi (/ (* 2 pi) (* 4 (abs (- mid x)))))
+    :else (or (get ratio/simple-ratios (/ (* 2 pi) (* 4 (abs (- mid x)))))
+              (get ratio/fractions-of-pi (/ (* 2 pi) (* 4 (abs (- mid x)))))
               (str "\\dfrac{2\\pi}{" (* 4 (abs (- mid x))) "}"))))
 
 (defn period [{[max-x _] :max
@@ -360,6 +291,8 @@
         (/ (* 2 pi) (* 4 (abs (- mid-x max-x))))
         (and max-x min-x)
         (/ (* 2 pi) (* 2 (abs (- max-x min-x))))))
+
+(period @points)
 
 (defn period-tex [{[max-x _] :max
                    [mid-x _] :mid
@@ -375,9 +308,9 @@
           (= (abs (- max-x min-x)) (/ pi 4)) "4"
           (int? (/ (* 2 pi) (* 2 (abs (- max-x min-x)))))
           (/ (* 2 pi) (* 2 (abs (- max-x min-x))))
-          :else (or (get simple-ratios 
+          :else (or (get ratio/simple-ratios 
                          (/ (* 2 pi) (* 2 (abs (- max-x min-x)))))
-                    (get fractions-of-pi 
+                    (get ratio/fractions-of-pi 
                          (/ (* 2 pi) (* 2 (abs (- max-x min-x)))))
                     (str "\\dfrac{2\\pi}{" (* 2 (abs (- max-x min-x))) "}")))))
 
@@ -456,19 +389,25 @@
        (if (= 0 (y-shift-tex w)) "" (y-shift-tex w)) "}"))
 
 (defn render-b [w]
-  (let [p (or (get (ratios 100) (period w))
-              (/ (get fracs-of-7pi (period w)) 7)
-              (/ (get fracs-of-2pi (period w)) 2)
-              (get fracs-of-pi (period w))
+  (let [p (or (get (ratio/ratios 100) (period w))
+              (/ (get ratio/fracs-of-7pi (period w)) 7)
+              (/ (get ratio/fracs-of-2pi (period w)) 2)
+              (get ratio/fracs-of-pi (period w))
               )]
     (str (if (= 1 (amplitude w)) "" (amplitude w))
          @trig-fn
          "\\left(" (period-tex w) (if (neg? (x-shift w)) "x-" "x+")
          (if (contains? #{"" "+0" "-0"} (x-shift-tex w))
            "{x}" 
-           (or (get fractions-of-pi (/ pi (/ p (x-shift w))))
-               (get fractions-of-2pi (/ pi (/ p (x-shift w))))
-               (get fractions-of-7pi (abs (/ pi (/ p (x-shift w)))))
+           (or (get ratio/fractions-of-pi (/ pi (/ p (x-shift w))))
+               (get ratio/fractions-of-2pi (abs (* (period w) (x-shift w))))
+               (get ratio/fractions-of-3pi (abs (* (period w) (x-shift w))))
+               (get ratio/fractions-of-4pi (abs (* (period w) (x-shift w))))
+               (get ratio/fractions-of-5pi (abs (* (period w) (x-shift w))))
+               (get ratio/fractions-of-6pi (abs (* (period w) (x-shift w))))
+               (get ratio/fractions-of-7pi (abs (* (period w) (x-shift w))))
+               (get ratio/fractions-of-8pi (abs (* (period w) (x-shift w))))
+               (get ratio/fractions-of-9pi (abs (* (period w) (x-shift w))))
                (str "\\dfrac{\\pi}{" (/ p (x-shift w)) "}")))
          "\\right)\\purple{"
          (if (= 0 (y-shift-tex w)) "" (y-shift-tex w)) "}")))
@@ -479,7 +418,8 @@
     (render-b w)))
 
 (comment
-  (get fracs-of-2pi (period @points))
+   (get fractions-of-4pi (/ (* 4 pi) 3))
+  (get fractions-of-4pi (* (period @points) (x-shift @points)))
   (/ pi (* (period @points) (x-shift @points)))
   (get (ratios 100) (period @points))
 (/ (* 3 pi) 2)
@@ -524,8 +464,8 @@
     [:div.flex-item
      [:button {:on-click (fn [] (swap! render-mode #(if (= :a %) :b :a)))} 
       (if (= :a @render-mode)
-        (tex "\\dfrac{1}{2}x-\\dfrac{\\pi}{2}")
-        (tex "\\dfrac{1}{2}(x+2\\pi)"))]]]])
+        (tex "\\tiny{\\dfrac{1}{2}x+\\dfrac{\\pi}{2}}")
+        (tex "\\tiny{\\dfrac{1}{2}(x+\\pi)}"))]]]])
 
 (reset! function-atom
         (fn [x]

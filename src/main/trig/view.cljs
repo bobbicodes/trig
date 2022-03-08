@@ -12,6 +12,7 @@
     (tex (str "\\large{f(x)="
               (render-fn @points)
               "}"))]]
+    [:br]
     [sin/calc-graph]
     [:div.flex-container
      [:div.flex-item

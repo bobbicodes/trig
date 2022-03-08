@@ -1,6 +1,6 @@
 body {
   background-color: #260247;
-  margin-left: 4px;
+  margin-left: 8px;
   border-top: 0px;
   margin-top: -25px;
   padding-top: 0px;
@@ -73,7 +73,7 @@ textarea, input {
 }
 
 .flex-item {
-  width: 175px;
+  width: 170px;
   height: 40px;
   line-height: 30px;
   text-align: left;

@@ -93,7 +93,7 @@
                                           :parent el)))))]
     [:div
      {:ref mount!
-      :style {:background-color "gray"
+      :style {:background-color "#5091a0"
               ;:width 550
               }}]
     (finally (j/call @!view :destroy))))
