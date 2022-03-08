@@ -455,11 +455,16 @@
     [:div.flex-item
      [:button {:on-click #(reset! trig-fn "\\sin")} (tex "\\sin")]
      [:button {:on-click #(reset! trig-fn "\\cos")} (tex "\\cos")]
-     [:button {:on-click (fn [] (swap! render-mode #(if (= :a %) :b :a)))} (str @render-mode)]]
+     ]
     [:div.flex-item
      [:button {:on-click #(reset! points (eval-all (str "(def pi js/Math.PI)"
                                                         (some-> @!points .-state .-doc str))))}
-      "Eval"]]]])
+      "Eval"]]
+    [:div.flex-item
+     [:button {:on-click (fn [] (swap! render-mode #(if (= :a %) :b :a)))} 
+      (if (= :a @render-mode)
+        (tex "\\dfrac{1}{2}x-\\dfrac{\\pi}{2}")
+        (tex "\\dfrac{1}{2}(x+2\\pi)"))]]]])
 
 (reset! function-atom
         (fn [x]
