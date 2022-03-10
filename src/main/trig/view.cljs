@@ -16,7 +16,7 @@
     [sin/calc-graph]
     [:div.flex-container
      [:div.flex-item
-      [sin/x-slider -10 10 0.01]]
+      [sin/x-slider -10 10 1]]
       [:div.flex-item
        [sin/y-slider -1 1 0.01]]
      [:div.flex-item
@@ -27,3 +27,5 @@
     [tri/app]]
      #_[pythagoras/pythagorean-identity-sin 
       "\\theta_1" "\\text{IV}" 3 5]])
+
+(reset! x-scale 6)
