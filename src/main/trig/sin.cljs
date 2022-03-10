@@ -210,11 +210,11 @@
                 [:text {:transform "scale(0.6) translate(426,276)"
                         :fill      "#ffcc00"} (str (.floor js/Math (* @x-scale 3)) "π")]
                 [:text {:transform "scale(0.6) translate(266,193)"
-                        :fill      "#ffcc00"} (/ (.round js/Math (* 10 (* @y-scale 2))) 10)]
+                        :fill      "#ffcc00"} (/ (.round js/Math (* 10 (/ 2 @y-scale))) 10)]
                 [:text {:transform "scale(0.6) translate(266,130)"
-                        :fill      "#ffcc00"} (/ (.round js/Math (* 10 (* @y-scale 4))) 10)]
+                        :fill      "#ffcc00"} (/ (.round js/Math (* 10 (/ 4 @y-scale))) 10)]
                 [:text {:transform "scale(0.6) translate(266,68)"
-                        :fill      "#ffcc00"} (/ (.round js/Math (* 10 (* @y-scale 6))) 10)]]
+                        :fill      "#ffcc00"} (/ (.round js/Math (* 10 (/ 6 @y-scale))) 10)]]
                [:g
                 [:text {:transform "scale(0.6) translate(306,276)"
                         :fill      "#ffcc00"} (/ (.round js/Math (* 10 (* @x-scale 2))) 10)]
@@ -223,11 +223,11 @@
                 [:text {:transform "scale(0.6) translate(432,276)"
                         :fill      "#ffcc00"} (/ (.round js/Math (* 10 (* @x-scale 6))) 10)]
                 [:text {:transform "scale(0.6) translate(266,193)"
-                        :fill      "#ffcc00"} (/ (.round js/Math (* 10 (* @y-scale 2))) 10)]
+                        :fill      "#ffcc00"} (/ (.round js/Math (* 10 (/ 2 @y-scale))) 10)]
                 [:text {:transform "scale(0.6) translate(266,130)"
-                        :fill      "#ffcc00"} (/ (.round js/Math (* 10 (* @y-scale 4))) 10)]
+                        :fill      "#ffcc00"} (/ (.round js/Math (* 10 (/ 4 @y-scale))) 10)]
                 [:text {:transform "scale(0.6) translate(266,68)"
-                        :fill      "#ffcc00"} (/ (.round js/Math (* 10 (* @y-scale 6))) 10)]])
+                        :fill      "#ffcc00"} (/ (.round js/Math (* 10 (/ 6 @y-scale))) 10)]])
              ;; mouse tracking grid
              (let [size (/ view-box-width 16)]
                (for [x (range 0 17 0.5)

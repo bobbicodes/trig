@@ -599,7 +599,7 @@
 (defonce counter (r/atom 0))
 
 (js/setInterval
- #(js/window.requestAnimationFrame (fn [] (reset! counter (js/Date.now)))) 1)
+ #(js/requestAnimationFrame (fn [] (reset! counter (js/Date.now)))) 15)
 
 @counter
 (/ 124 2)
