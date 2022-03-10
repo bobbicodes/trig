@@ -55,13 +55,13 @@
      ^{:key x}
      [:line {:x1     x :y1     size :x2     x  :y2     0
              :stroke "#ffcc00"
-             :stroke-width (if (= x (/ size 2)) 1.5 1)
+             :stroke-width 1
              :opacity (if (= x (/ size 2)) 1 0.2)}])
    (for [y (range 0 (inc size) (/ size rows))]
      ^{:key y}
      [:line {:x1     0  :y1     y :x2     size  :y2     y
              :stroke "#ffcc00"
-             :stroke-width (if (= y (/ size 2)) 1.5 1)
+             :stroke-width 1
              :opacity (if (= y (/ size 2)) 1 0.22)}])])
 
 (defn arrows [size]
@@ -78,7 +78,7 @@
           :stroke "#ffcc00"
           :stroke-linejoin "round"
           :stroke-linecap "round"
-          :stroke-width 2}])
+          :stroke-width 1}])
 
 (defn ticks [size rows]
   [:g
@@ -89,7 +89,7 @@
              :x2     (+ x (/ size rows))
              :y2     (- (/ size 2) (/ (/ size rows) 3) )
              :stroke "#ffcc00"
-             :stroke-width 1.5}])
+             :stroke-width 1}])
    (for [y (range 0 (- size (/ size rows)) (/ size rows))]
      ^{:key y}
      [:line {:x1     (+ (/ (/ size rows) 3) (/ size 2))
@@ -97,7 +97,7 @@
              :x2     (- (/ size 2) (/ (/ size rows) 3))
              :y2     (+ y (/ size rows))
              :stroke "#ffcc00"
-             :stroke-width 1.5}])])
+             :stroke-width 1}])])
 
 (defn x-slider [min max step]
   [:div (str "x")
@@ -162,7 +162,7 @@
                          :fill           "none"
                          :pointer-events "none"
                          :stroke-width   2}])]
-      [:div [:svg {:width    500
+      [:div [:svg {:width    700
                    :view-box (str "0 0 " view-box-width " " view-box-height)
                    :style    {:cursor (when (or (target (coords @mouse-pos) [max-x max-y])
                                                 (target (coords @mouse-pos) [mid-x mid-y])
@@ -201,16 +201,31 @@
                            :fill "green"}])]]
              (if (= @scale :pi)
                [:g
-                [latex/pi]
-                [latex/two-pi]
-                [latex/three-pi]]
+                [:text {:transform "scale(0.6) translate(297,276)"
+                        :fill      "#ffcc00"} (str (.floor js/Math (* @x-scale 1)) "π")]
+                [:text {:transform "scale(0.6) translate(360,276)"
+                        :fill      "#ffcc00"} (str (.floor js/Math (* @x-scale 2)) "π")]
+                [:text {:transform "scale(0.6) translate(424,276)"
+                        :fill      "#ffcc00"} (str (.floor js/Math (* @x-scale 3)) "π")]
+                [:text {:transform "scale(0.6) translate(266,190)"
+                        :fill      "#ffcc00"} (.floor js/Math (* @y-scale 2))]
+                [:text {:transform "scale(0.6) translate(266,130)"
+                        :fill      "#ffcc00"} (.floor js/Math (* @y-scale 4))]
+                [:text {:transform "scale(0.6) translate(266,68)"
+                        :fill      "#ffcc00"} (.floor js/Math (* @y-scale 6))]]
                [:g
-                [:text {:transform "scale(0.65) translate(284,256)"
-                        :fill "#ffcc00"} "2"]
-                [:text {:transform "scale(0.65) translate(340,256)"
-                        :fill "#ffcc00"} "4"]
-                [:text {:transform "scale(0.65) translate(398,256)"
-                        :fill "#ffcc00"} "6"]])
+                [:text {:transform "scale(0.6) translate(282,276)"
+                        :fill      "#ffcc00"} (.floor js/Math (* @x-scale 2))]
+                [:text {:transform "scale(0.6) translate(338,276)"
+                        :fill      "#ffcc00"} (.floor js/Math (* @x-scale 4))]
+                [:text {:transform "scale(0.6) translate(394,276)"
+                        :fill      "#ffcc00"} (.floor js/Math (* @x-scale 6))]
+                [:text {:transform "scale(0.6) translate(266,190)"
+                        :fill      "#ffcc00"} (.floor js/Math (* @y-scale 2))]
+                [:text {:transform "scale(0.6) translate(266,130)"
+                        :fill      "#ffcc00"} (.floor js/Math (* @y-scale 4))]
+                [:text {:transform "scale(0.6) translate(266,68)"
+                        :fill      "#ffcc00"} (.floor js/Math (* @y-scale 6))]])
              ;; mouse tracking grid
              (let [size (/ view-box-width 16)]
                (for [x (range 0 17 0.5)
@@ -291,8 +306,6 @@
         (/ (* 2 pi) (* 4 (abs (- mid-x max-x))))
         (and max-x min-x)
         (/ (* 2 pi) (* 2 (abs (- max-x min-x))))))
-
-(period @points)
 
 (defn period-tex [{[max-x _] :max
                    [mid-x _] :mid
@@ -418,16 +431,17 @@
     (render-b w)))
 
 (comment
-   (get fractions-of-4pi (/ (* 4 pi) 3))
-  (get fractions-of-4pi (* (period @points) (x-shift @points)))
+  (render-fn @points)
+   (get ratio/fractions-of-4pi (/ (* 4 pi) 3))
+  (get ratio/fractions-of-4pi (* (period @points) (x-shift @points)))
   (/ pi (* (period @points) (x-shift @points)))
-  (get (ratios 100) (period @points))
+  (get (ratio/ratios 100) (period @points))
 (/ (* 3 pi) 2)
-(get fractions-of-7pi (abs (/ (* -7 pi) 9)))
+(get ratio/fractions-of-7pi (abs (/ (* -7 pi) 9)))
 (period @points)
   (x-shift @points)
 
-  (get (ratios 100) (period {:max [pi 6]
+  (get (ratio/ratios 100) (period {:max [pi 6]
                              :min [(/ (* -3 pi) 4) 2]
                              :mid [nil nil]}))
 
