@@ -201,11 +201,13 @@
                            :fill "green"}])]]
              (if (= @scale :pi)
                [:g
-                [:text {:transform "scale(0.6) translate(297,276)"
-                        :fill      "#ffcc00"} (str (.floor js/Math (* @x-scale 1)) "π")]
-                [:text {:transform "scale(0.6) translate(360,276)"
+                [:text {:transform "scale(0.6) translate(304,276)"
+                        :fill      "#ffcc00"} (str (let [v (.floor js/Math (* @x-scale 1))]
+                                                     (if (= 1 v) "" v))
+                                                   "π")]
+                [:text {:transform "scale(0.6) translate(362,276)"
                         :fill      "#ffcc00"} (str (.floor js/Math (* @x-scale 2)) "π")]
-                [:text {:transform "scale(0.6) translate(424,276)"
+                [:text {:transform "scale(0.6) translate(426,276)"
                         :fill      "#ffcc00"} (str (.floor js/Math (* @x-scale 3)) "π")]
                 [:text {:transform "scale(0.6) translate(266,190)"
                         :fill      "#ffcc00"} (.floor js/Math (* @y-scale 2))]
@@ -214,11 +216,11 @@
                 [:text {:transform "scale(0.6) translate(266,68)"
                         :fill      "#ffcc00"} (.floor js/Math (* @y-scale 6))]]
                [:g
-                [:text {:transform "scale(0.6) translate(282,276)"
+                [:text {:transform "scale(0.6) translate(304,276)"
                         :fill      "#ffcc00"} (.floor js/Math (* @x-scale 2))]
-                [:text {:transform "scale(0.6) translate(338,276)"
+                [:text {:transform "scale(0.6) translate(368,276)"
                         :fill      "#ffcc00"} (.floor js/Math (* @x-scale 4))]
-                [:text {:transform "scale(0.6) translate(394,276)"
+                [:text {:transform "scale(0.6) translate(432,276)"
                         :fill      "#ffcc00"} (.floor js/Math (* @x-scale 6))]
                 [:text {:transform "scale(0.6) translate(266,190)"
                         :fill      "#ffcc00"} (.floor js/Math (* @y-scale 2))]
