@@ -209,25 +209,25 @@
                         :fill      "#ffcc00"} (str (.floor js/Math (* @x-scale 2)) "π")]
                 [:text {:transform "scale(0.6) translate(426,276)"
                         :fill      "#ffcc00"} (str (.floor js/Math (* @x-scale 3)) "π")]
-                [:text {:transform "scale(0.6) translate(266,190)"
-                        :fill      "#ffcc00"} (.floor js/Math (* @y-scale 2))]
+                [:text {:transform "scale(0.6) translate(266,193)"
+                        :fill      "#ffcc00"} (/ (.round js/Math (* 10 (* @y-scale 2))) 10)]
                 [:text {:transform "scale(0.6) translate(266,130)"
-                        :fill      "#ffcc00"} (.floor js/Math (* @y-scale 4))]
+                        :fill      "#ffcc00"} (/ (.round js/Math (* 10 (* @y-scale 4))) 10)]
                 [:text {:transform "scale(0.6) translate(266,68)"
-                        :fill      "#ffcc00"} (.floor js/Math (* @y-scale 6))]]
+                        :fill      "#ffcc00"} (/ (.round js/Math (* 10 (* @y-scale 6))) 10)]]
                [:g
-                [:text {:transform "scale(0.6) translate(304,276)"
-                        :fill      "#ffcc00"} (.floor js/Math (* @x-scale 2))]
+                [:text {:transform "scale(0.6) translate(306,276)"
+                        :fill      "#ffcc00"} (/ (.round js/Math (* 10 (* @x-scale 2))) 10)]
                 [:text {:transform "scale(0.6) translate(368,276)"
-                        :fill      "#ffcc00"} (.floor js/Math (* @x-scale 4))]
+                        :fill      "#ffcc00"} (/ (.round js/Math (* 10 (* @x-scale 4))) 10)]
                 [:text {:transform "scale(0.6) translate(432,276)"
-                        :fill      "#ffcc00"} (.floor js/Math (* @x-scale 6))]
-                [:text {:transform "scale(0.6) translate(266,190)"
-                        :fill      "#ffcc00"} (.floor js/Math (* @y-scale 2))]
+                        :fill      "#ffcc00"} (/ (.round js/Math (* 10 (* @x-scale 6))) 10)]
+                [:text {:transform "scale(0.6) translate(266,193)"
+                        :fill      "#ffcc00"} (/ (.round js/Math (* 10 (* @y-scale 2))) 10)]
                 [:text {:transform "scale(0.6) translate(266,130)"
-                        :fill      "#ffcc00"} (.floor js/Math (* @y-scale 4))]
+                        :fill      "#ffcc00"} (/ (.round js/Math (* 10 (* @y-scale 4))) 10)]
                 [:text {:transform "scale(0.6) translate(266,68)"
-                        :fill      "#ffcc00"} (.floor js/Math (* @y-scale 6))]])
+                        :fill      "#ffcc00"} (/ (.round js/Math (* 10 (* @y-scale 6))) 10)]])
              ;; mouse tracking grid
              (let [size (/ view-box-width 16)]
                (for [x (range 0 17 0.5)
@@ -266,6 +266,8 @@
                          :pointer-events "all"}]))]
                          #_[:p (str @mouse-pos)]
                          #_[:p (str (coords @mouse-pos))]])))
+
+()
 
 (defn reflection? [{[max-x max-y] :max
                     [mid-x mid-y] :mid

@@ -18,7 +18,7 @@
      [:div.flex-item
       [sin/x-slider -10 10 0.01]]
       [:div.flex-item
-       [sin/y-slider -10 10 0.01]]
+       [sin/y-slider -2 2 0.01]]
      [:div.flex-item
       [:button {:on-click #(reset! scale :x)} (sin/tex "x")]
       [:button {:on-click #(reset! scale :pi)} (sin/tex "\\pi")]
