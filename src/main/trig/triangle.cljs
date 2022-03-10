@@ -598,8 +598,11 @@
 
 (defonce counter (r/atom 0))
 
-(js/setInterval #(swap! counter inc) 10)
+(js/setInterval
+ #(js/window.requestAnimationFrame (fn [] (reset! counter (js/Date.now)))) 1)
 
+@counter
+(/ 124 2)
 (defn abs [n] (.abs js/Math n))
 
 (defn nearly-equal? [n1 n2]
