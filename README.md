@@ -2,12 +2,11 @@
 
 Learn trig with Clojure!
 
-* Calculate and render an angle's sine/cosine using the Pythagorean identity
-
 ![Interactive graph](./trig.png)
 
 ![Pythagorean identities](./trig1.png)
 
+* Calculate and render an angle's sine/cosine using the Pythagorean identity
 * Render triangles and solve for angles/sides using Law of Sines/Cosines
 
 ![Triangles](./trig2.png)
