@@ -2,7 +2,7 @@
 
 Learn trig with Clojure!
 
-![Interactive graph](./trig.png)
+![Interactive graph](./sinusoid.gif)
 
 ![Pythagorean identities](./trig1.png)
 
